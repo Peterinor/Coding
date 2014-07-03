@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WTLTest", "WTLTest\WTLTest.vcxproj", "{4E471984-AA41-4A54-AB44-C6B4C59E18BB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WTLMessage", "WTLMessage\WTLMessage.vcxproj", "{26F59976-E8EB-471A-BE31-91B739F61DD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E471984-AA41-4A54-AB44-C6B4C59E18BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E471984-AA41-4A54-AB44-C6B4C59E18BB}.Debug|Win32.Build.0 = Debug|Win32
+		{4E471984-AA41-4A54-AB44-C6B4C59E18BB}.Release|Win32.ActiveCfg = Release|Win32
+		{4E471984-AA41-4A54-AB44-C6B4C59E18BB}.Release|Win32.Build.0 = Release|Win32
+		{26F59976-E8EB-471A-BE31-91B739F61DD7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{26F59976-E8EB-471A-BE31-91B739F61DD7}.Debug|Win32.Build.0 = Debug|Win32
+		{26F59976-E8EB-471A-BE31-91B739F61DD7}.Release|Win32.ActiveCfg = Release|Win32
+		{26F59976-E8EB-471A-BE31-91B739F61DD7}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
