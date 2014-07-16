@@ -1,0 +1,250 @@
+imshow '../images/bw.jpg'
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+pixvar
+{??? Undefined function or variable 'pixvar'.
+} 
+pixval
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/images/pixval.m',10,0)">pixval at 10</a>
+PIXVAL is obsolete and has been removed.
+ IMPIXELINFO is its recommended replacement for pixel reporting.
+ IMDISTLINE is its recommended replacement for measuring distance.
+} 
+impixelinfo
+imdistline
+
+ans = 
+
+  <a href="matlab:help imdistline">imdistline</a> <a href="matlab:help handle">handle</a> with no properties.
+  <a href="matlab:methods('imdistline')">Methods</a>, <a href="matlab:events('imdistline')">Events</a>, <a href="matlab:superclasses('imdistline')">Superclasses</a>
+
+close all
+impixel
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/images/impixel.m',185,0)">impixel>parse_inputs at 185</a>
+An image must be currently active in a figure window.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/images/impixel.m',77,0)">impixel at 77</a>
+[a,cm,xi,yi,x,y] = parse_inputs(varargin{:});
+} 
+clc
+close all
+imshow '../images/bw.jpg'
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+impixel
+
+ans =
+
+    12    12    12
+    17    17    17
+    21    21    21
+    23    23    23
+    10    10    10
+    25    25    25
+   221   221   221
+   229   229   229
+
+improfile
+improfile
+uiopen('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/filter/getline.m',1)
+builtin('cd','/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness');
+imshow '../images/bw.jpg'
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+imshow '../images/bw.jpg'
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+analys
+{Warning: Image is too big to fit on screen; displaying at 2%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',16,1)">analys at 16</a>
+Any key to Exit:
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graphics/close.m',93,0)">close at 93</a>
+Invalid figure handle.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',23,0)">analys at 23</a>
+close figure 100;
+} 
+clc
+analys
+{Warning: Image is too big to fit on screen; displaying at 2%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',16,1)">analys at 16</a>
+Any key to Exit:
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graphics/close.m',93,0)">close at 93</a>
+Invalid figure handle.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',23,0)">analys at 23</a>
+close figure 100;
+} 
+clc
+close all
+imshow '../images/edge.tif'
+analys
+{Warning: Image is too big to fit on screen; displaying at 2%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',16,1)">analys at 16</a>
+Any key to Exit:
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graphics/close.m',93,0)">close at 93</a>
+Invalid figure handle.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',25,0)">analys at 25</a>
+close figure 102;
+} 
+analys
+{Warning: Image is too big to fit on screen; displaying at 2%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',16,1)">analys at 16</a>
+Any key to Exit:
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graphics/close.m',93,0)">close at 93</a>
+Invalid figure handle.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',24,0)">analys at 24</a>
+close figure 101;
+} 
+clc
+imname = '../images/edge.tif';
+image = imread(imname);
+imshow(image);
+
+imcont = imcontour(image);
+figure;
+imshow(imcont);
+{Warning: Image is too big to fit on screen; displaying at 2%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+clc
+imshow(image);
+imhist(image);
+imshow(image);
+{Warning: The initial magnification of the image is set to 'fit' in a docked figure.} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',241,1)">imshow at 241</a>
+figure,imhist
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/shared/imageslib/iptchecknargin.m',57,0)">iptchecknargin at 57</a>
+Function IMHIST expected at least 1 input argument
+but was called instead with 0 input arguments.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/images/imhist.m',273,0)">imhist>parse_inputs at 273</a>
+iptchecknargin(1,2,nargin,mfilename);
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/images/imhist.m',57,0)">imhist at 57</a>
+[a, n, isScaled, top, map] = parse_inputs(varargin{:});
+} 
+clc
+figure,imhist(image)
+analys
+Any key to Exit:
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graphics/close.m',93,0)">close at 93</a>
+Invalid figure handle.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/analys.m',31,0)">analys at 31</a>
+close figure 101;
+} 
+clc
+analys
+Any key to Exit:
+imshow(histq)
+hist(histq)
+{??? Error using ==> mtimes
+Integers can only be combined with integers of the same class, or scalar doubles.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/datafun/hist.m',78,0)">hist at 78</a>
+        xx = miny + binwidth*(0:x);
+} 
+imhist(histq)
+close all
+clc
+imshow(image)
+figure,imshow(histq)
+figure,imhist(image),figure,imhist(histq)
+close
+close
+analys
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=0.5
+{??? Error using ==> mpower
+Matrix must be square.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',26,0)">br3 at 26</a>
+plot(x,c*x^r,'-r');
+} 
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=0.5
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',31,1)">br3 at 31</a>
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=0.5
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',31,1)">br3 at 31</a>
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=1
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',31,1)">br3 at 31</a>
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=2
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',31,1)">br3 at 31</a>
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=0.5
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',32,1)">br3 at 32</a>
+Any key to Exit:
+br3
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',16,1)">br3 at 16</a>
+Input the r: r=1
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/brightness/br3.m',32,1)">br3 at 32</a>
+Any key to Exit:

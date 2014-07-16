@@ -1,0 +1,60 @@
+#include<iostream>
+
+#include"lifegame.h"
+
+using std::cout;
+using std::cin;
+using std::endl;
+
+int main()
+{
+	cout<<"LifeGame Here!"<<endl;
+
+	Farmland f(5);
+	f.PrintLand();	
+	
+	unit_type land[]={	1,1,1,0,0,
+						0,1,1,1,0,
+						0,0,0,1,1,
+						0,1,1,0,1,
+						0,1,1,0,0
+					};	
+	cout<<endl;
+	cout<<"Initialize land with a array!"<<endl;
+	
+	Farmland fd(5,land);
+	fd.PrintLand();
+	cout<<fd.GetCellState(1,2)<<endl;
+	cout<<endl;
+	fd.NextGeneration();
+	fd.PrintLand();
+	
+	cout<<fd.ReportLandState()<<endl;
+	
+	string data="1110001110000110110101100";
+	cout<<endl;
+	cout<<"Initialize land with a string "<<endl;
+	Farmland fds(5,data);
+	fds.PrintLand();
+	
+	
+	cout<<"Test coye construction !"<<endl;
+	Farmland fdcpy(fd);
+	fdcpy.PrintLand();
+	cout<<true+true+false<<endl;
+	cout<<false+false<<endl;
+	
+	cout<<"Here Go a test of the game!!"<<endl;
+	for(int i=0;i<50;i++)
+	{
+		cout<<fd.NextGeneration()<<endl;
+		cout<<"the "<<i<<" Generation:"<<endl;
+		fd.PrintLand();
+		
+	}
+	cout<<"test of LifeGame"<<endl;
+	LifeGame game;
+	cout<<game.HashLand("tangy")<<endl;
+	return 0;
+}
+

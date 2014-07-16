@@ -1,0 +1,6 @@
+Something Advanced in java Class not mentioned and discussed in ../JavaBase/javaClass
+including inherit, interface, package and access authortization, polymorphism and ....
+
+JavaClass_0.java			--	the test pf println(Object x), see also ../javaBase/javaBase_2sys_obj.java, and JavaClass.java for every class reride the toString() method for compare
+JavaClass.java				--	the most start of inherit in java 
+

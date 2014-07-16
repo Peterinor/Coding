@@ -1,0 +1,276 @@
+clear
+clc
+c = 2.0;
+x = [ 0.01 : 0.01 : 1];
+y = c*log(1+x);
+plot(x,y)
+close all
+c = 1;
+y = c*log(1+x);
+plot(x,y)
+y = c*log(1+ 2 * x);
+plot(x,y)
+y = c*log(1+x)+1;
+plot(x,y)
+y = c*log(x)+1;
+plot(x,y)
+clc
+a = 20;
+m = 0.5;
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+a = 2000;
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+image = imread('../images/bw.jpg');
+r1 = log(1+double(image));
+r1 = im2uint8(mat2gray(r1));
+imshow(image),figure,imshow(r1)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close
+close all
+r2 = 1./(1 + (m./double(image))^.E);
+??? r2 = 1./(1 + (m./double(image))^.E);
+                                    |
+{Error: Unexpected MATLAB operator.
+} 
+r2 = 1./(1 + (m./double(image))^.a);
+??? r2 = 1./(1 + (m./double(image))^.a);
+                                    |
+{Error: Unexpected MATLAB operator.
+} 
+r2 = 1./(1 + (m./double(image)).^a);
+r2 = 1./(1 + (m./double(image)).^a); r2 = im2uint8(mat2gray(r2));
+imshow(image),figure,imshow(r1)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(mat2gray(r2));
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+imshow(image)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+whos image
+  Name         Size              Bytes  Class    Attributes
+
+  image      660x440            290400  uint8              
+
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+m = 0.3
+
+m =
+
+    0.3000
+
+a = 5;
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(mat2gray(r2));
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+m = 0.5;
+r2 = 1./(1 + (m./double(image) + eps).^a);
+r2 = im2uint8(mat2gray(r2));
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+z = 1./(1 + (m./(double(image)).^a);
+??? z = 1./(1 + (m./(double(image)).^a);
+                                       |
+{Error: Unbalanced or unexpected parenthesis or bracket.
+} 
+z = 1./(1 + (m./(double(image)).^a));
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+m = mean2(double(image));
+m = mean2(double(image))
+
+m =
+
+  101.9884
+
+z = 1./(1 + (m./(double(image)).^a);
+??? z = 1./(1 + (m./(double(image)).^a);
+                                       |
+{Error: Unbalanced or unexpected parenthesis or bracket.
+} 
+z = 1./(1 + (m./(double(image)).^a));
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+clc
+close all
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(mat2gray(r2));
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+x = [1:255];
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+z = 1./(1 + (m./double(image)).^a);
+plot(z)
+surf(z)
+image(z)
+{??? Subscript indices must either be real positive integers or logicals.
+} 
+imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+r2 = 1./(1 + (m./double(image) + eps).^a);
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close
+a = 10;
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+a = 20;
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+close all
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(z)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+a = 40;
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+a = 100;
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+a = 10000;
+z = 1./(1 + (m./x).^a);
+plot(x,z)
+r2 = 1./(1 + (m./double(image) + eps).^a); r2 = im2uint8(r2);
+imshow(image),figure,imshow(r2)
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+diary off

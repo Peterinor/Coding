@@ -1,0 +1,13 @@
+This dir include many java program for java class basic Knowledge!
+
+JavaBase_class_1glance.java		-- first glance at java class
+JavaBase_class_2.java			-- java class Constructor function and toString() reride
+JavaBase_class_3.java			-- some java class other Knowledge, such as object array
+JavaBase_class_4exam.java		-- a exam about class basic Knowledge
+JavaBase_class_5this.java		-- some test on this and static
+JavaBase_class_6codeblock.java	-- something about codeblock
+JavaBase_class_7arg.java		-- object as argument and retrun value
+JavaBase_class_8prv.java		-- a java class with witch just can have sigle one Instance
+JavaBase_class_9innerclass.java	-- java inner class test, the position and the form of inner class
+JavaBase_class_list.java		-- a List realized by java
+

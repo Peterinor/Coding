@@ -1,0 +1,17 @@
+Something test on java basic Knowledge:
+Here you see is the most basic Knowledge on java, here the point we fly in the ground of java!
+
+javaArray				--	basic Knowledge about java Array
+javaClass				--	basic Knowledge about java class
+something_in_C			--	some puzzles performed in C
+
+JavaBase.java			--	a first glance at javac
+JavaBase_1.java			--	more test about the for of the main class 
+JavaBase_2sys_obj.java	--  here you can get some Knowledge about the System class and the Object class, some methods metioned too!
+JavaBase_args.java		--	some test about argments of the main method of javac
+JavaBase_control.java	--	the basic control structure of java, such as for, if...
+JavaBase_datatype.java	--	the basic datatype built in java
+JavaBase_main.java		--	the more deeply think of main method, the form of main method
+JavaBase_operator.java	--	the main operators in java
+JavaBase_name.java		--	java function and value name rules
+JavaBase_reference.java	--	reference in java 

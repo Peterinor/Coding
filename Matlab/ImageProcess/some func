@@ -1,0 +1,45 @@
+图像转换：
+gray2ind
+ind2gray
+rgb2gray
+gray2rgb
+rgb2ind
+ind2rdb
+
+阈值转换
+im2bw
+grayslice
+
+矩阵转为灰度图
+mat2gray
+
+
+图像显示
+imshow
+montage	同时显示多幅
+immovie	转化为动画
+
+其他命令
+colorbar
+zoom on
+hold on
+
+图像几何操作
+imresize
+imrotate
+imcrop
+
+图像分析
+impixelinfo
+impixel
+
+improfile		--相当与在../filter/文件夹下面的scan.m getline.m中实现的内容
+imcontour
+imhist
+
+edge
+
+imadjust
+
+histeq
+

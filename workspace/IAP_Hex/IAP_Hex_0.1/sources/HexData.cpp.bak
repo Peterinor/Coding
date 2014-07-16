@@ -1,0 +1,214 @@
+#include"../includes/includes.h"
+
+
+//定义Hex文件的行起始字符
+#define Start_Code	':'
+
+//设置十六进制的数据输出格式
+#define Hex_Print 1
+
+#if Hex_Print
+#define	_hex_	hex
+#define _0x		"0x"
+#else
+#define	_hex_	""
+#define _0x 	""
+#endif
+
+enum Record_Type		//记录类型
+{
+	H_ERR=-1,			//错误记录
+	H_DATA,				//数据记录
+	H_EOF,				//文件结束记录
+	H_ESAR,				//扩展存储段地址记录
+	H_SSAR,				//起始段地址记录
+	H_ELAR,
+	H_SLAR
+};
+
+typedef struct hex_Rec
+{
+	unsigned int 	byte_cout;		//数据长度
+	unsigned int 	address;		//数据地址
+	Record_Type 	rec_type;		//数据类型
+	unsigned char 	*pdata;			//数据数组
+	unsigned int 	chechsum;		//校验和
+
+}Hex,*pHex;
+
+
+/*
+ * 打印hex数据，并且返回数据记录是否已到数据尾部
+ * 若到数据尾部则返回true，否则返回false
+ */
+bool show_Hex(Hex rec);
+
+
+#define char_to_int_gap	48	//0x30
+
+//hex文件路径
+string hexfile="/home/tylwj/file/Data.hex";
+
+
+Hex get_Data_Str(char * s);
+
+/*
+ * 打印hexfile
+ * 输出hex_file为文件名的hex文件，无返回类型
+ */
+void print_Hex(string hex_file);
+
+/*
+ * 将一个字母转换为一个十六进制的数字
+ * 返回转换后的数字
+ */
+int get_Num(char ch);
+
+
+/*
+ * 测试函数，不用
+ */
+void test();
+
+/*
+ * 主程序，打印hex文件内容
+ */
+int main()
+{
+	print_Hex(hexfile.c_str());
+
+	return 0;
+}
+
+
+/*
+ *
+ */
+int get_Num(char ch)
+{
+	if(!isalnum(ch))
+	{
+		cout<<"Error Code!!"<<endl;
+		return -1;
+	}
+	if(isupper(ch))
+	{
+		return ch-'A'+10;
+	}
+	else if(islower(ch))
+	{
+		return ch-'a'+10;
+	}
+	else
+	{
+		return ch-'0';
+	}
+}
+
+/*
+ *
+ */
+Hex get_Data_Str(char * line)
+{
+	int i=0;
+	Hex rec;
+	if(line[i]!=':')
+	{
+		cout<<"error code!"<<endl;
+		rec.rec_type=H_ERR;
+		return rec;
+	}
+	i+=1;	//指向字节数起始位置
+	rec.byte_cout=16*(get_Num(line[i]))+get_Num(line[i+1]);
+
+	i+=2;	//指向地址段起始位置
+	rec.address=16*16*16*get_Num(line[i])
+					+16*16*get_Num(line[i+1])
+					+16*get_Num(line[i+2])+get_Num(line[i+3]);
+
+	i+=4;	//指向数据记录类型段起始位置
+	rec.rec_type=/*16*get_Num(line[i])+*/(Record_Type)get_Num(line[i+1]);	//因为类型段不可能大于5，故。。。
+
+	i+=2;	//指向数据段起始位置
+	rec.pdata=new unsigned char[rec.byte_cout];
+	for(unsigned int k=0;k<rec.byte_cout;k++)
+	{
+		rec.pdata[k]=16*(get_Num(line[i]))+get_Num(line[i+1]);
+		i+=2;
+	}
+
+	i=i;	//指向校验和段起始位置
+	rec.chechsum=16*(get_Num(line[i]))+get_Num(line[i+1]);
+
+	return rec;
+}
+
+
+/*
+ *
+ */
+void print_Hex(string hex_file)
+{
+	fstream file;
+	char line[100];
+
+	bool end_of_data=false;
+
+	file.open(hex_file.c_str(),ios::in);
+	if(!file)
+	{
+		cout<<"open failed!"<<endl;
+		exit(-1);
+	}
+	while(!file.eof()&&!end_of_data)
+	{
+		file.getline(line,sizeof(line));
+		cout<<endl<<"------->"<<line<<"<-------"<<endl;
+		end_of_data=show_Hex(get_Data_Str(line));
+	}
+	file.close();
+}
+
+/*
+ *
+ */
+bool show_Hex(Hex rec)
+{
+	cout<<"Information of Rec:"<<endl;
+	cout<<_hex_
+		<<"DataType :	"	<<_0x<<rec.rec_type	<<endl
+		<<"Address  :	"	<<_0x<<rec.address	<<endl
+		<<"ByteCount:	"	<<dec<<rec.byte_cout<<endl			//数据段大小始终使用10进制输出
+		<<_hex_
+		<<"CheckSum :	"	<<_0x<<rec.chechsum	<<endl;
+	cout<<"Data     :	"	<<endl;
+	for(unsigned int i=0;i<rec.byte_cout;i++)
+	{
+		cout<<_0x<<(unsigned int)rec.pdata[i]<<"  .  ";
+		//printf("  %h.  ",rec.pdata[i]);
+	}
+	cout<<endl;
+	if(rec.rec_type==H_EOF)
+		return true;
+	return false;
+}
+
+
+
+char * hex_str=":10002E00E0FE1200B5907F13E04402F0AF10EF3304";
+/*
+ *
+ */
+void test()
+{
+	Record_Type a=H_ERR;
+	cout<<a<<endl;
+	cout<<get_Num('9')<<endl;
+	a=(Record_Type)4;
+	cout<<a<<endl;
+	cout<<hex_str<<endl;
+	show_Hex(get_Data_Str(hex_str));
+
+
+}
+

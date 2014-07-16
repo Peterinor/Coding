@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IAP", "IAP\IAP.vcxproj", "{0085C816-09F8-48D5-818A-93DCADB938F4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hex", "Hex\Hex.vcxproj", "{1019EB0A-CB63-4E99-9123-2C5CF247C363}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maste", "Maste\Maste.vcxproj", "{89986B39-0DC2-4AE2-A2F8-D96AA8C3A17F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4} = {FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Slever", "Slever\Slever.vcxproj", "{6C9E45D5-9C71-448D-A0DF-BC51496A4DEC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4} = {FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSerial", "CSerial\CSerial.vcxproj", "{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0085C816-09F8-48D5-818A-93DCADB938F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0085C816-09F8-48D5-818A-93DCADB938F4}.Debug|Win32.Build.0 = Debug|Win32
+		{0085C816-09F8-48D5-818A-93DCADB938F4}.Release|Win32.ActiveCfg = Release|Win32
+		{0085C816-09F8-48D5-818A-93DCADB938F4}.Release|Win32.Build.0 = Release|Win32
+		{1019EB0A-CB63-4E99-9123-2C5CF247C363}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1019EB0A-CB63-4E99-9123-2C5CF247C363}.Debug|Win32.Build.0 = Debug|Win32
+		{1019EB0A-CB63-4E99-9123-2C5CF247C363}.Release|Win32.ActiveCfg = Release|Win32
+		{1019EB0A-CB63-4E99-9123-2C5CF247C363}.Release|Win32.Build.0 = Release|Win32
+		{89986B39-0DC2-4AE2-A2F8-D96AA8C3A17F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{89986B39-0DC2-4AE2-A2F8-D96AA8C3A17F}.Debug|Win32.Build.0 = Debug|Win32
+		{89986B39-0DC2-4AE2-A2F8-D96AA8C3A17F}.Release|Win32.ActiveCfg = Release|Win32
+		{89986B39-0DC2-4AE2-A2F8-D96AA8C3A17F}.Release|Win32.Build.0 = Release|Win32
+		{6C9E45D5-9C71-448D-A0DF-BC51496A4DEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6C9E45D5-9C71-448D-A0DF-BC51496A4DEC}.Debug|Win32.Build.0 = Debug|Win32
+		{6C9E45D5-9C71-448D-A0DF-BC51496A4DEC}.Release|Win32.ActiveCfg = Release|Win32
+		{6C9E45D5-9C71-448D-A0DF-BC51496A4DEC}.Release|Win32.Build.0 = Release|Win32
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}.Debug|Win32.Build.0 = Debug|Win32
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}.Release|Win32.ActiveCfg = Release|Win32
+		{FEEDFCAD-406A-452C-9E93-EDB8C02D36D4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

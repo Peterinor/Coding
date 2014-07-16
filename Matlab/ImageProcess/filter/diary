@@ -1,0 +1,3 @@
+f = imread('./images/gzlz_matlab_DIP/images/dipum_images_ch02/Fig0203(a)(chest-xray).tif');
+imshow(f,[])
+diary off

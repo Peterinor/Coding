@@ -1,0 +1,310 @@
+clc
+disp('Now learning the painting in Matlab -- 2D');
+Now learning the painting in Matlab -- 2D
+x = 0:2*pi;
+y = sin(x)*abs(cos(x));
+{??? Error using ==> mtimes
+Inner matrix dimensions must agree.
+} 
+x
+
+x =
+
+     0     1     2     3     4     5     6
+
+x = 0:0.1:2*pi;
+y = sin(x).*abs(cos(x));
+plot(x,y,'-r');
+grid on
+title('sin(x)*|cos(x)|')
+xlabel('x (0...2\pi')
+xlabel('x (0...2\pi)')
+ylabel('y (sin*|cos|)')
+text(pi,0,'y=sin(x)*|cos(x)')
+figure(2)
+subplot(2,2,1)
+plot(x,sin(x))
+grid on
+axis([0 2*pi])
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graph2d/axis.m',234,0)">axis>LocSetLimits at
+234</a>
+Vector must have 4, 6, or 8 elements.
+
+Error in ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graph2d/axis.m',94,0)">axis at 94</a>
+                LocSetLimits(ax(j),cur_arg);} 
+axis([0 2*pi -1 1])
+clc
+subplot(2,2,2)
+plot(x,cos(x))
+grid on
+axis([0 2*pi -1 1])
+subplot(2,2,3)
+plot(x,tan(x))
+grid on
+axis([0 2*pi -50 50])
+subplot(x,cot(x))
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graph2d/subplot.m',188,0)">subplot at 188</a>
+Unknown command option.
+} 
+subplot(2,2,4)
+plot(x,cot(x))
+clc
+subplot(2,2,2)
+text(pi,0,'cos(x)')
+subplot(2,2,1)
+text(pi,0,'sin(x)')
+clc
+figure(3)
+plot(x,2*sin(x))
+hold on 
+plot(x,2*cos(x),'r')
+grid on
+axis([0 2*pi -2 2])
+clc
+plot(pi,0,'*')
+plot(pi,0,'8')
+{??? Error using ==> plot
+Error in color/linetype argument
+} 
+plot(pi,0,'+')
+plot(2pi,0,'+')
+??? plot(2pi,0,'+')
+          |
+{Error: Unexpected MATLAB expression.
+} 
+plot(2*pi,0,'+')
+plot(0,0,'o')
+plot([-2 2],[-2 2])
+plot([0 2],[6 2])
+plot([0 2],[-2 6])
+plot([0 6],[-2 2])
+figure(4)
+x = 0 : 0.5 : 2*pi;
+X = [x;x];
+Y = [zeros(1,numel(x));cos(x)];
+plot(X,Y)
+plot(x,cos(x))
+hold on
+plot(X,Y)
+grid on
+plot([ 0 1 2 ] , [ 9 3 2])
+plot([ 0 0 0; 3 1 2 ] , [ 0 0 0; 1 1 1])
+plot([ 0 0 0; 3 1 2 ] , [ 1 2 3; 1 1 1])
+clc
+uiopen('/media/tw/Users/tylwj/Coding/Matlab/Learning/painting.m',1)
+v=axis
+
+v =
+
+     0     6    -1     9
+
+v(3) = -3
+
+v =
+
+     0     6    -3     9
+
+v(4) = 5;
+axis(v)
+th = linspace(0,2*pi)
+
+th =
+
+  Columns 1 through 4
+
+         0    0.0635    0.1269    0.1904
+
+  Columns 5 through 8
+
+    0.2539    0.3173    0.3808    0.4443
+
+  Columns 9 through 12
+
+    0.5077    0.5712    0.6347    0.6981
+
+  Columns 13 through 16
+
+    0.7616    0.8251    0.8885    0.9520
+
+  Columns 17 through 20
+
+    1.0155    1.0789    1.1424    1.2059
+
+  Columns 21 through 24
+
+    1.2693    1.3328    1.3963    1.4597
+
+  Columns 25 through 28
+
+    1.5232    1.5867    1.6501    1.7136
+
+  Columns 29 through 32
+
+    1.7771    1.8405    1.9040    1.9675
+
+  Columns 33 through 36
+
+    2.0309    2.0944    2.1579    2.2213
+
+  Columns 37 through 40
+
+    2.2848    2.3483    2.4117    2.4752
+
+  Columns 41 through 44
+
+    2.5387    2.6021    2.6656    2.7291
+
+  Columns 45 through 48
+
+    2.7925    2.8560    2.9195    2.9829
+
+  Columns 49 through 52
+
+    3.0464    3.1099    3.1733    3.2368
+
+  Columns 53 through 56
+
+    3.3003    3.3637    3.4272    3.4907
+
+  Columns 57 through 60
+
+    3.5541    3.6176    3.6811    3.7445
+
+  Columns 61 through 64
+
+    3.8080    3.8715    3.9349    3.9984
+
+  Columns 65 through 68
+
+    4.0619    4.1253    4.1888    4.2523
+
+  Columns 69 through 72
+
+    4.3157    4.3792    4.4427    4.5061
+
+  Columns 73 through 76
+
+    4.5696    4.6331    4.6965    4.7600
+
+  Columns 77 through 80
+
+    4.8235    4.8869    4.9504    5.0139
+
+  Columns 81 through 84
+
+    5.0773    5.1408    5.2043    5.2677
+
+  Columns 85 through 88
+
+    5.3312    5.3947    5.4581    5.5216
+
+  Columns 89 through 92
+
+    5.5851    5.6485    5.7120    5.7755
+
+  Columns 93 through 96
+
+    5.8389    5.9024    5.9659    6.0293
+
+  Columns 97 through 100
+
+    6.0928    6.1563    6.2197    6.2832
+
+clc
+th = linspace(0,2*pi);
+R = 3
+
+R =
+
+     3
+
+x = R*cos(th);
+y = R*sin(th);
+plot(x,y)
+clc
+hold off
+plot(x,y)
+axis equal
+clc
+grid on
+axis off
+grid off
+box on
+box off
+clc
+axis on
+box off
+grid on
+x = sin(x);
+y = sin(2*th+pi/4);
+plot(x,y)
+box off
+box on
+builtin('cd','/media/tw/Users/tylwj/Coding/Matlab/ImageProcess');
+builtin('cd','/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/subsection_bitlevel');
+subsection_fun_s('../images/bw.jpg',[40 100;180 225],[0 0;255 255])
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/subsection_bitlevel/subsection_fun_s.m',33,1)">subsection_fun_s at 33</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/subsection_bitlevel/subsection_fun_s.m',54,1)">subsection_fun_s at 54</a>
+Any key to Exit:
+subsection_fun_s('../images/bw.jpg',[40 100;180 225],[0 0;255 255])
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/subsection_bitlevel/subsection_fun_s.m',33,1)">subsection_fun_s at 33</a>
+{Warning: Image is too big to fit on screen; displaying at 67%} 
+> In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/private/initSize.m',73,1)">imuitools/private/initSize at 73</a>
+  In <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/images/imuitools/imshow.m',262,1)">imshow at 262</a>
+  In <a href="matlab: opentoline('/media/tw/Users/tylwj/Coding/Matlab/ImageProcess/subsection_bitlevel/subsection_fun_s.m',54,1)">subsection_fun_s at 54</a>
+Any key to Exit:
+cd ../
+cd ../
+cd Learning
+plot(x,sin(x),x,cos(x))
+axis
+
+ans =
+
+    -1     1    -1     1
+
+axis equa
+{??? Error using ==> <a href="matlab: opentoline('/media/tw/Ubuntu/Matlab/toolbox/matlab/graph2d/axis.m',183,0)">axis at 183</a>
+Unknown command option equa
+} 
+axis equal
+clc
+v = axis
+
+v =
+
+   -0.9975    0.9999   -1.4229    1.5816
+
+axis([0,2*pi,-1,1])
+plot(x,sin(x),x,cos(x))
+x = linspace(0,2*pi);
+plot(x,sin(x),x,cos(x))
+axis([0,2*pi,-1,1])
+clc
+legent('sin(x)','cos(x)')
+{??? Undefined function or method 'legent' for input arguments of type
+'char'.
+} 
+legend('sin(x)','cos(x)')
+clc
+legend('cos(x)','sin(x)')
+legend('cos(x)','sin(x)')
+legent('sin(x)','cos(x)')
+{??? Undefined function or method 'legent' for input arguments of type
+'char'.
+} 
+legend('sin(x)','cos(x)')
+clc
+legend('sin(x)','cos(x)','Location','SouthWest')
+legend('boxoff')
+legend('boxon')
+exit
