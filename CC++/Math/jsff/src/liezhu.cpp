@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 edited in 2010/11/01
 builed in 2010/11/01
 Version 1.1
@@ -10,9 +10,9 @@ Version 1.1
 
 using namespace std;
 
-int N;		//·½³ÌµÄ½×Êı,¸ÄÓÃ±äÁ¿£¬¿ÉÒÔÓÉÊ¹ÓÃÕß¾ö¶¨·½³Ì½×Êı£¬³ÌĞò¸ü¼ÓÁé»î
+int N;		//æ–¹ç¨‹çš„é˜¶æ•°,æ”¹ç”¨å˜é‡ï¼Œå¯ä»¥ç”±ä½¿ç”¨è€…å†³å®šæ–¹ç¨‹é˜¶æ•°ï¼Œç¨‹åºæ›´åŠ çµæ´»
 
-double Main_Element;	//¼ÇÂ¼Ã¿´ÎÑ¡ÔñµÄÖ÷Ôª
+double Main_Element;	//è®°å½•æ¯æ¬¡é€‰æ‹©çš„ä¸»å…ƒ
 
 double **A;
 double **B;
@@ -24,66 +24,66 @@ double **X;
 A=	{2,1,3};
 	{1,1,1};
 B=	{2,7,4};
-ÇóµÄ¸ùÎª£ºX={19,-7,-8};
+æ±‚çš„æ ¹ä¸ºï¼šX={19,-7,-8};
 */
 
 /*
-Îª±äÁ¿·ÖÅä´æ´¢¿Õ¼ä£¬³õÊ¼»¯ÏµÊı¾ØÕó
+ä¸ºå˜é‡åˆ†é…å­˜å‚¨ç©ºé—´ï¼Œåˆå§‹åŒ–ç³»æ•°çŸ©é˜µ
 v1.0
 */
 void Init_Data();
 
 /*
-Ïú»Ù±äÁ¿¿Õ¼ä
+é”€æ¯å˜é‡ç©ºé—´
 v1.0
 */
 void Destroy_Data();
 
 /*
-Çó·½³Ì×éAx=BµÄÔö¹ã¾ØÕóA_B
+æ±‚æ–¹ç¨‹ç»„Ax=Bçš„å¢å¹¿çŸ©é˜µA_B
 v1.0
 */
 double** AUB(int N,double **A,double **B,double **A_B);	
 
 /*
-ÓÃÓÚÏÔÊ¾¾ØÕóµÄÏêÏ¸²ÎÊı,row x colĞÍ
+ç”¨äºæ˜¾ç¤ºçŸ©é˜µçš„è¯¦ç»†å‚æ•°,row x colå‹
 v1.0
 */
 void Show_Matrix(double **A,int row,int col);
 
 /*
-ÓÃÓÚºáÏòÏÔÊ¾ÏòÁ¿,N x 1ĞÍ
+ç”¨äºæ¨ªå‘æ˜¾ç¤ºå‘é‡,N x 1å‹
 v1.0
 */
-void Show_Result(int x,/*±íÕ÷½âµÄ¸öÊı*/int N);
+void Show_Result(int x,/*è¡¨å¾è§£çš„ä¸ªæ•°*/int N);
 
 int Gauss_Colum_Main_Element(
-							int n,			//·½³Ì½×Êı
-							double **A,		//ÏµÊı¾ØÕó
+							int n,			//æ–¹ç¨‹é˜¶æ•°
+							double **A,		//ç³»æ•°çŸ©é˜µ
 							double**B,		//
-							double e);		//¾«¶È¿ØÖÆ
+							double e);		//ç²¾åº¦æ§åˆ¶
 
 /*
-È·¶¨ÁĞÖ÷ÔªËØËùÔÚĞĞ£¬²¢·µ»ØĞĞºÅ
+ç¡®å®šåˆ—ä¸»å…ƒç´ æ‰€åœ¨è¡Œï¼Œå¹¶è¿”å›è¡Œå·
 V1.0
 */
 int Choose_Colum_Main_Element(
-							int n,			//·½³Ì½×Êı
-							double**A,		//ÏµÊı¾ØÕó
+							int n,			//æ–¹ç¨‹é˜¶æ•°
+							double**A,		//ç³»æ•°çŸ©é˜µ
 							int start);
 /*
-½»»»¾ØÕóL1,L2Á½ĞĞ
+äº¤æ¢çŸ©é˜µL1,L2ä¸¤è¡Œ
 */
 void Exchange(double **A,int num_of_colum,int L1,int L2);
 
 /*
-µ¥Î»»¯ÏµÊı¾ØÕó,¸ü×¼È·µØËµÊÇ½«¾ØÕóAµÄ×óÉÏ½Çnxn¸ö·Ö¿é¾ØÕóµ¥Î»»¯
+å•ä½åŒ–ç³»æ•°çŸ©é˜µ,æ›´å‡†ç¡®åœ°è¯´æ˜¯å°†çŸ©é˜µAçš„å·¦ä¸Šè§’nxnä¸ªåˆ†å—çŸ©é˜µå•ä½åŒ–
 v1.0
 */
-double **Unitization(int n/*·½³Ì½×Êı*/,double**A	/*ÏµÊı¾ØÕó*/);
+double **Unitization(int n/*æ–¹ç¨‹é˜¶æ•°*/,double**A	/*ç³»æ•°çŸ©é˜µ*/);
 
 /*
-¶ÔÈ·¶¨ºÃÁĞÖ÷ÔªËØµÄ¾ØÕó½øĞĞÏûÔª´¦Àí
+å¯¹ç¡®å®šå¥½åˆ—ä¸»å…ƒç´ çš„çŸ©é˜µè¿›è¡Œæ¶ˆå…ƒå¤„ç†
 */
 void Elimination(int n,double**A,int start);
 
@@ -95,7 +95,7 @@ int main()
 	{	
 		Init_Data();		
 		Show_Result(Gauss_Colum_Main_Element(N,A,B,0),N);
-		cout<<"ÍË³ö(0)»¹ÊÇ¼ÌĞøÇó½âÆäËû·½³Ì×é(1)?"<<endl;
+		cout<<"é€€å‡º(0)è¿˜æ˜¯ç»§ç»­æ±‚è§£å…¶ä»–æ–¹ç¨‹ç»„(1)?"<<endl;
 		Destroy_Data();
 		
 		cin>>willgo;
@@ -106,11 +106,11 @@ int main()
 
 void Init_Data()
 {
-	cout<<"ÇëÊäÈë·½³ÌµÄ½×Êı£º"<<endl;
+	cout<<"è¯·è¾“å…¥æ–¹ç¨‹çš„é˜¶æ•°ï¼š"<<endl;
 	cin>>N;
 	while(N<=0)
 	{
-		cout<<"ÇëÊäÈëÓĞĞ§µÄ·½³Ì½×Êı"<<endl;
+		cout<<"è¯·è¾“å…¥æœ‰æ•ˆçš„æ–¹ç¨‹é˜¶æ•°"<<endl;
 		cin>>N;
 	}
 	A=new double*[sizeof(double*)*N];
@@ -125,7 +125,7 @@ void Init_Data()
 		A_B[i]=new double[N+1];
 		X[i]=new double[1];
 	}
-	cout<<"ÄúÑ¡ÔñÁË"<<N<<"½×·½³Ì×é¼ÆËã.\nÇëÊäÈëÏµÊı¾ØÕóA£¨°´ĞĞÊäÈë£©:"<<endl;
+	cout<<"æ‚¨é€‰æ‹©äº†"<<N<<"é˜¶æ–¹ç¨‹ç»„è®¡ç®—.\nè¯·è¾“å…¥ç³»æ•°çŸ©é˜µAï¼ˆæŒ‰è¡Œè¾“å…¥ï¼‰:"<<endl;
 	for(int i=0;i<N;i++)
 	{
 		for(int j=0;j<N;j++)
@@ -133,7 +133,7 @@ void Init_Data()
 			cin>>A[i][j];
 		}
 	}
-	cout<<"ÇëÊäÈë¾ØÕóB:"<<endl;
+	cout<<"è¯·è¾“å…¥çŸ©é˜µB:"<<endl;
 	for(int i=0;i<N;i++)
 	{		
 		cin>>B[i][0];
@@ -187,20 +187,20 @@ void Show_Matrix(double **A,int row,int col)
 	cout<<endl;
 }
 
-void Show_Result(int x/*±íÕ÷½âµÄ¸öÊı*/,int N)
+void Show_Result(int x/*è¡¨å¾è§£çš„ä¸ªæ•°*/,int N)
 {
 	if(x==0)
 	{
-		cout<<"ÓÉÓÚÏûÔª¹ı³ÌÖĞ³öÏÖÖ÷ÔªĞ¡ÓÚËùÉè¶¨µÄ¾«¶È,ÇÒ´ËÊ±Ôö¹ã¾ØÕóÖĞB!~0\n"
-			<<"ËùÒÔ£º·½³ÌÎŞ½â"<<endl;
+		cout<<"ç”±äºæ¶ˆå…ƒè¿‡ç¨‹ä¸­å‡ºç°ä¸»å…ƒå°äºæ‰€è®¾å®šçš„ç²¾åº¦,ä¸”æ­¤æ—¶å¢å¹¿çŸ©é˜µä¸­B!~0\n"
+			<<"æ‰€ä»¥ï¼šæ–¹ç¨‹æ— è§£"<<endl;
 		return ;
 	}
 	if(x==-1)
 	{
-		cout<<"·½³Ì×éÎªÈÎÒâ½â"<<endl;
+		cout<<"æ–¹ç¨‹ç»„ä¸ºä»»æ„è§£"<<endl;
 		return ;
 	}
-	cout<<"ËùÇó·½³Ì×éµÄ¸ùÎª:(x1,x2,x3)=( ";
+	cout<<"æ‰€æ±‚æ–¹ç¨‹ç»„çš„æ ¹ä¸º:(x1,x2,x3)=( ";
 	for(int i=0;i<N;i++)
 	{
 		cout<<X[i][0]<<" ,";
@@ -210,26 +210,26 @@ void Show_Result(int x/*±íÕ÷½âµÄ¸öÊı*/,int N)
 }
 
 int Gauss_Colum_Main_Element(
-							int N,			//·½³Ì½×Êı
-							double **A,		//ÏµÊı¾ØÕó
+							int N,			//æ–¹ç¨‹é˜¶æ•°
+							double **A,		//ç³»æ•°çŸ©é˜µ
 							double**B,		//
-							double e)		//¾«¶È¿ØÖÆ
+							double e)		//ç²¾åº¦æ§åˆ¶
 {
-	cout<<endl<<"Ax=BµÄÔö¹ã¾ØÕóÎª:"<<endl;
+	cout<<endl<<"Ax=Bçš„å¢å¹¿çŸ©é˜µä¸º:"<<endl;
 	Show_Matrix(A_B,N,N+1);
-	cout<<"½â·½³ÌAx=BµÄ¹ı³ÌÈçÏÂ:"<<endl;
+	cout<<"è§£æ–¹ç¨‹Ax=Bçš„è¿‡ç¨‹å¦‚ä¸‹:"<<endl;
 	for(int i=0;i<N;i++)
 	{
 		int row=Choose_Colum_Main_Element(N,A_B,i);
 		if(Main_Element<=e) goto A_0;
 		Exchange(A_B,N+1,row,i);
 		Elimination(N,A_B,i);
-		cout<<"Ñ¡È¡ÁĞÖ÷ÔªºóµÚ"<<i+1<<"´ÎÏûÔª:"<<endl;
+		cout<<"é€‰å–åˆ—ä¸»å…ƒåç¬¬"<<i+1<<"æ¬¡æ¶ˆå…ƒ:"<<endl;
 		Show_Matrix(A_B,N,N+1);
 	}
 	
 	Unitization(N,A_B);
-	cout<<"µ¥Î»»¯Ö®ºóµÄ½á¹û:"<<endl;
+	cout<<"å•ä½åŒ–ä¹‹åçš„ç»“æœ:"<<endl;
 	Show_Matrix(A_B,N,N+1);
 	for(int i=0;i<N;i++)
 	{
@@ -237,13 +237,13 @@ int Gauss_Colum_Main_Element(
 	}	
 	return 1;
 
-A_0:	//Èç¹û³öÏÖÔö¹ã¾ØÕóÖĞ|A|~0µÄÇé¿ö´¦ÀíÈçÏÂ
+A_0:	//å¦‚æœå‡ºç°å¢å¹¿çŸ©é˜µä¸­|A|~0çš„æƒ…å†µå¤„ç†å¦‚ä¸‹
 	for(int i=0;i<N;i++)
 	{
-		//Ôö¹ã¾ØÕóÖĞ|B|!~0
+		//å¢å¹¿çŸ©é˜µä¸­|B|!~0
 		if(abs(A_B[i][N])>e) return 0;
 	}
-	//Ôö¹ã¾ØÕóÖĞ|B|~0,¼´·½³Ì½âÎªÈÎÒâ½âµÄÇé¿ö
+	//å¢å¹¿çŸ©é˜µä¸­|B|~0,å³æ–¹ç¨‹è§£ä¸ºä»»æ„è§£çš„æƒ…å†µ
 	/*
 	for(int i=0;i<N;i++)
 	{
@@ -253,7 +253,7 @@ A_0:	//Èç¹û³öÏÖÔö¹ã¾ØÕóÖĞ|A|~0µÄÇé¿ö´¦ÀíÈçÏÂ
 	
 }
 
-//·µ»ØÖ÷ÔªËùÔÚµÄĞĞ
+//è¿”å›ä¸»å…ƒæ‰€åœ¨çš„è¡Œ
 int Choose_Colum_Main_Element(int n,double**A,int start)
 {
 	int row=start;
@@ -269,7 +269,7 @@ int Choose_Colum_Main_Element(int n,double**A,int start)
 	Main_Element=max;
 	return row;
 }
-//½»»»L1,L2ĞĞ
+//äº¤æ¢L1,L2è¡Œ
 void Exchange(double **A,int num_of_colum,int L1,int L2)
 {
 	double temp;
@@ -294,11 +294,11 @@ void Elimination(int n,double**A,int start)
 	}
 }
 
-//»Ø´øÇó½â£¬¼´µ¥Î»»¯ÏµÊı¾ØÕó
+//å›å¸¦æ±‚è§£ï¼Œå³å•ä½åŒ–ç³»æ•°çŸ©é˜µ
 double **Unitization(int n,double**A)
 {
-	double row_first;	//ĞĞÊ×ÔªËØ
-	//Ö÷¶Ô½ÇÔªËØµ¥Î»»¯
+	double row_first;	//è¡Œé¦–å…ƒç´ 
+	//ä¸»å¯¹è§’å…ƒç´ å•ä½åŒ–
 	for(int i=0;i<n;i++)
 	{
 		row_first=A[i][i];

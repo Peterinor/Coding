@@ -1,2 +1,0 @@
-This is a test of access file with pure c stdlib!
-My age is :22
