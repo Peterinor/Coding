@@ -20,13 +20,6 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 ...
 */
 
-(function(){
-
-this.Ajs = {
-	version: '0.0.1',
-	build: '0f7b690afee9349b15909f33016a25d2e4d9f4e3'
-};
-
 // typeOf, instanceOf
 
 var typeOf = this.typeOf = function(item){
@@ -56,10 +49,6 @@ var instanceOf = this.instanceOf = function(item, object){
 	/*</ltIE8>*/
 	return item instanceof object;
 };
-
-// Function overloading
-
-var Function = this.Function;
 
 var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
@@ -518,4 +507,3 @@ this.$unlink = function(object){
 
 //</1.2compat>
 
-})();

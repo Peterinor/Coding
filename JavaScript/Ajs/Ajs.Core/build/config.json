@@ -1,6 +1,7 @@
 {
     "root" : "../src/",
     "modules" : [
+        "intro",
         "Core/Core",
         "Types/Array",
         "Types/Function",
@@ -10,7 +11,10 @@
         "Browser/Browser",
         "Class/Class",
         "Class/Class.Extras",
-        
+
+        "exports",
+        "outro",
+
         "third-party/Sizzle/Sizzle.ajs",
         "third-party/jQuery/intro",
         "third-party/jQuery/core",

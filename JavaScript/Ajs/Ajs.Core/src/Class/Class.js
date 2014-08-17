@@ -14,7 +14,6 @@ provides: Class
 ...
 */
 
-(function(){
 
 var Class = this.Class = new Type('Class', function(params){
 	if (instanceOf(params, Function)) params = {initialize: params};
@@ -112,4 +111,3 @@ Class.Mutators = {
 	}
 };
 
-})();

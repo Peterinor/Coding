@@ -14,7 +14,6 @@ provides: [Class.Extras, Chain, Events, Options]
 ...
 */
 
-(function(){
 
 this.Chain = new Class({
 
@@ -117,5 +116,3 @@ this.Options = new Class({
 	}
 
 });
-
-})();
