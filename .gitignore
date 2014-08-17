@@ -182,3 +182,5 @@ FakesAssemblies/
 *.o
 *.class
 *.exe
+
+build*
