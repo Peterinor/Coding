@@ -1,0 +1,15 @@
+{
+    "root" : "../src/",
+    "modules" : [
+        "Core/Core",
+        "Types/Array",
+        "Types/Function",
+        "Types/Number",
+        "Types/Object",
+        "Types/String",
+        "Browser/Browser",
+        "Class/Class",
+        "Class/Class.Extras",
+        "Sizzle/Sizzle.ajs"
+    ]
+}
