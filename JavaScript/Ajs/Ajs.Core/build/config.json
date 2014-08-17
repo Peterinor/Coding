@@ -10,7 +10,13 @@
         "Browser/Browser",
         "Class/Class",
         "Class/Class.Extras",
+        
         "third-party/Sizzle/Sizzle.ajs",
-        "third-party/jQuery/jquery"
+        "third-party/jQuery/intro",
+        "third-party/jQuery/core",
+        "third-party/jQuery/sizzle-jquery",
+        "third-party/jQuery/traversing",
+        "third-party/jQuery/exports",
+        "third-party/jQuery/outro"
     ]
 }
