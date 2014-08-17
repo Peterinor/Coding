@@ -10,6 +10,7 @@
         "Browser/Browser",
         "Class/Class",
         "Class/Class.Extras",
-        "Sizzle/Sizzle.ajs"
+        "third-party/Sizzle/Sizzle.ajs",
+        "third-party/jQuery/jquery"
     ]
 }
