@@ -19,7 +19,7 @@ Fx.Tween = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(element, options){
-		this.element = this.subject = document.id(element);
+		this.element = this.subject = new Element(element);
 		this.parent(options);
 	},
 

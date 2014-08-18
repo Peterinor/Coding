@@ -17,7 +17,7 @@ provides: Cookie
 ...
 */
 
-var Cookie = new Class({
+var Cookie = this.Cookie = new Class({
 
 	Implements: Options,
 

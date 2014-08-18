@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+		<title>Fx Tests</title>
+
+        <script type="text/javascript" src="../../build/ajs.js"></script>
+
+		<style>
+
+			body {
+				font: 13px sans-serif;
+			}
+
+			h1 {
+				border-top: 1px dashed #AAA;
+				font: normal 22px sans-serif;
+				margin: 5px 0;
+				padding-top: 10px;
+			}
+
+			#content {
+				top: 0;
+				bottom: 0;
+				left: 370px;
+				position: absolute;
+				overflow: auto;
+				padding-bottom: 150px;
+				right: 0;
+			}
+
+			#aside {
+				background: #F5F5F5;
+				border-right: 1px dashed #AAA;
+				bottom: 0;
+				font-family: monospace;
+				left: 0;
+				margin-right: 10px;
+				overflow: auto;
+				padding: 10px;
+				position: absolute;
+				top: 0;
+				width: 340px;
+			}
+
+			.success {
+				background: greenyellow;
+			}
+
+			.fail {
+				background: orangered;
+			}
+
+			.box {
+				background: greenyellow;
+				border: 1px solid black;
+				padding: 10px;
+				width: 300px;
+			}
+
+			.wrapper {
+				width: 500px;
+				height: 300px;
+				background: #eee;
+			}
+
+		</style>
+
+	</head>
+	<body>
+
+		<div id="aside">
+			<h2>Log</h2>
+			<div id="log"></div>
+		</div>
+
+		<script>
+
+			var logger = $('log');
+			var log = function(msg, success){
+				new Ajs.Element('div', {
+					'class': success == true ? 'success' : (success == false ? 'fail' : ''),
+					text: msg
+				}).inject(logger, 'top');
+			};
+
+		</script>
+
+		<div id="content">
+
+			<h1>Fx.Tween</h1>
+
+			<p>
+				<a href="#" id="simple-fx-tween-link">tween</a>
+			</p>
+
+			<div id="simple-fx-tween" class="box"></div>
+
+			<script>
+
+				var simpleFxTween = new Ajs.Fx.Tween('#simple-fx-tween', {
+					property: 'width',
+					link: 'cancel'
+				});
+				var simpleFxTweenToggle = true;
+
+				$('#simple-fx-tween-link').addEvent('click', function(event){
+					event.preventDefault();
+					simpleFxTween.start(simpleFxTweenToggle ? 500 : 200);
+					simpleFxTweenToggle = !simpleFxTweenToggle;
+				});
+
+			</script>
+
+
+			<h1>Fx.Morph</h1>
+
+			<p>
+				<a href="#" id="simple-fx-morph-link">morph</a>
+			</p>
+
+			<div id="simple-fx-morph" class="box"></div>
+
+			<script>
+
+				var simpleFxMorph = new Ajs.Fx.Morph('#simple-fx-morph');
+				var simpleFxMorphToggle = true;
+
+				$('#simple-fx-morph-link').addEvent('click', function(event){
+					event.preventDefault();
+					simpleFxMorph.start(simpleFxMorphToggle ? {
+						width: 500,
+						height: 300
+					} : {
+						width: [400, 300],
+						height: [250, '50px']
+					});
+					simpleFxMorphToggle = !simpleFxMorphToggle;
+				});
+
+			</script>
+
+			<h1>Element.morph</h1>
+
+			<p>
+				<a href="#" id="fx-sun">start</a>
+			</p>
+
+			<div id="sun" class="box"></div>
+
+		</div>
+
+	</body>
+</html>

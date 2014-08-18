@@ -45,7 +45,7 @@ JSON.validate = function(string){
 
 JSON.encode = JSON.stringify ? function(obj){
 	return JSON.stringify(obj);
-} : function(obj){
+} : (JSON.stringify = function(obj){
 	if (obj && obj.toJSON) obj = obj.toJSON();
 
 	switch (typeOf(obj)){
@@ -65,7 +65,7 @@ JSON.encode = JSON.stringify ? function(obj){
 	}
 
 	return null;
-};
+});
 
 JSON.secure = true;
 //<1.4compat>
@@ -84,4 +84,7 @@ JSON.decode = function(string, secure){
 	return eval('(' + string + ')');
 };
 
+if (! JSON.parse) {
+	JSON.parse = JSON.decode;
+};
 })();

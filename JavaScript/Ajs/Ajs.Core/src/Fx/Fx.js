@@ -14,7 +14,6 @@ provides: Fx
 ...
 */
 
-(function(){
 
 var Fx = this.Fx = new Class({
 
@@ -180,4 +179,3 @@ var pullInstance = function(fps){
 	}
 };
 
-})();

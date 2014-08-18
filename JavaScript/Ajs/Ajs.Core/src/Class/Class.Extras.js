@@ -15,7 +15,7 @@ provides: [Class.Extras, Chain, Events, Options]
 */
 
 
-this.Chain = new Class({
+var Chain = this.Chain = new Class({
 
 	$chain: [],
 
@@ -41,7 +41,7 @@ var removeOn = function(string){
 	});
 };
 
-this.Events = new Class({
+var Events = this.Events = new Class({
 
 	$events: {},
 
@@ -103,7 +103,7 @@ this.Events = new Class({
 
 });
 
-this.Options = new Class({
+var Options = this.Options = new Class({
 
 	setOptions: function(){
 		var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments));

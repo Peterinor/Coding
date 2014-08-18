@@ -12,15 +12,37 @@
         "Class/Class",
         "Class/Class.Extras",
 
-        "exports",
-        "outro",
-
         "third-party/Sizzle/Sizzle.ajs",
         "third-party/jQuery/intro",
         "third-party/jQuery/core",
         "third-party/jQuery/sizzle-jquery",
         "third-party/jQuery/traversing",
+
+        "third-party/jQuery/callbacks",
+        "third-party/jQuery/deferred",
+        "third-party/jQuery/support",
+        "third-party/jQuery/css",
+
+        "third-party/jQuery/data",
+        "third-party/jQuery/event",
+
+        "third-party/jQuery/port",
+
         "third-party/jQuery/exports",
-        "third-party/jQuery/outro"
+        "third-party/jQuery/outro",
+
+        "Element/Element",
+
+        "Fx/Fx",
+        "Fx/Fx.Transitions",
+        "Fx/Fx.CSS",
+        "Fx/Fx.Morph",
+        "Fx/Fx.Tween",
+
+        "Utilities/Cookie",
+        "Utilities/JSON",
+
+        "exports",
+        "outro"
     ]
 }
