@@ -1,16 +1,16 @@
 {
     "root" : "../src/",
     "modules" : [
-        "intro",
-        "Core/Core",
-        "Types/Array",
-        "Types/Function",
-        "Types/Number",
-        "Types/Object",
-        "Types/String",
-        "Browser/Browser",
-        "Class/Class",
-        "Class/Class.Extras",
+        "Core/intro",
+        "Core/Core/Core",
+        "Core/Types/Array",
+        "Core/Types/Function",
+        "Core/Types/Number",
+        "Core/Types/Object",
+        "Core/Types/String",
+        "Core/Browser/Browser",
+        "Core/Class/Class",
+        "Core/Class/Class.Extras",
 
         "third-party/Sizzle/Sizzle.ajs",
         "third-party/jQuery/intro",
@@ -31,18 +31,18 @@
         "third-party/jQuery/exports",
         "third-party/jQuery/outro",
 
-        "Element/Element",
+        "Core/Element/Element",
 
-        "Fx/Fx",
-        "Fx/Fx.Transitions",
-        "Fx/Fx.CSS",
-        "Fx/Fx.Morph",
-        "Fx/Fx.Tween",
+        "Core/Fx/Fx",
+        "Core/Fx/Fx.Transitions",
+        "Core/Fx/Fx.CSS",
+        "Core/Fx/Fx.Morph",
+        "Core/Fx/Fx.Tween",
 
-        "Utilities/Cookie",
-        "Utilities/JSON",
+        "Core/Utilities/Cookie",
+        "Core/Utilities/JSON",
 
-        "exports",
-        "outro"
+        "Core/exports",
+        "Core/outro"
     ]
 }
