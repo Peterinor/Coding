@@ -57,10 +57,10 @@ Element.Properties.morph = {
 	},
 
 	get: function(){
-		var morph = this.retrieve('morph');
+		var morph = this.data('morph');
 		if (!morph){
 			morph = new Fx.Morph(this, {link: 'cancel'});
-			this.store('morph', morph);
+			this.data('morph', morph);
 		}
 		return morph;
 	}

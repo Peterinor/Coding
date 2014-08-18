@@ -25,6 +25,9 @@
 
         "third-party/jQuery/data",
         "third-party/jQuery/event",
+        
+        "third-party/jQuery/attributes",
+        "third-party/jQuery/manipulation",
 
         "third-party/jQuery/port",
 

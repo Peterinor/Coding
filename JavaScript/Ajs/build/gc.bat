@@ -1,1 +1,1 @@
-java -jar ../tools/compiler.jar ajs.js > ../dist/ajs.min.js
+java -jar ../tools/compiler.jar ../dist/ajs.js > ../dist/ajs.min.js

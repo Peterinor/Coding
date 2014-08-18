@@ -5,7 +5,7 @@
 
 		<title>Fx Tests</title>
 
-        <script type="text/javascript" src="../../build/ajs.js"></script>
+        <script type="text/javascript" src="../../../dist/ajs.js"></script>
 
 		<style>
 
@@ -157,19 +157,19 @@
 			</style>
 
 			<script>
-				// var sun = $('#sun').set("morph", {
-				// 	duration: 2000
-				// });
-				// var sunToggle = true;
-				// $('#fx-sun').addEvent('click', function(event){
-				// 	event.preventDefault();
-				// 	sun.morph(sunToggle ? {
-				// 		width: '300px'
-				// 	} : {
-				// 		width: '200px'
-				// 	});
-				// 	sunToggle = !sunToggle;
-				// });
+				var sun = $('#sun').set("morph", {
+					duration: 2000
+				});
+				var sunToggle = true;
+				$('#fx-sun').addEvent('click', function(event){
+					event.preventDefault();
+					sun.morph(sunToggle ? {
+						width: '300px'
+					} : {
+						width: '200px'
+					});
+					sunToggle = !sunToggle;
+				});
 			</script>
 
 			<h1>Fx.Morph with % as unit</h1>
@@ -194,11 +194,11 @@
 					unitsFxMorph.start(unitsFxMorphToggle ? {
 						width: 50,
 						height: 50,
-						'margin-left': 6
+						'margin-left': 2
 					} : {
 						width: 30,
 						height: 20,
-						'margin-left': 0
+						'margin-left': 6
 					});
 					unitsFxMorphToggle = !unitsFxMorphToggle;
 				});
@@ -217,28 +217,29 @@
 				<h1 id="fade2" class="box">test</h1>
 			</div>
 
-			// <script>
-			// var fadeToggle = 1;
-			// var fade = $('fade').set('tween', {
+			<script>
+			var fadeToggle = 1;
+			var fade = $('#fade').set('tween');
+			// var fade = $('#fade').set('tween', {
 			// 	onStart: function(){
-			// 		$('fade-opacity').set('text', fade.getStyle('opacity'))
+			// 		$('#fade-opacity').set('text', fade.getStyle('opacity'))
 			// 			.appendText(' ' + fade.getStyle('visibility'));
 			// 	},
 			// 	onComplete: function(){
-			// 		$('fade-opacity').set('text', fade.getStyle('opacity'))
+			// 		$('#fade-opacity').set('text', fade.getStyle('opacity'))
 			// 			.appendText(' ' + fade.getStyle('visibility'));
 			// 	}
 			// });
-			// fade.fade('hide');
-			// var fade2 = $('fade2');
-			// $('fade-link').addEvent('click', function(event){
-			// 	event.preventDefault();
-			// 	var to = fadeToggle++ % 5 / 4;
-			// 	fade.fade(to == 1 ? 'in' : (to == 0 ? 'out' : to));
-			// 	fade2.fade('hide');
-			// 	fade2.fade('in');
-			// });
-			// </script>
+			fade.fade('hide');
+			var fade2 = $('#fade2');
+			$('#fade-link').addEvent('click', function(event){
+				event.preventDefault();
+				var to = fadeToggle++ % 5 / 4;
+				fade.fade(to == 1 ? 'in' : (to == 0 ? 'out' : to));
+				fade2.fade('hide');
+				fade2.fade('in');
+			});
+			</script>
 
 		</div>
 

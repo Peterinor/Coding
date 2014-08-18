@@ -50,10 +50,10 @@ Element.Properties.tween = {
 	},
 
 	get: function(){
-		var tween = this.retrieve('tween');
+		var tween = this.data('tween');
 		if (!tween){
 			tween = new Fx.Tween(this, {link: 'cancel'});
-			this.store('tween', tween);
+			this.data('tween', tween);
 		}
 		return tween;
 	}
@@ -76,15 +76,15 @@ Element.implement({
 			case 'show': method = 'set'; args[1] = 1; break;
 			case 'hide': method = 'set'; args[1] = 0; break;
 			case 'toggle':
-				var flag = this.retrieve('fade:flag', this.getStyle('opacity') == 1);
+				var flag = this.data('fade:flag', this.getStyle('opacity') == 1);
 				method = 'start';
 				args[1] = flag ? 0 : 1;
-				this.store('fade:flag', !flag);
+				this.data('fade:flag', !flag);
 				toggle = true;
 			break;
 			default: method = 'start';
 		}
-		if (!toggle) this.eliminate('fade:flag');
+		if (!toggle) this.removeData('fade:flag');
 		fade[method].apply(fade, args);
 		var to = args[args.length - 1];
 		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
@@ -97,12 +97,12 @@ Element.implement({
 
 	highlight: function(start, end){
 		if (!end){
-			end = this.retrieve('highlight:original', this.getStyle('background-color'));
+			end = this.data('highlight:original', this.getStyle('background-color'));
 			end = (end == 'transparent') ? '#fff' : end;
 		}
 		var tween = this.get('tween');
 		tween.start('background-color', start || '#ffff88', end).chain(function(){
-			this.setStyle('background-color', this.retrieve('highlight:original'));
+			this.setStyle('background-color', this.data('highlight:original'));
 			tween.callChain();
 		}.bind(this));
 		return this;
