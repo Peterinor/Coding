@@ -12,6 +12,7 @@
         "Core/Class/Class",
         "Core/Class/Class.Extras",
 
+
         "third-party/Sizzle/Sizzle.ajs",
         "third-party/jQuery/intro",
         "third-party/jQuery/core",
@@ -25,7 +26,7 @@
 
         "third-party/jQuery/data",
         "third-party/jQuery/event",
-        
+
         "third-party/jQuery/attributes",
         "third-party/jQuery/manipulation",
 
@@ -34,6 +35,7 @@
         "third-party/jQuery/exports",
         "third-party/jQuery/outro",
 
+
         "Core/Element/Element",
 
         "Core/Fx/Fx",
@@ -41,6 +43,10 @@
         "Core/Fx/Fx.CSS",
         "Core/Fx/Fx.Morph",
         "Core/Fx/Fx.Tween",
+
+        "Core/Request/Request",
+        "Core/Request/Request.HTML",
+        "Core/Request/Request.JSON",
 
         "Core/Utilities/Cookie",
         "Core/Utilities/JSON",

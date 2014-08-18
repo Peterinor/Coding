@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../../dist/ajs.js"></script>
+    </head>
+    <body>
+
+        <div id="log"></div>
+        <script type="text/javascript">
+
+            var el = $('#log');
+            var req = new Request({
+                url: '../../Data/users.json',
+                method: 'get',
+                onRequest: function(){
+                    el.text('loading...');
+                },
+                onSuccess: function(responseText){
+                    el.text(responseText);
+                },
+                onFailure: function(){
+                    el.text('Sorry, your request failed :(');
+                }
+            });
+
+            req.send();
+
+        </script>
+    </body>
+</html>
