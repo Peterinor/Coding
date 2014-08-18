@@ -8761,6 +8761,10 @@ var inserters = {
 inserters.inside = inserters.bottom;
 
 Element.implement({
+	toDom: function() {
+		return this[0] || null;
+	},
+
 	setProperty: function(name, value) {
 		return this.attr(name, value);
 	},
@@ -8793,6 +8797,9 @@ Element.implement({
 	}.overloadSetter(),
 
 	get: function(prop) {
+		if (typeOf(prop) == 'number') {
+			return this[0];
+		}
 		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
 	}.overloadGetter(),
@@ -8801,73 +8808,74 @@ Element.implement({
 		var property = Element.Properties[prop];
 		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
 		return this;
-	} //,
+	},
 
-	// adopt: function() {
-	// 	var parent = this,
-	// 		fragment, elements = Array.flatten(arguments),
-	// 		length = elements.length;
-	// 	if (length > 1) parent = fragment = document.createDocumentFragment();
+	adopt: function() {
+		var parent = this.toDom(),
+			fragment, elements = Array.flatten(arguments),
+			length = elements.length;
+		if (length > 1) parent = fragment = document.createDocumentFragment();
 
-	// 	for (var i = 0; i < length; i++) {
-	// 		var element = document.id(elements[i], true);
-	// 		if (element) parent.appendChild(element);
-	// 	}
+		for (var i = 0; i < length; i++) {
+			var element = $(elements[i], true);
+			if (element) parent.appendChild(element);
+		}
 
-	// 	if (fragment) this.appendChild(fragment);
+		if (fragment) this.appendChild(fragment);
 
-	// 	return this;
-	// },
+		return this;
+	},
 
 	// appendText: function(text, where) {
 	// 	return this.grab(Element(text), where);
 	// },
 
 	// grab: function(el, where) {
-	// 	inserters[where || 'bottom']($(el)[0], this);
+	// 	inserters[where || 'bottom']($(el).toDom(), this);
 	// 	return this;
 	// },
 
-	// inject: function(el, where) {
-	// 	inserters[where || 'bottom'](this, $(el)[0]);
-	// 	return this;
-	// },
+	inject: function(el, where) {
+		inserters[where || 'bottom'](this, $(el).toDom());
+		return this;
+	},
 
-	// replaces: function(el) {
-	// 	el = $(el)[0];
-	// 	el.parentNode.replaceChild(this, el);
-	// 	return this;
-	// },
+	replaces: function(el) {
+		el = $(el).toDom();
+		el.parentNode.replaceChild(this, el);
+		return this;
+	},
 
 	// wraps: function(el, where) {
-	// 	el = $(el)[0];
+	// 	el = $(el).toDom();
 	// 	return this.replaces(el).grab(el, where);
 	// },
 
-	// getSelected: function() {
-	// 	this.selectedIndex; // Safari 3.2.1
-	// 	return new Elements(Array.from(this.options).filter(function(option) {
-	// 		return option.selected;
-	// 	}));
-	// },
+	getSelected: function() {
+		this.toDom().selectedIndex; // Safari 3.2.1
+		return new Elements(Array.from(this.options).filter(function(option) {
+			return option.selected;
+		}));
+	},
 
-	// toQueryString: function() {
-	// 	var queryString = [];
-	// 	this.getElements('input, select, textarea').each(function(el) {
-	// 		var type = el.type;
-	// 		if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
+	toQueryString: function() {
+		var queryString = [];
+		$('input, select, textarea', this).each(function(_el) {
+			var el = _el.toDom();
+			var type = el.type;
+			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 
-	// 		var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
-	// 			// IE
-	// 			return document.id(opt).get('value');
-	// 		}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
+			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
+				// IE
+				return $(opt).get('value');
+			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
 
-	// 		Array.from(value).each(function(val) {
-	// 			if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
-	// 		});
-	// 	});
-	// 	return queryString.join('&');
-	// }
+			Array.from(value).each(function(val) {
+				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
+			});
+		});
+		return queryString.join('&');
+	}
 });
 
 
@@ -8882,15 +8890,15 @@ Element.Properties = {};
 Element.Properties.style = {
 
 	set: function(style) {
-		this.style.cssText = style;
+		this.toDom().style.cssText = style;
 	},
 
 	get: function() {
-		return this.style.cssText;
+		return this.toDom().style.cssText;
 	},
 
 	erase: function() {
-		this.style.cssText = '';
+		this.toDom().style.cssText = '';
 	}
 
 };
@@ -8898,7 +8906,7 @@ Element.Properties.style = {
 Element.Properties.tag = {
 
 	get: function() {
-		return this.tagName.toLowerCase();
+		return this.toDom().tagName.toLowerCase();
 	}
 
 };
@@ -8908,11 +8916,11 @@ Element.Properties.html = {
 	set: function(html) {
 		if (html == null) html = '';
 		else if (typeOf(html) == 'array') html = html.join('');
-		this.innerHTML = html;
+		this.toDom().innerHTML = html;
 	},
 
 	erase: function() {
-		this.innerHTML = '';
+		this.toDom().innerHTML = '';
 	}
 
 };
@@ -9801,7 +9809,7 @@ var Request = this.Request = new Class({
 		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
 		switch (typeOf(data)){
-			case 'element': data = document.id(data).toQueryString(); break;
+			case 'element': data = $(data).toQueryString(); break;
 			case 'object': case 'hash': data = Object.toQueryString(data);
 		}
 
@@ -9920,94 +9928,6 @@ Element.implement({
 });
 
 })();
-/*
----
-
-name: Request.HTML
-
-description: Extends the basic Request Class with additional methods for interacting with HTML responses.
-
-license: MIT-style license.
-
-requires: [Element, Request]
-
-provides: Request.HTML
-
-...
-*/
-
-Request.HTML = new Class({
-
-	Extends: Request,
-
-	options: {
-		update: false,
-		append: false,
-		evalScripts: true,
-		filter: false,
-		headers: {
-			Accept: 'text/html, application/xml, text/xml, */*'
-		}
-	},
-
-	success: function(text){
-		var options = this.options, response = this.response;
-
-		response.html = text.stripScripts(function(script){
-			response.javascript = script;
-		});
-
-		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-		if (match) response.html = match[1];
-		var temp = new Element('div').set('html', response.html);
-
-		response.tree = temp.childNodes;
-		response.elements = temp.getElements(options.filter || '*');
-
-		if (options.filter) response.tree = response.elements;
-		if (options.update){
-			var update = document.id(options.update).empty();
-			if (options.filter) update.adopt(response.elements);
-			else update.set('html', response.html);
-		} else if (options.append){
-			var append = document.id(options.append);
-			if (options.filter) response.elements.reverse().inject(append);
-			else append.adopt(temp.getChildren());
-		}
-		if (options.evalScripts) Browser.exec(response.javascript);
-
-		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
-	}
-
-});
-
-Element.Properties.load = {
-
-	set: function(options){
-		var load = this.get('load').cancel();
-		load.setOptions(options);
-		return this;
-	},
-
-	get: function(){
-		var load = this.retrieve('load');
-		if (!load){
-			load = new Request.HTML({data: this, link: 'cancel', update: this, method: 'get'});
-			this.store('load', load);
-		}
-		return load;
-	}
-
-};
-
-Element.implement({
-
-	load: function(){
-		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
-		return this;
-	}
-
-});
 /*
 ---
 

@@ -157,7 +157,7 @@ var Request = this.Request = new Class({
 		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
 		switch (typeOf(data)){
-			case 'element': data = document.id(data).toQueryString(); break;
+			case 'element': data = $(data).toQueryString(); break;
 			case 'object': case 'hash': data = Object.toQueryString(data);
 		}
 

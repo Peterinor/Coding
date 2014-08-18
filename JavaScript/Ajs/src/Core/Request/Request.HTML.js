@@ -44,11 +44,11 @@ Request.HTML = new Class({
 
 		if (options.filter) response.tree = response.elements;
 		if (options.update){
-			var update = document.id(options.update).empty();
+			var update = $(options.update).empty();
 			if (options.filter) update.adopt(response.elements);
 			else update.set('html', response.html);
 		} else if (options.append){
-			var append = document.id(options.append);
+			var append = $(options.append);
 			if (options.filter) response.elements.reverse().inject(append);
 			else append.adopt(temp.getChildren());
 		}

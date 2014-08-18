@@ -4,7 +4,20 @@
         <script type="text/javascript" src="../../dist/ajs.js"></script>
         
         <script type="text/javascript">
-            console.log(this.Ajs);
+
+        $(function(){
+            console.log(Ajs);
+
+            // $('body').addEvent('keydown', function(event){
+            //     event.preventDefault();
+            //     // the passed event parameter is already an instance of the Event type.
+            //     console.log(event);
+            //     console.log(event.keyCode);   // returns the lowercase letter pressed.
+            //     console.log(event.shiftKey, event.ctrlKey); // returns true if the key pressed is shift.
+            //     if (event.keyCode == 's' && event.ctrlKey) console.log('Document saved.'); //executes if the user presses Ctr+S.
+            // });
+        });
+
         </script>
     </head>
     <body>
