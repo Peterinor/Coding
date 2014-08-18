@@ -2,6 +2,9 @@
 //port for using
 
 jQuery.fn.extend({
+    getComputedStyle : function(){
+
+    },
     getStyle : function (prop) {
         return this.css(prop);
     },
