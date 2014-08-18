@@ -9,7 +9,8 @@ var config = JSON.parse(config_str);
 var modules = config.modules;
 
 
-var ajsFile = './ajs.js';
+var ajsFile = '../dist/ajs.js';
+
 if (fs.existsSync(ajsFile)) {
     fs.unlinkSync(ajsFile);
 }
