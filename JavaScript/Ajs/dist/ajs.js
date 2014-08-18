@@ -922,10 +922,6 @@ provides: [Browser, Window, Document]
 ...
 */
 
-(function(){
-
-var document = this.document;
-var window = document.window = this;
 
 var parse = function(ua, platform){
 	ua = ua.toLowerCase();
@@ -1038,7 +1034,7 @@ Browser.extend({
 	Event: this.Event
 });
 
-this.Window = this.$constructor = new Type('Window', function(){});
+var Window = this.Window = this.$constructor = new Type('Window', function(){});
 
 this.$family = Function.from('window').hide();
 
@@ -1046,7 +1042,7 @@ Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-this.Document = document.$constructor = new Type('Document', function(){});
+var Document = this.Document = document.$constructor = new Type('Document', function(){});
 
 document.$family = Function.from('document').hide();
 
@@ -1097,7 +1093,6 @@ try {
 
 //
 
-})();
 /*
 ---
 
