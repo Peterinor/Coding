@@ -153,10 +153,10 @@ String.implement('stripScripts', function(exec){
 // Window, Document
 
 Browser.extend({
-	Document: this.Document,
-	Window: this.Window,
-	Element: this.Element,
-	Event: this.Event
+	Document: window.Document,
+	Window: window.Window,
+	Element: window.Element,
+	Event: window.Event
 });
 
 var Window = this.Window = this.$constructor = new Type('Window', function(){});
