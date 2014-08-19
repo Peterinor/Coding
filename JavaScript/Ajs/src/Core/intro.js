@@ -2,7 +2,7 @@
 
 this.Ajs = {
     version: '0.0.1',
-    build: '0f7b690afee9349b15909f33016a25d2e4d9f4e3'
+    build: 'f284fb28215cf8c470d5cf84b86a5025afebac61'
 };
 
 (function( window, undefined ) {
