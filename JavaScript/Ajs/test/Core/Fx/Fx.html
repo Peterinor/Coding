@@ -105,7 +105,7 @@
 				});
 				var simpleFxTweenToggle = true;
 
-				$('#simple-fx-tween-link').addEvent('click', function(event){
+				$('#simple-fx-tween-link').on('click', function(event){
 					event.preventDefault();
 					simpleFxTween.start(simpleFxTweenToggle ? 500 : 200);
 					simpleFxTweenToggle = !simpleFxTweenToggle;
@@ -127,7 +127,7 @@
 				var simpleFxMorph = new Ajs.Fx.Morph('#simple-fx-morph');
 				var simpleFxMorphToggle = true;
 
-				$('#simple-fx-morph-link').addEvent('click', function(event){
+				$('#simple-fx-morph-link').on('click', function(event){
 					event.preventDefault();
 					simpleFxMorph.start(simpleFxMorphToggle ? {
 						width: 500,
@@ -157,11 +157,11 @@
 			</style>
 
 			<script>
-				var sun = $('#sun').set("morph", {
+				var sun = new Ajs.Element('#sun').set("morph", {
 					duration: 2000
 				});
 				var sunToggle = true;
-				$('#fx-sun').addEvent('click', function(event){
+				$('#fx-sun').on('click', function(event){
 					event.preventDefault();
 					sun.morph(sunToggle ? {
 						width: '300px'
@@ -189,16 +189,16 @@
 				});
 				var unitsFxMorphToggle = true;
 
-				$('#units-fx-morph-link').addEvent('click', function(event){
+				$('#units-fx-morph-link').on('click', function(event){
 					event.preventDefault();
 					unitsFxMorph.start(unitsFxMorphToggle ? {
 						width: 50,
 						height: 50,
-						'margin-left': 2
+						'margin-left': 6
 					} : {
 						width: 30,
 						height: 20,
-						'margin-left': 6
+						'margin-left': 0
 					});
 					unitsFxMorphToggle = !unitsFxMorphToggle;
 				});
@@ -219,8 +219,8 @@
 
 			<script>
 			var fadeToggle = 1;
-			var fade = $('#fade').set('tween');
-			// var fade = $('#fade').set('tween', {
+			var fade = new Ajs.Element('#fade').set('tween');
+			// var fade = Ajs.Element('#fade').set('tween', {
 			// 	onStart: function(){
 			// 		$('#fade-opacity').set('text', fade.getStyle('opacity'))
 			// 			.appendText(' ' + fade.getStyle('visibility'));
@@ -231,8 +231,8 @@
 			// 	}
 			// });
 			fade.fade('hide');
-			var fade2 = $('#fade2');
-			$('#fade-link').addEvent('click', function(event){
+			var fade2 = Ajs.Element('#fade2');
+			$('#fade-link').on('click', function(event){
 				event.preventDefault();
 				var to = fadeToggle++ % 5 / 4;
 				fade.fade(to == 1 ? 'in' : (to == 0 ? 'out' : to));

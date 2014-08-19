@@ -1028,21 +1028,21 @@ String.implement('stripScripts', function(exec){
 // Window, Document
 
 Browser.extend({
-	Document: this.Document,
-	Window: this.Window,
-	Element: this.Element,
-	Event: this.Event
+	Document: window.Document,
+	Window: window.Window,
+	Element: window.Element,
+	Event: window.Event
 });
 
-var Window = this.Window = this.$constructor = new Type('Window', function(){});
+var Window = window.Window = this.Window = this.$constructor = new Type('Window', window.Window);
 
-this.$family = Function.from('window').hide();
+window.$family = Function.from('window').hide();
 
 Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-var Document = this.Document = document.$constructor = new Type('Document', function(){});
+var Document = window.Document = this.Document = document.$constructor = new Type('Document', window.Document);
 
 document.$family = Function.from('document').hide();
 
@@ -8646,55 +8646,55 @@ jQuery.extend({
 
 //port for using
 
-var hasGetComputedStyle = !!window.getComputedStyle;
+// var hasGetComputedStyle = !!window.getComputedStyle;
 
-//Element.Style
-jQuery.fn.extend({
-    getComputedStyle : function(property){
-        var _this = this[0];
-        if (!hasGetComputedStyle && _this.currentStyle) return _this.currentStyle[property.camelCase()];
-        var defaultView = document.defaultView,
-            computed = defaultView ? defaultView.getComputedStyle(_this, null) : null;
-        return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
-    },
-    getStyle : function (prop) {
-        return this.css(prop);
-    },
-    setStyle : function(prop, value){
-        return this.css(prop, value);
-    },
-    getStyles : function(props){
-        return this.css(props);
-    },
-    setStyles : function(css){
-        return this.css(css);
-    }
-});
+// //Element.Style
+// jQuery.fn.extend({
+//     getComputedStyle : function(property){
+//         var _this = this[0];
+//         if (!hasGetComputedStyle && _this.currentStyle) return _this.currentStyle[property.camelCase()];
+//         var defaultView = document.defaultView,
+//             computed = defaultView ? defaultView.getComputedStyle(_this, null) : null;
+//         return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
+//     },
+//     getStyle : function (prop) {
+//         return this.css(prop);
+//     },
+//     setStyle : function(prop, value){
+//         return this.css(prop, value);
+//     },
+//     getStyles : function(props){
+//         return this.css(props);
+//     },
+//     setStyles : function(css){
+//         return this.css(css);
+//     }
+// });
 
 
-//Element.Event
-jQuery.fn.extend({
+// //Element.Event
+// jQuery.fn.extend({
 
-    addEvent: function(type, fn){
-        return this.on(type, fn);
-    },
+//     addEvent: function(type, fn){
+//         return this.on(type, fn);
+//     },
 
-    removeEvent: function(type, fn){
-        return this.off(type, fn);
-    },
+//     removeEvent: function(type, fn){
+//         return this.off(type, fn);
+//     },
 
-    addEvents: function(events){
-        return this.on(events);
-    },
+//     addEvents: function(events){
+//         return this.on(events);
+//     },
 
-    removeEvents: function(events){
-        return this.off(events);
-    },
+//     removeEvents: function(events){
+//         return this.off(events);
+//     },
 
-    fireEvent: function(type, args, delay){
-        return this.trigger(type);
-    }
-});// Expose jQuery to the global object
+//     fireEvent: function(type, args, delay){
+//         return this.trigger(type);
+//     }
+// });// Expose jQuery to the global object
 window.jQuery = window.$ = jQuery;
 
 // Expose jQuery as an AMD module, but only for AMD loaders that
@@ -8731,11 +8731,233 @@ provides: [Element, Elements, $, $$, IFrame, Selectors]
 */
 
 var Element = this.Element = function(tag, props) {
-	var el = jQuery(tag).attr(props);
+	var _Element = function() {};
+	// var el = jQuery(tag).attr(props || {});
+	if (typeOf(tag) == 'element') return tag;
+	var el = Sizzle(tag)[0];
+	_Element.prototype = el;
+	var _el = new _Element();
 	return el;
 };
 
-var Element = this.Element = jQuery;
+
+if (Browser.Element) {
+	Element.prototype = Browser.Element.prototype;
+	// IE8 and IE9 require the wrapping.
+	Element.prototype._fireEvent = (function(fireEvent) {
+		return function(type, event) {
+			return fireEvent.call(this, type, event);
+		};
+	})(Element.prototype.fireEvent);
+}
+
+new Type('Element', Element).mirror(function(name) {
+	if (Array.prototype[name]) return;
+
+	var obj = {};
+	obj[name] = function() {
+		var results = [],
+			args = arguments,
+			elements = true;
+		for (var i = 0, l = this.length; i < l; i++) {
+			var element = this[i],
+				result = results[i] = element[name].apply(element, args);
+			elements = (elements && typeOf(result) == 'element');
+		}
+		return (elements) ? new Elements(results) : results;
+	};
+
+	// Elements.implement(obj);
+});
+
+if (!Browser.Element) {
+	Element.parent = Object;
+
+	Element.Prototype = {
+		'$constructor': Element,
+		'$family': Function.from('element').hide()
+	};
+
+	Element.mirror(function(name, method) {
+		Element.Prototype[name] = method;
+	});
+}
+
+Element.Constructors = {};
+
+
+// var Element = this.Element = jQuery;
+
+
+var IFrame = new Type('IFrame', function() {
+	var params = Array.link(arguments, {
+		properties: Type.isObject,
+		iframe: function(obj) {
+			return (obj != null);
+		}
+	});
+
+	var props = params.properties || {}, iframe;
+	if (params.iframe) iframe = document.id(params.iframe);
+	var onload = props.onload || function() {};
+	delete props.onload;
+	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
+	iframe = new Element(iframe || 'iframe', props);
+
+	var onLoad = function() {
+		onload.call(iframe.contentWindow);
+	};
+
+	if (window.frames[props.id]) onLoad();
+	else iframe.addListener('load', onLoad);
+	return iframe;
+});
+
+
+
+var Elements = this.Elements = function(nodes) {
+	var ns = Sizzle(nodes);
+	for (var i = 0; i < ns.length; i++) {
+		this.push(ns[i]);
+	};
+};
+
+Elements.prototype = {
+	length: 0
+};
+Elements.parent = Array;
+
+new Type('Elements', Elements).implement({
+
+	filter: function(filter, bind) {
+		if (!filter) return this;
+		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
+			return item.match(filter);
+		} : filter, bind));
+	}.protect(),
+
+	push: function() {
+		var length = this.length;
+		for (var i = 0, l = arguments.length; i < l; i++) {
+			var item = arguments[i];
+			if (item) this[length++] = item;
+		}
+		return (this.length = length);
+	}.protect(),
+
+	unshift: function() {
+		var items = [];
+		for (var i = 0, l = arguments.length; i < l; i++) {
+			var item = arguments[i];
+			if (item) items.push(item);
+		}
+		return Array.prototype.unshift.apply(this, items);
+	}.protect(),
+
+	concat: function() {
+		var newElements = new Elements(this);
+		for (var i = 0, l = arguments.length; i < l; i++) {
+			var item = arguments[i];
+			if (Type.isEnumerable(item)) newElements.append(item);
+			else newElements.push(item);
+		}
+		return newElements;
+	}.protect(),
+
+	append: function(collection) {
+		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
+		return this;
+	}.protect(),
+
+	empty: function() {
+		while (this.length) delete this[--this.length];
+		return this;
+	}.protect()
+
+});
+
+//
+
+(function() {
+
+	// FF, IE
+	var splice = Array.prototype.splice,
+		object = {
+			'0': 0,
+			'1': 1,
+			length: 2
+		};
+
+	splice.call(object, 1, 1);
+	if (object[1] == 1) Elements.implement('splice', function() {
+		var length = this.length;
+		var result = splice.apply(this, arguments);
+		while (length >= this.length) delete this[length--];
+		return result;
+	}.protect());
+
+	Array.forEachMethod(function(method, name) {
+		Elements.implement(name, method);
+	});
+
+	Array.mirror(Elements);
+
+	/*<ltIE8>*/
+	var createElementAcceptsHTML;
+	try {
+		createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
+	} catch (e) {}
+
+	var escapeQuotes = function(html) {
+		return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+	};
+	/*</ltIE8>*/
+
+	Document.implement({
+
+		newElement: function(tag, props) {
+			if (props && props.checked != null) props.defaultChecked = props.checked;
+			/*<ltIE8>*/ // Fix for readonly name and type properties in IE < 8
+			if (createElementAcceptsHTML && props) {
+				tag = '<' + tag;
+				if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
+				if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
+				tag += '>';
+				delete props.name;
+				delete props.type;
+			}
+			/*</ltIE8>*/
+			return this.id(this.createElement(tag)).set(props);
+		}
+
+	});
+
+
+	Document.implement({
+
+		newTextNode: function(text) {
+			return this.createTextNode(text);
+		},
+
+		getDocument: function() {
+			return this;
+		},
+
+		getWindow: function() {
+			return this.window;
+		},
+
+		id: function(el) {
+			if (typeOf(el) == 'string') {
+				if (el.indexOf('#') == -1) {
+					el = '#' + el;
+				}
+			}
+			return Sizzle(el)[0];
+		}
+	});
+
+})();
 
 
 var inserters = {
@@ -8791,15 +9013,23 @@ Element.implement({
 		return this;
 	},
 
+	removeData: function(prop) {
+		$(this).removeData(prop);
+	},
+
+	data: function(prop, value) {
+		if (value) {
+			return $(this).data(prop, value);
+		}
+		return $(this).data(prop);
+	},
+
 	set: function(prop, value) {
 		var property = Element.Properties[prop];
 		(property && property.set) ? property.set.call(this, value) : this.setProperty(prop, value);
 	}.overloadSetter(),
 
 	get: function(prop) {
-		if (typeOf(prop) == 'number') {
-			return this[0];
-		}
 		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
 	}.overloadGetter(),
@@ -8876,16 +9106,27 @@ Element.implement({
 		});
 		return queryString.join('&');
 	}
-});
+});/*
+---
+
+name: Element.Style
+
+description: Contains methods for interacting with the styles of Elements in a fashionable way.
+
+license: MIT-style license.
+
+requires: Element
+
+provides: Element.Style
+
+...
+*/
 
 
 //Element.Style
-var html = document.html,
-	el;
-
+var html = document.html;
 
 Element.Properties = {};
-
 
 Element.Properties.style = {
 
@@ -8935,6 +9176,29 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
 	},
 	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
 
+var hasGetComputedStyle = !!window.getComputedStyle;
+
+Element.implement({
+	getComputedStyle: function(property) {
+		var _this = this;
+		if (!hasGetComputedStyle && _this.currentStyle) return _this.currentStyle[property.camelCase()];
+		var defaultView = document.defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(_this, null) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
+	},
+	getStyle: function(prop) {
+		return $(this).css(prop);
+	},
+	setStyle: function(prop, value) {
+		return $(this).css(prop, value);
+	},
+	getStyles: function(props) {
+		return $(this).css(props);
+	},
+	setStyles: function(css) {
+		return $(this).css(css);
+	}
+});
 
 Element.Styles = {
 	left: '@px',
@@ -8999,6 +9263,21 @@ if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {
 	backgroundPositionX: '@',
 	backgroundPositionY: '@'
 };/*
+---
+
+name: Element.Event
+
+description: Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events, if necessary.
+
+license: MIT-style license.
+
+requires: [Element, Event]
+
+provides: Element.Event
+
+...
+*/
+/*
 ---
 
 name: Fx
@@ -9310,60 +9589,74 @@ Fx.CSS = new Class({
 
 	//prepares the base from/to object
 
-	prepare: function(element, property, values){
+	prepare: function(element, property, values) {
 		values = Array.from(values);
-		var from = values[0], to = values[1];
-		if (to == null){
+		var from = values[0],
+			to = values[1];
+		if (to == null) {
 			to = from;
 			from = element.getStyle(property);
 			var unit = this.options.unit;
 			// adapted from: https://github.com/ryanmorr/fx/blob/master/fx.js#L299
-			if (unit && from && typeof from == 'string' && from.slice(-unit.length) != unit && parseFloat(from) != 0){
+			if (unit && from && typeof from == 'string' && from.slice(-unit.length) != unit && parseFloat(from) != 0) {
 				element.setStyle(property, to + unit);
 				var value = element.getComputedStyle(property);
-				var el = element[0];
 				// IE and Opera support pixelLeft or pixelWidth
-				if (!(/px$/.test(value))){
-					value = el.style[('pixel-' + property).camelCase()];
-					if (value == null){
+				if (!(/px$/.test(value))) {
+					value = element.style[('pixel-' + property).camelCase()];
+					if (value == null) {
 						// adapted from Dean Edwards' http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
-						var left = el.style.left;
-						el.style.left = to + unit;
-						value = el.style.pixelLeft;
-						el.style.left = left;
+						var left = element.style.left;
+						element.style.left = to + unit;
+						value = element.style.pixelLeft;
+						element.style.left = left;
 					}
 				}
+				// console.log(value, from, to, values);
 				from = (to || 1) / (parseFloat(value) || 1) * (parseFloat(from) || 0);
+				// console.log(property, from + unit);
 				element.setStyle(property, from + unit);
 			}
 		}
-		return {from: this.parse(from), to: this.parse(to)};
+		return {
+			from: this.parse(from),
+			to: this.parse(to)
+		};
 	},
 
 	//parses a value into an array
 
-	parse: function(value){
+	parse: function(value) {
 		value = Function.from(value)();
 		value = (typeof value == 'string') ? value.split(' ') : Array.from(value);
-		return value.map(function(val){
+		return value.map(function(val) {
 			val = String(val);
 			var found = false;
-			Object.each(Fx.CSS.Parsers, function(parser, key){
+			Object.each(Fx.CSS.Parsers, function(parser, key) {
 				if (found) return;
 				var parsed = parser.parse(val);
-				if (parsed || parsed === 0) found = {value: parsed, parser: parser};
+				if (parsed || parsed === 0) found = {
+					value: parsed,
+					parser: parser
+				};
 			});
-			found = found || {value: val, parser: Fx.CSS.Parsers.String};
+			found = found || {
+				value: val,
+				parser: Fx.CSS.Parsers.String
+			};
 			return found;
 		});
 	},
 
 	//computes by a from and to prepared objects, using their parsers.
 
-	compute: function(from, to, delta){
+	compute: function(from, to, delta) {
 		var computed = [];
-		(Math.min(from.length, to.length)).times(function(i){
-			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
+		(Math.min(from.length, to.length)).times(function(i) {
+			computed.push({
+				value: from[i].parser.compute(from[i].value, to[i].value, delta),
+				parser: from[i].parser
+			});
 		});
 		computed.$family = Function.from('fx:css:value');
 		return computed;
@@ -9371,10 +9664,10 @@ Fx.CSS = new Class({
 
 	//serves the value as settable
 
-	serve: function(value, unit){
+	serve: function(value, unit) {
 		if (typeOf(value) != 'fx:css:value') value = this.parse(value);
 		var returned = [];
-		value.each(function(bit){
+		value.each(function(bit) {
 			returned = returned.concat(bit.parser.serve(bit.value, unit));
 		});
 		return returned;
@@ -9382,28 +9675,28 @@ Fx.CSS = new Class({
 
 	//renders the change to an element
 
-	render: function(element, property, value, unit){
+	render: function(element, property, value, unit) {
 		element.setStyle(property, this.serve(value, unit));
 	},
 
 	//searches inside the page css to find the values for a selector
 
-	search: function(selector){
+	search: function(selector) {
 		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
 		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
 
-		var searchStyles = function(rules){
-			Array.each(rules, function(rule, i){
-				if (rule.media){
+		var searchStyles = function(rules) {
+			Array.each(rules, function(rule, i) {
+				if (rule.media) {
 					searchStyles(rule.rules || rule.cssRules);
 					return;
 				}
 				if (!rule.style) return;
-				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m){
+				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m) {
 					return m.toLowerCase();
 				}) : null;
 				if (!selectorText || !selectorTest.test(selectorText)) return;
-				Object.each(Element.Styles, function(value, style){
+				Object.each(Element.Styles, function(value, style) {
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
 					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
@@ -9411,7 +9704,7 @@ Fx.CSS = new Class({
 			});
 		};
 
-		Array.each(document.styleSheets, function(sheet, j){
+		Array.each(document.styleSheets, function(sheet, j) {
 			var href = sheet.href;
 			if (href && href.indexOf('://') > -1 && href.indexOf(document.domain) == -1) return;
 			var rules = sheet.rules || sheet.cssRules;
@@ -9427,16 +9720,16 @@ Fx.CSS.Cache = {};
 Fx.CSS.Parsers = {
 
 	Color: {
-		parse: function(value){
+		parse: function(value) {
 			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
-		compute: function(from, to, delta){
-			return from.map(function(value, i){
+		compute: function(from, to, delta) {
+			return from.map(function(value, i) {
 				return Math.round(Fx.compute(from[i], to[i], delta));
 			});
 		},
-		serve: function(value){
+		serve: function(value) {
 			return value.map(Number);
 		}
 	},
@@ -9444,24 +9737,22 @@ Fx.CSS.Parsers = {
 	Number: {
 		parse: parseFloat,
 		compute: Fx.compute,
-		serve: function(value, unit){
+		serve: function(value, unit) {
 			return (unit) ? value + unit : value;
 		}
 	},
 
 	String: {
 		parse: Function.from(false),
-		compute: function(zero, one){
+		compute: function(zero, one) {
 			return one;
 		},
-		serve: function(zero){
+		serve: function(zero) {
 			return zero;
 		}
 	}
 
 };
-
-//
 /*
 ---
 

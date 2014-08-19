@@ -36,6 +36,8 @@
         "third-party/jQuery/outro",
 
         "Core/Element/Element",
+        "Core/Element/Element.Style",
+        "Core/Element/Element.Event",
 
         "Core/Fx/Fx",
         "Core/Fx/Fx.Transitions",

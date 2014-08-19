@@ -159,15 +159,15 @@ Browser.extend({
 	Event: window.Event
 });
 
-var Window = this.Window = this.$constructor = new Type('Window', function(){});
+var Window = window.Window = this.Window = this.$constructor = new Type('Window', window.Window);
 
-this.$family = Function.from('window').hide();
+window.$family = Function.from('window').hide();
 
 Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-var Document = this.Document = document.$constructor = new Type('Document', function(){});
+var Document = window.Document = this.Document = document.$constructor = new Type('Document', window.Document);
 
 document.$family = Function.from('document').hide();
 
