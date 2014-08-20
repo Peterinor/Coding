@@ -82,13 +82,15 @@ Element.implement({
 		return $(this).css(prop);
 	},
 	setStyle: function(prop, value) {
-		return $(this).css(prop, value);
+		$(this).css(prop, value);
+		return this;
 	},
 	getStyles: function(props) {
 		return $(this).css(props);
 	},
 	setStyles: function(css) {
-		return $(this).css(css);
+		$(this).css(css);
+		return this;
 	}
 });
 
