@@ -73,122 +73,122 @@ Element.Constructors = {};
 // var Element = this.Element = jQuery;
 
 
-var IFrame = new Type('IFrame', function() {
-	var params = Array.link(arguments, {
-		properties: Type.isObject,
-		iframe: function(obj) {
-			return (obj != null);
-		}
-	});
+// var IFrame = new Type('IFrame', function() {
+// 	var params = Array.link(arguments, {
+// 		properties: Type.isObject,
+// 		iframe: function(obj) {
+// 			return (obj != null);
+// 		}
+// 	});
 
-	var props = params.properties || {}, iframe;
-	if (params.iframe) iframe = document.id(params.iframe);
-	var onload = props.onload || function() {};
-	delete props.onload;
-	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
-	iframe = new Element(iframe || 'iframe', props);
+// 	var props = params.properties || {}, iframe;
+// 	if (params.iframe) iframe = document.id(params.iframe);
+// 	var onload = props.onload || function() {};
+// 	delete props.onload;
+// 	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
+// 	iframe = new Element(iframe || 'iframe', props);
 
-	var onLoad = function() {
-		onload.call(iframe.contentWindow);
-	};
+// 	var onLoad = function() {
+// 		onload.call(iframe.contentWindow);
+// 	};
 
-	if (window.frames[props.id]) onLoad();
-	else iframe.addListener('load', onLoad);
-	return iframe;
-});
+// 	if (window.frames[props.id]) onLoad();
+// 	else iframe.addListener('load', onLoad);
+// 	return iframe;
+// });
 
 
 
-var Elements = this.Elements = function(nodes) {
-	var ns = Sizzle(nodes);
-	for (var i = 0; i < ns.length; i++) {
-		this.push(ns[i]);
-	};
-};
+// var Elements = this.Elements = function(nodes) {
+// 	var ns = Sizzle(nodes);
+// 	for (var i = 0; i < ns.length; i++) {
+// 		this.push(ns[i]);
+// 	};
+// };
 
-Elements.prototype = {
-	length: 0
-};
-Elements.parent = Array;
+// Elements.prototype = {
+// 	length: 0
+// };
+// Elements.parent = Array;
 
-new Type('Elements', Elements).implement({
+// new Type('Elements', Elements).implement({
 
-	filter: function(filter, bind) {
-		if (!filter) return this;
-		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
-			return item.match(filter);
-		} : filter, bind));
-	}.protect(),
+// 	filter: function(filter, bind) {
+// 		if (!filter) return this;
+// 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
+// 			return item.match(filter);
+// 		} : filter, bind));
+// 	}.protect(),
 
-	push: function() {
-		var length = this.length;
-		for (var i = 0, l = arguments.length; i < l; i++) {
-			var item = arguments[i];
-			if (item) this[length++] = item;
-		}
-		return (this.length = length);
-	}.protect(),
+// 	push: function() {
+// 		var length = this.length;
+// 		for (var i = 0, l = arguments.length; i < l; i++) {
+// 			var item = arguments[i];
+// 			if (item) this[length++] = item;
+// 		}
+// 		return (this.length = length);
+// 	}.protect(),
 
-	unshift: function() {
-		var items = [];
-		for (var i = 0, l = arguments.length; i < l; i++) {
-			var item = arguments[i];
-			if (item) items.push(item);
-		}
-		return Array.prototype.unshift.apply(this, items);
-	}.protect(),
+// 	unshift: function() {
+// 		var items = [];
+// 		for (var i = 0, l = arguments.length; i < l; i++) {
+// 			var item = arguments[i];
+// 			if (item) items.push(item);
+// 		}
+// 		return Array.prototype.unshift.apply(this, items);
+// 	}.protect(),
 
-	concat: function() {
-		var newElements = new Elements(this);
-		for (var i = 0, l = arguments.length; i < l; i++) {
-			var item = arguments[i];
-			if (Type.isEnumerable(item)) newElements.append(item);
-			else newElements.push(item);
-		}
-		return newElements;
-	}.protect(),
+// 	concat: function() {
+// 		var newElements = new Elements(this);
+// 		for (var i = 0, l = arguments.length; i < l; i++) {
+// 			var item = arguments[i];
+// 			if (Type.isEnumerable(item)) newElements.append(item);
+// 			else newElements.push(item);
+// 		}
+// 		return newElements;
+// 	}.protect(),
 
-	append: function(collection) {
-		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
-		return this;
-	}.protect(),
+// 	append: function(collection) {
+// 		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
+// 		return this;
+// 	}.protect(),
 
-	empty: function() {
-		while (this.length) delete this[--this.length];
-		return this;
-	}.protect()
+// 	empty: function() {
+// 		while (this.length) delete this[--this.length];
+// 		return this;
+// 	}.protect()
 
-});
+// });
 
-//<1.2compat>
+// //<1.2compat>
 
-Elements.alias('extend', 'append');
+// Elements.alias('extend', 'append');
 
-//</1.2compat>
+// //</1.2compat>
 
 (function() {
 
-	// FF, IE
-	var splice = Array.prototype.splice,
-		object = {
-			'0': 0,
-			'1': 1,
-			length: 2
-		};
+	// // FF, IE
+	// var splice = Array.prototype.splice,
+	// 	object = {
+	// 		'0': 0,
+	// 		'1': 1,
+	// 		length: 2
+	// 	};
 
-	splice.call(object, 1, 1);
-	if (object[1] == 1) Elements.implement('splice', function() {
-		var length = this.length;
-		var result = splice.apply(this, arguments);
-		while (length >= this.length) delete this[length--];
-		return result;
-	}.protect());
+	// splice.call(object, 1, 1);
+	// if (object[1] == 1) Elements.implement('splice', function() {
+	// 	var length = this.length;
+	// 	var result = splice.apply(this, arguments);
+	// 	while (length >= this.length) delete this[length--];
+	// 	return result;
+	// }.protect());
 
-	Array.forEachMethod(function(method, name) {
-		Elements.implement(name, method);
-	});
+	// Array.forEachMethod(function(method, name) {
+	// 	Elements.implement(name, method);
+	// });
 
-	Array.mirror(Elements);
+	// Array.mirror(Elements);
 
 	/*<ltIE8>*/
 	var createElementAcceptsHTML;
@@ -201,39 +201,39 @@ Elements.alias('extend', 'append');
 	};
 	/*</ltIE8>*/
 
+	// Document.implement({
+
+	// 	newElement: function(tag, props) {
+	// 		if (props && props.checked != null) props.defaultChecked = props.checked;
+	// 		/*<ltIE8>*/ // Fix for readonly name and type properties in IE < 8
+	// 		if (createElementAcceptsHTML && props) {
+	// 			tag = '<' + tag;
+	// 			if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
+	// 			if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
+	// 			tag += '>';
+	// 			delete props.name;
+	// 			delete props.type;
+	// 		}
+	// 		/*</ltIE8>*/
+	// 		return this.id(this.createElement(tag)).set(props);
+	// 	}
+
+	// });
+
+
 	Document.implement({
 
-		newElement: function(tag, props) {
-			if (props && props.checked != null) props.defaultChecked = props.checked;
-			/*<ltIE8>*/ // Fix for readonly name and type properties in IE < 8
-			if (createElementAcceptsHTML && props) {
-				tag = '<' + tag;
-				if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
-				if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
-				tag += '>';
-				delete props.name;
-				delete props.type;
-			}
-			/*</ltIE8>*/
-			return this.id(this.createElement(tag)).set(props);
-		}
+		// newTextNode: function(text) {
+		// 	return this.createTextNode(text);
+		// },
 
-	});
+		// getDocument: function() {
+		// 	return this;
+		// },
 
-
-	Document.implement({
-
-		newTextNode: function(text) {
-			return this.createTextNode(text);
-		},
-
-		getDocument: function() {
-			return this;
-		},
-
-		getWindow: function() {
-			return this.window;
-		},
+		// getWindow: function() {
+		// 	return this.window;
+		// },
 
 		id: function(el) {
 			if (typeOf(el) == 'string') {
@@ -248,58 +248,29 @@ Elements.alias('extend', 'append');
 })();
 
 
-var inserters = {
+// var inserters = {
 
-	before: function(context, element) {
-		$(context).insertBefore(element);
-	},
+// 	before: function(context, element) {
+// 		$(context).insertBefore(element);
+// 	},
 
-	after: function(context, element) {
-		$(context).insertAfter(element);
-	},
+// 	after: function(context, element) {
+// 		$(context).insertAfter(element);
+// 	},
 
-	bottom: function(context, element) {
-		$(element).append(context);
-	},
+// 	bottom: function(context, element) {
+// 		$(element).append(context);
+// 	},
 
-	top: function(context, element) {
-		$(element).insertBefore($(":first-child", context));
-	}
+// 	top: function(context, element) {
+// 		$(element).insertBefore($(":first-child", context));
+// 	}
 
-};
+// };
 
-inserters.inside = inserters.bottom;
+// inserters.inside = inserters.bottom;
 
 Element.implement({
-	toDom: function() {
-		return this[0] || null;
-	},
-
-	setProperty: function(name, value) {
-		return this.attr(name, value);
-	},
-
-	setProperties: function(attributes) {
-		return this.attr(attributes);
-	},
-
-	getProperty: function(name) {
-		return this.attr(name);
-	},
-
-	getProperties: function() {
-		var args = Array.from(arguments);
-		return args.map(this.getProperty, this).associate(args);
-	},
-
-	removeProperty: function(name) {
-		return this.setProperty(name, null);
-	},
-
-	removeProperties: function() {
-		Array.each(arguments, this.removeProperty, this);
-		return this;
-	},
 
 	removeData: function(prop) {
 		$(this).removeData(prop);
@@ -328,54 +299,6 @@ Element.implement({
 		return this;
 	},
 
-	adopt: function() {
-		var parent = this.toDom(),
-			fragment, elements = Array.flatten(arguments),
-			length = elements.length;
-		if (length > 1) parent = fragment = document.createDocumentFragment();
-
-		for (var i = 0; i < length; i++) {
-			var element = $(elements[i], true);
-			if (element) parent.appendChild(element);
-		}
-
-		if (fragment) this.appendChild(fragment);
-
-		return this;
-	},
-
-	// appendText: function(text, where) {
-	// 	return this.grab(Element(text), where);
-	// },
-
-	// grab: function(el, where) {
-	// 	inserters[where || 'bottom']($(el).toDom(), this);
-	// 	return this;
-	// },
-
-	inject: function(el, where) {
-		inserters[where || 'bottom'](this, $(el).toDom());
-		return this;
-	},
-
-	replaces: function(el) {
-		el = $(el).toDom();
-		el.parentNode.replaceChild(this, el);
-		return this;
-	},
-
-	// wraps: function(el, where) {
-	// 	el = $(el).toDom();
-	// 	return this.replaces(el).grab(el, where);
-	// },
-
-	getSelected: function() {
-		this.toDom().selectedIndex; // Safari 3.2.1
-		return new Elements(Array.from(this.options).filter(function(option) {
-			return option.selected;
-		}));
-	},
-
 	toQueryString: function() {
 		var queryString = [];
 		$('input, select, textarea', this).each(function(_el) {
@@ -395,3 +318,45 @@ Element.implement({
 		return queryString.join('&');
 	}
 });
+
+Element.Properties = {};
+
+// Element.Properties.style = {
+
+// 	set: function(style) {
+// 		this.style.cssText = style;
+// 	},
+
+// 	get: function() {
+// 		return this.style.cssText;
+// 	},
+
+// 	erase: function() {
+// 		this.style.cssText = '';
+// 	}
+
+// };
+
+// Element.Properties.tag = {
+
+// 	get: function() {
+// 		return this.tagName.toLowerCase();
+// 	}
+
+// };
+
+// Element.Properties.html = {
+
+// 	set: function(html) {
+// 		if (html == null) html = '';
+// 		else if (typeOf(html) == 'array') html = html.join('');
+// 		this.innerHTML = html;
+// 	},
+
+// 	erase: function() {
+// 		this.innerHTML = '';
+// 	}
+
+// };
+
+;

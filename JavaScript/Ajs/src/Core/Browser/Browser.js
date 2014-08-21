@@ -159,7 +159,9 @@ Browser.extend({
 	Event: window.Event
 });
 
-var Window = window.Window = this.Window = this.$constructor = new Type('Window', window.Window);
+var superWin = function(){};
+// superWin.prototype = window.Window;
+var Window = window.Window = this.Window = window.$constructor = new Type('Window', superWin);
 
 window.$family = Function.from('window').hide();
 
@@ -167,7 +169,9 @@ Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-var Document = window.Document = this.Document = document.$constructor = new Type('Document', window.Document);
+var superDoc = function(){};
+// superDoc.prototype = window.Document;
+var Document = window.Document = this.Document = document.$constructor = new Type('Document', superDoc);
 
 document.$family = Function.from('document').hide();
 

@@ -18,59 +18,113 @@ provides: Element.Style
 //Element.Style
 var html = document.html;
 
-Element.Properties = {};
+//<ltIE9>
+// Check for oldIE, which does not remove styles when they're set to null
+el = document.createElement('div');
+el.style.color = 'red';
+el.style.color = null;
+var doesNotRemoveStyles = el.style.color == 'red';
 
-Element.Properties.style = {
-
-	set: function(style) {
-		this.toDom().style.cssText = style;
-	},
-
-	get: function() {
-		return this.toDom().style.cssText;
-	},
-
-	erase: function() {
-		this.toDom().style.cssText = '';
-	}
-
-};
-
-Element.Properties.tag = {
-
-	get: function() {
-		return this.toDom().tagName.toLowerCase();
-	}
-
-};
-
-Element.Properties.html = {
-
-	set: function(html) {
-		if (html == null) html = '';
-		else if (typeOf(html) == 'array') html = html.join('');
-		this.toDom().innerHTML = html;
-	},
-
-	erase: function() {
-		this.toDom().innerHTML = '';
-	}
-
-};
-
-var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
-	namedPositions = {
-		left: '0%',
-		top: '0%',
-		center: '50%',
-		right: '100%',
-		bottom: '100%'
-	},
-	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
+// check for oldIE, which returns border* shorthand styles in the wrong order (color-width-style instead of width-style-color)
+var border = '1px solid #123abc';
+el.style.border = border;
+var returnsBordersInWrongOrder = el.style.border != border;
+el = null;
+//</ltIE9>
 
 var hasGetComputedStyle = !!window.getComputedStyle;
 
+Element.Properties.styles = {set: function(styles){
+	this.setStyles(styles);
+}};
+
+var hasOpacity = (html.style.opacity != null),
+	hasFilter = (html.style.filter != null),
+	reAlpha = /alpha\(opacity=([\d.]+)\)/i;
+
+var setVisibility = function(element, opacity){
+	element.store('$opacity', opacity);
+	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
+};
+
+//<ltIE9>
+var setFilter = function(element, regexp, value){
+	var style = element.style,
+		filter = style.filter || element.getComputedStyle('filter') || '';
+	style.filter = (regexp.test(filter) ? filter.replace(regexp, value) : filter + ' ' + value).trim();
+	if (!style.filter) style.removeAttribute('filter');
+};
+//</ltIE9>
+
+var setOpacity = (hasOpacity ? function(element, opacity){
+	element.style.opacity = opacity;
+} : (hasFilter ? function(element, opacity){
+	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
+	if (opacity == null || opacity == 1){
+		setFilter(element, reAlpha, '');
+		if (opacity == 1 && getOpacity(element) != 1) setFilter(element, reAlpha, 'alpha(opacity=100)');
+	} else {
+		setFilter(element, reAlpha, 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')');
+	}
+} : setVisibility));
+
+var getOpacity = (hasOpacity ? function(element){
+	var opacity = element.style.opacity || element.getComputedStyle('opacity');
+	return (opacity == '') ? 1 : opacity.toFloat();
+} : (hasFilter ? function(element){
+	var filter = (element.style.filter || element.getComputedStyle('filter')),
+		opacity;
+	if (filter) opacity = filter.match(reAlpha);
+	return (opacity == null || filter == null) ? 1 : (opacity[1] / 100);
+} : function(element){
+	var opacity = element.retrieve('$opacity');
+	if (opacity == null) opacity = (element.style.visibility == 'hidden' ? 0 : 1);
+	return opacity;
+}));
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
+	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
+	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
+
+//<ltIE9>
+var removeStyle = function(style, property){
+	if (property == 'backgroundPosition'){
+		style.removeAttribute(property + 'X');
+		property += 'Y';
+	}
+	style.removeAttribute(property);
+};
+//</ltIE9>
+
+var hasGetComputedStyle = !!window.getComputedStyle;
+
+// Element.implement({
+// 	getComputedStyle: function(property) {
+// 		var _this = this;
+// 		if (!hasGetComputedStyle && _this.currentStyle) return _this.currentStyle[property.camelCase()];
+// 		var defaultView = document.defaultView,
+// 			computed = defaultView ? defaultView.getComputedStyle(_this, null) : null;
+// 		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
+// 	},
+// 	getStyle: function(prop) {
+// 		return $(this).css(prop);
+// 	},
+// 	setStyle: function(prop, value) {
+// 		$(this).css(prop, value);
+// 		return this;
+// 	},
+// 	getStyles: function(props) {
+// 		return $(this).css(props);
+// 	},
+// 	setStyles: function(css) {
+// 		$(this).css(css);
+// 		return this;
+// 	}
+// });
+
+
 Element.implement({
+
 	getComputedStyle: function(property) {
 		var _this = this;
 		if (!hasGetComputedStyle && _this.currentStyle) return _this.currentStyle[property.camelCase()];
@@ -78,20 +132,88 @@ Element.implement({
 			computed = defaultView ? defaultView.getComputedStyle(_this, null) : null;
 		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
 	},
-	getStyle: function(prop) {
-		return $(this).css(prop);
-	},
-	setStyle: function(prop, value) {
-		$(this).css(prop, value);
+
+	setStyle: function(property, value){
+		if (property == 'opacity'){
+			if (value != null) value = parseFloat(value);
+			setOpacity(this, value);
+			return this;
+		}
+		property = (property == 'float' ? floatName : property).camelCase();
+		if (typeOf(value) != 'string'){
+			var map = (Element.Styles[property] || '@').split(' ');
+			value = Array.from(value).map(function(val, i){
+				if (!map[i]) return '';
+				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+			}).join(' ');
+		} else if (value == String(Number(value))){
+			value = Math.round(value);
+		}
+		this.style[property] = value;
+		//<ltIE9>
+		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
+			removeStyle(this.style, property);
+		}
+		//</ltIE9>
 		return this;
 	},
-	getStyles: function(props) {
-		return $(this).css(props);
+
+	getStyle: function(property){
+		if (property == 'opacity') return getOpacity(this);
+		property = (property == 'float' ? floatName : property).camelCase();
+		var result = this.style[property];
+		if (!result || property == 'zIndex'){
+			if (Element.ShortStyles.hasOwnProperty(property)){
+				result = [];
+				for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
+				return result.join(' ');
+			}
+			result = this.getComputedStyle(property);
+		}
+		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
+			return result.replace(/(top|right|bottom|left)/g, function(position){
+				return namedPositions[position];
+			}) || '0px';
+		}
+		if (!result && property == 'backgroundPosition') return '0px 0px';
+		if (result){
+			result = String(result);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
+			if (color) result = result.replace(color[0], color[0].rgbToHex());
+		}
+		if (!hasGetComputedStyle && !this.style[property]){
+			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
+				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
+				values.each(function(value){
+					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+				}, this);
+				return this['offset' + property.capitalize()] - size + 'px';
+			}
+			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
+				return '0px';
+			}
+		}
+		//<ltIE9>
+		if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
+			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
+		}
+		//</ltIE9>
+		return result;
 	},
-	setStyles: function(css) {
-		$(this).css(css);
+
+	setStyles: function(styles){
+		for (var style in styles) this.setStyle(style, styles[style]);
 		return this;
+	},
+
+	getStyles: function(){
+		var result = {};
+		Array.flatten(arguments).each(function(key){
+			result[key] = this.getStyle(key);
+		}, this);
+		return result;
 	}
+
 });
 
 Element.Styles = {
