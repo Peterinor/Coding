@@ -391,7 +391,6 @@ String.extend('uniqueID', function(){
 });
 
 
-//globals
 (function(Ajs) {
 
     /*
