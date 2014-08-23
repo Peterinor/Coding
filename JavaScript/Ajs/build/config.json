@@ -1,6 +1,9 @@
 {
-    "root" : "../src/",
-    "modules" : [
+    "root": "../src/",
+    "ES5": false,
+    "ltIE9": false,
+    "SignFile":false,
+    "modules": [
         "Core/intro",
         "Core/Core/Core",
         "Core/Types/Array",
@@ -29,8 +32,6 @@
 
         "third-party/jQuery/attributes",
         "third-party/jQuery/manipulation",
-
-        "third-party/jQuery/port",
 
         "third-party/jQuery/exports",
         "third-party/jQuery/outro",
