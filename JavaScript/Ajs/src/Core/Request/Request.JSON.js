@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Request, JSON]
 
-provides: Request.JSON
+provides: [Request.JSON]
 
 ...
 */

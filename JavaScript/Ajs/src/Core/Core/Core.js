@@ -3,19 +3,13 @@
 
 name: Core
 
-description: The heart of MooTools.
-
-license: MIT-style license.
-
-copyright: Copyright (c) 2006-2012 [Valerio Proietti](http://mad4milk.net/).
-
-authors: The MooTools production team (http://mootools.net/developers/)
+description: The heart of Ajs.
 
 inspiration:
   - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
   - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
+provides: [Core, Type, typeOf, instanceOf, Native]
 
 ...
 */
@@ -449,48 +443,77 @@ String.extend('uniqueID', function(){
     var require = Ajs.require = requirejs;
     var define = Ajs.define = define;
 
-    // var libsList = {
-    //     Ajs: {
-    //         RE: "RE"
-    //     },
-    //     libs: {
-    //         _jquery: 'jquery-1.8.2',
-    //         jquery: 'jquery_req',
-    //         underscore: 'underscore',
-    //         backbone: 'backbone'
-    //     }
-    // }
 
-    // Ajs.config = function(config) {
-    //     config = config || {
-    //         AjsPath: "../Ajs/js/",
-    //         libsPath: "../libs/",
+    var ajs_path_r = /ajs\.(min.){0,1}js/;
+    var ajs_path = '';
 
-    //         urlArgs: "bust=" +  (new Date()).getTime(),
-    //         baseUrl: "./",
-    //         paths: {},
-    //         shim: {
-    //             backbone: {
-    //                 deps: 'underscore'
-    //             }
-    //         }
-    //     };
+    var scripts = document.getElementsByTagName('script');
+    var _scripts = Array.from(scripts);
+    for (var i = 0; i < scripts.length; i++) {
+        var s = scripts[i];
+        if (ajs_path_r.test(s.src)) {
+            ajs_path = s.src.replace(ajs_path_r, '');
+            break;
+        }
 
-    //     for (var libs in libsList) {
-    //         var _libs = libsList[libs];
-    //         for (var lib in _libs) {
-    //             var libPath =  _libs[lib];
-    //             config.paths[lib] = config[libs + "Path"] + libPath;
-    //         };
-    //     };
-    //     // console.log(config);
-    //     require.config(config);
-    //     //...
-    //     //TODO:        
-    // }
-    // Ajs.config();
+    };
 
-    var Dependence = function(name){
+    var ajs_libs = {
+        'Core.Browser': 'Core/Browser/Browser',
+
+        'Core.Class': 'Core/Class/Class',
+        'Core.Class.Extras': 'Core/Class/Class.Extras',
+
+        'Core.Element': 'Core/Element/Element',
+        'Core.Element.Event': 'Core/Element/Element.Event',
+        'Core.Element.Style': 'Core/Element/Element.Style',
+
+        'Core.Fx': 'Core/Fx/Fx',
+        'Core.Fx.CSS': 'Core/Fx/Fx.CSS',
+        'Core.Fx.Transition': 'Core/Fx/Fx.Transition',
+        'Core.Fx.Tween': 'Core/Fx/Fx.Tween',
+        'Core.Fx.Morph': 'Core/Fx/Fx.Morph',
+
+        'Core.Request': 'Core/Request/Request',
+        'Core.Request.HTML': 'Core/Request/Request.HTML',
+        'Core.Request.JSON': 'Core/Request/Request.JSON',
+
+        'Core.Types.Array': 'Core/Types/Array',
+        'Core.Types.Function': 'Core/Types/Function',
+        'Core.Types.Number': 'Core/Types/Number',
+        'Core.Types.Object': 'Core/Types/Object',
+        'Core.Types.String': 'Core/Types/String',
+
+        'Core.Utilities.Cookie': 'Core/Utilities/Cookie',
+        'Core.Utilities.JSON': 'Core/Utilities/JSON'
+    }
+    var ajs_libs_config = {};
+
+    for (var lib in ajs_libs) {
+        ajs_libs_config['Ajs.' + lib] = ajs_path + ajs_libs[lib];
+    }
+
+    Ajs.config = function(config) {
+        config = config || {
+            urlArgs: "bust=" + (new Date()).getTime(),
+            baseUrl: "./",
+            paths: {},
+            shim: {
+                backbone: {
+                    deps: 'underscore'
+                }
+            }
+        };
+
+        Object.extend.call(config.paths, ajs_libs_config);
+        console.log(config);
+        require.config(config);
+        //...
+        //TODO:        
+    }
+    Ajs.config();
+
+    var Dependence = function(name) {
         Object.extend.call(this, {
             name: name,
             _requires: [],
@@ -508,16 +531,16 @@ String.extend('uniqueID', function(){
             this.body.push(m);
             var nsobj = Ajs.namespace(this.name);
             if (typeof m == 'object') {
-            	if(nsobj){
-					Object.extend.call(nsobj, m);
-            	}
+                if (nsobj) {
+                    Object.extend.call(nsobj, m);
+                }
                 return this;
             }
             if (typeof m == 'function') {
                 Ajs.define(this._requires, function() {
                     var _m = m.apply(Ajs, Array.prototype.slice.call(arguments));
-                    if(nsobj){
-                    	Object.extend.call(nsobj, _m);
+                    if (nsobj) {
+                        Object.extend.call(nsobj, _m);
                     }
                 });
             }

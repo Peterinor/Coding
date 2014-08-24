@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Element, Request]
 
-provides: Request.HTML
+provides: [Request.HTML]
 
 ...
 */

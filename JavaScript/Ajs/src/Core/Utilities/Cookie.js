@@ -12,7 +12,7 @@ credits:
 
 requires: [Options, Browser]
 
-provides: Cookie
+provides: [Cookie]
 
 ...
 */

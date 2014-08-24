@@ -7,7 +7,7 @@ description: Contains Utility Classes that can be implemented into your own Clas
 
 license: MIT-style license.
 
-requires: Class
+requires: [Class]
 
 provides: [Class.Extras, Chain, Events, Options]
 
@@ -17,141 +17,141 @@ provides: [Class.Extras, Chain, Events, Options]
 
 var Chain = this.Chain = new Class({
 
-	$chain: [],
+    $chain: [],
 
-	chain: function() {
-		this.$chain.append(Array.flatten(arguments));
-		return this;
-	},
+    chain: function() {
+        this.$chain.append(Array.flatten(arguments));
+        return this;
+    },
 
-	callChain: function() {
-		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
-	},
+    callChain: function() {
+        return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
+    },
 
-	clearChain: function() {
-		this.$chain.empty();
-		return this;
-	}
+    clearChain: function() {
+        this.$chain.empty();
+        return this;
+    }
 
 });
 
 var removeOn = function(string) {
-	return string.replace(/^on([A-Z])/, function(full, first) {
-		return first.toLowerCase();
-	});
+    return string.replace(/^on([A-Z])/, function(full, first) {
+        return first.toLowerCase();
+    });
 };
 
 var Events = this.Events = new Class({
 
-	$events: {},
+    $events: {},
 
-	addEvent: function(type, fn, internal) {
-		type = removeOn(type);
+    addEvent: function(type, fn, internal) {
+        type = removeOn(type);
 
-		/*<1.2compat>*/
-		if (fn == $empty) return this;
-		/*</1.2compat>*/
+        /*<1.2compat>*/
+        if (fn == $empty) return this;
+        /*</1.2compat>*/
 
-		this.$events[type] = (this.$events[type] || []).include(fn);
-		if (internal) fn.internal = true;
-		return this;
-	},
+        this.$events[type] = (this.$events[type] || []).include(fn);
+        if (internal) fn.internal = true;
+        return this;
+    },
 
-	addEvents: function(events) {
-		for (var type in events) this.addEvent(type, events[type]);
-		return this;
-	},
+    addEvents: function(events) {
+        for (var type in events) this.addEvent(type, events[type]);
+        return this;
+    },
 
-	fireEvent: function(type, args, delay) {
-		type = removeOn(type);
-		var events = this.$events[type];
-		if (!events) return this;
-		args = Array.from(args);
-		events.each(function(fn) {
-			if (delay) fn.delay(delay, this, args);
-			else fn.apply(this, args);
-		}, this);
-		return this;
-	},
+    fireEvent: function(type, args, delay) {
+        type = removeOn(type);
+        var events = this.$events[type];
+        if (!events) return this;
+        args = Array.from(args);
+        events.each(function(fn) {
+            if (delay) fn.delay(delay, this, args);
+            else fn.apply(this, args);
+        }, this);
+        return this;
+    },
 
-	removeEvent: function(type, fn) {
-		type = removeOn(type);
-		var events = this.$events[type];
-		if (events && !fn.internal) {
-			var index = events.indexOf(fn);
-			if (index != -1) delete events[index];
-		}
-		return this;
-	},
+    removeEvent: function(type, fn) {
+        type = removeOn(type);
+        var events = this.$events[type];
+        if (events && !fn.internal) {
+            var index = events.indexOf(fn);
+            if (index != -1) delete events[index];
+        }
+        return this;
+    },
 
-	removeEvents: function(events) {
-		var type;
-		if (typeOf(events) == 'object') {
-			for (type in events) this.removeEvent(type, events[type]);
-			return this;
-		}
-		if (events) events = removeOn(events);
-		for (type in this.$events) {
-			if (events && events != type) continue;
-			var fns = this.$events[type];
-			for (var i = fns.length; i--;)
-				if (i in fns) {
-					this.removeEvent(type, fns[i]);
-				}
-		}
-		return this;
-	}
+    removeEvents: function(events) {
+        var type;
+        if (typeOf(events) == 'object') {
+            for (type in events) this.removeEvent(type, events[type]);
+            return this;
+        }
+        if (events) events = removeOn(events);
+        for (type in this.$events) {
+            if (events && events != type) continue;
+            var fns = this.$events[type];
+            for (var i = fns.length; i--;)
+                if (i in fns) {
+                    this.removeEvent(type, fns[i]);
+                }
+        }
+        return this;
+    }
 
 });
 
 var Options = this.Options = new Class({
 
-	setOptions: function() {
-		var options = this.options = Object.merge.apply(null, [{},
-			this.options
-		].append(arguments));
-		if (this.addEvent)
-			for (var option in options) {
-				if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
-				this.addEvent(option, options[option]);
-				delete options[option];
-			}
-		return this;
-	}
+    setOptions: function() {
+        var options = this.options = Object.merge.apply(null, [{},
+            this.options
+        ].append(arguments));
+        if (this.addEvent)
+            for (var option in options) {
+                if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+                this.addEvent(option, options[option]);
+                delete options[option];
+            }
+        return this;
+    }
 
 });
 
 
 Events.implement({
-	on: function(type, fn) {
-		return this.addEvent(type, fn);
-	}.overloadSetter(),
+    on: function(type, fn) {
+        return this.addEvent(type, fn);
+    }.overloadSetter(),
 
-	off: function(type, fn) {
-		type = removeOn(type);
-		var events = this.$events[type];
-		if (!fn) {
-			events.empty();
-			delete this.$events[type];
-			return this;
-		}
-		if (events && !fn.internal) {
-			var index = events.indexOf(fn);
-			if (index != -1) events.remove(index);
-		}
-		return this;
-	}.overloadSetter(),
+    off: function(type, fn) {
+        type = removeOn(type);
+        var events = this.$events[type];
+        if (!fn) {
+            events.empty();
+            delete this.$events[type];
+            return this;
+        }
+        if (events && !fn.internal) {
+            var index = events.indexOf(fn);
+            if (index != -1) events.remove(index);
+        }
+        return this;
+    }.overloadSetter(),
 
-	one: function(type, fn) {
-		var self = this;
-		var et = function() {
-			self.off(type, et);
-			fn.apply(this, Array.prototype.slice(arguments));
-		}
-		return this.on(type, et);
-	},
+    one: function(type, fn) {
+        var self = this;
+        var et = function() {
+            self.off(type, et);
+            fn.apply(this, Array.prototype.slice(arguments));
+        }
+        return this.on(type, et);
+    },
 
-	trigger: function(type, data, delay) {
-		return this.fireEvent(type, data, delay);
-	}
+    trigger: function(type, data, delay) {
+        return this.fireEvent(type, data, delay);
+    }
 });

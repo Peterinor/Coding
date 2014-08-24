@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Object, Element, Chain, Events, Options, Browser]
 
-provides: Request
+provides: [Request]
 
 ...
 */

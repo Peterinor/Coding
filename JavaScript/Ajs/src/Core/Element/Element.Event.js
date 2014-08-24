@@ -10,7 +10,7 @@ license: MIT-style license.
 
 requires: [Element, Event]
 
-provides: Element.Event
+provides: [Element.Event]
 
 ...
 */

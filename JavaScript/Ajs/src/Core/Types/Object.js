@@ -7,9 +7,9 @@ description: Object generic methods
 
 license: MIT-style license.
 
-requires: Type
+requires: [Type]
 
-provides: [Object, Hash]
+provides: [Object]
 
 ...
 */

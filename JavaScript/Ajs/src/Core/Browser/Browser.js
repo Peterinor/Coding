@@ -5,8 +5,6 @@ name: Browser
 
 description: The Browser Object. Contains Browser initialization, Window and Document, and the Browser Hash.
 
-license: MIT-style license.
-
 requires: [Array, Function, Number, String]
 
 provides: [Browser, Window, Document]

@@ -5,11 +5,9 @@ name: Function
 
 description: Contains Function Prototypes like create, bind, pass, and delay.
 
-license: MIT-style license.
+requires: [Type]
 
-requires: Type
-
-provides: Function
+provides: [Function]
 
 ...
 */

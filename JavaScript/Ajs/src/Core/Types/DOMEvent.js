@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Window, Document, Array, Function, String, Object]
 
-provides: Event
+provides: [DOMEvent, Event]
 
 ...
 */

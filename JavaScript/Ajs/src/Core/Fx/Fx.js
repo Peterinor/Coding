@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Chain, Events, Options]
 
-provides: Fx
+provides: [Fx]
 
 ...
 */

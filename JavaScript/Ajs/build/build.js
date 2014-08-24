@@ -9,22 +9,62 @@ var config = JSON.parse(config_str);
 var modules = config.modules;
 
 
-var ajsFile = '../dist/ajs.js';
-
-if (fs.existsSync(ajsFile)) {
-    fs.unlinkSync(ajsFile);
-}
-var r = /<(.*compat)>+[\d\D]*?<\/\1>/g; //采用[\d\D]或[\w\W]或[\s\S]来解决不能换行问题
-
-var ECMAScript5 = /<(!ES5.*?)>+[\d\D]*?<\/\1>/g;
-var ltIE9_r = /<(ltIE[6789].*?)>+[\d\D]*?<\/\1>/g;
-
+//生成依赖关系
+var deps = {};
+var req_r = /requires:.*?\[(.*?)\]/;
+var pro_r = /provides:.*?\[(.*?)\]/;
 for (var i = 0; i < modules.length; i++) {
     var m = modules[i];
     var src_file = config.root + m + '.js';
     var src = fs.readFileSync(src_file, 'utf-8');
 
-    src = src.replace(r, '');
+    var provs = pro_r.exec(src);
+    if(provs){
+        var ps = provs[1].replace(/[\[\]]/g, '').replace(/\s/g, '').split(',');
+        for (var j = 0; j < ps.length; j++) {
+            var p = ps[j];
+            var _m = 'Ajs.' + m.replace(/[\/\\]/g, '.');
+            deps[p] ? deps[p].push(_m) : (deps[p] = [], deps[p].push(_m));
+        };
+    }
+}
+console.log(deps);
+
+var campat_r = /<(.*compat)>+[\d\D]*?<\/\1>/g; //采用[\d\D]或[\w\W]或[\s\S]来解决不能换行问题
+
+var ECMAScript5 = /<(!ES5.*?)>+[\d\D]*?<\/\1>/g;
+var ltIE9_r = /<(ltIE[6789].*?)>+[\d\D]*?<\/\1>/g;
+
+
+var ajsFile = '../dist/ajs.js';
+var template = fs.readFileSync('./js.temp.js', 'utf-8');
+
+if (fs.existsSync(ajsFile)) {
+    fs.unlinkSync(ajsFile);
+}
+var fd = fs.openSync(ajsFile, 'a');
+for (var i = 0; i < modules.length; i++) {
+    var m = modules[i];
+    var src_file = config.root + m + '.js';
+    var src = fs.readFileSync(src_file, 'utf-8');
+
+    //分析依赖
+    var requires = [];
+    var requires_val = '';
+    var reqs = req_r.exec(src);
+    if(reqs){
+        var rs = reqs[1].replace(/[\[\]]/g, '').replace(/\s/g, '').split(',');
+        for (var k = 0; k < rs.length; k++) {
+            var r = rs[k];
+            requires_val += 'var ' + r + ' = this.' + r + ';';
+            if(deps[r]){
+                requires = requires.concat(deps[r]);
+            }
+        }
+    }
+    // console.log(m, requires);
+
+    src = src.replace(campat_r, '');
 
     if (!config.ES5) {
         src = src.replace(ECMAScript5, '');
@@ -32,7 +72,34 @@ for (var i = 0; i < modules.length; i++) {
     if (!config.ltIE9) {
         src = src.replace(ltIE9_r, '');
     }
-    fs.appendFileSync(ajsFile, src.replace(r, ''));
+    var buf = new Buffer(src);
+    // fs.appendFileSync(ajsFile, src.replace(r, ''));
+    fs.writeSync(fd, buf, 0, buf.length, null);
+
+    var sig = '../dist/' + m + '.js';
+    if(fs.existsSync(sig)){
+        fs.unlinkSync(sig);
+    }
+    checkdir(sig, true);
+
+    fs.appendFileSync(sig, 
+        template
+        .replace('{{requires}}', '"' +requires.join('","') + '"')
+        .replace('{{requires_val}}', requires_val)
+        .replace('{{defines}}', src));
 };
 
-console.log(config);
+fs.closeSync(fd);
+// console.log(config);
+
+function checkdir (path, isfile) {
+    var _path = path.substr(0, path.lastIndexOf('/') || path.lastIndexOf('\\'));
+    var ps = _path.split(/[\/\\]{1}/g);
+    var p = ps[0];
+    for (var i = 1; i < ps.length; i++) {
+        var p = p + '/' +  ps[i];
+        if(!fs.existsSync(p)){
+            fs.mkdirSync(p);
+        }
+    };
+}

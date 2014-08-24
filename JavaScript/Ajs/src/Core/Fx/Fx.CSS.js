@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Fx, Element.Style]
 
-provides: Fx.CSS
+provides: [Fx.CSS]
 
 ...
 */

@@ -1,7 +1,7 @@
 Ajs.module(
     'afx'
 ).requires(
-    'js/rq.js'
+    'js/rq.js', 'Ajs.Core.Browser', 'Ajs.Core.Fx.Morph'
 ).defines(function(t){
     // console.log(t);
     return {

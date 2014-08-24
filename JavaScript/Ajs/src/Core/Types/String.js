@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Type, Array]
 
-provides: String
+provides: [String]
 
 ...
 */

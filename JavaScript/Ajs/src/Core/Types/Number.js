@@ -7,9 +7,9 @@ description: Contains Number Prototypes like limit, round, times, and ceil.
 
 license: MIT-style license.
 
-requires: Type
+requires: [Type]
 
-provides: Number
+provides: [Number]
 
 ...
 */

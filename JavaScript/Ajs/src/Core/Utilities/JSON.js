@@ -11,7 +11,7 @@ SeeAlso: <http://www.json.org/>
 
 requires: [Array, String, Number, Function]
 
-provides: JSON
+provides: [JSON]
 
 ...
 */
