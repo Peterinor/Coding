@@ -19,12 +19,27 @@ for (var i = 0; i < modules.length; i++) {
     var src = fs.readFileSync(src_file, 'utf-8');
 
     var provs = pro_r.exec(src);
-    if(provs){
+    if (provs) {
         var ps = provs[1].replace(/[\[\]]/g, '').replace(/\s/g, '').split(',');
         for (var j = 0; j < ps.length; j++) {
             var p = ps[j];
             var _m = 'Ajs.' + m.replace(/[\/\\]/g, '.');
-            deps[p] ? deps[p].push(_m) : (deps[p] = [], deps[p].push(_m));
+            deps[p] || (deps[p] = []);
+            if (_m == 'Ajs.Core.Core.Core') {
+                deps;
+            } else {
+                var _ms = _m.split('.');
+                //去掉重复
+                var msObj = '';
+                for (var k = 0; k < _ms.length; k++) {
+                    var __m = _ms[k];
+                    if(msObj.indexOf(__m + '.') == -1){
+                        msObj += __m + '.';
+                    }
+                };
+                deps[p].push(msObj.substr(0, msObj.length -1));
+            }
+            // deps[p] ? deps[p].push(_m) : (deps[p] = [], deps[p].push(_m));
         };
     }
 }
@@ -50,14 +65,14 @@ for (var i = 0; i < modules.length; i++) {
 
     //分析依赖
     var requires = [];
-    var requires_val = '';
+    // var requires_val = '';
     var reqs = req_r.exec(src);
-    if(reqs){
+    if (reqs) {
         var rs = reqs[1].replace(/[\[\]]/g, '').replace(/\s/g, '').split(',');
         for (var k = 0; k < rs.length; k++) {
             var r = rs[k];
-            requires_val += 'var ' + r + ' = this.' + r + ';';
-            if(deps[r]){
+            // requires_val += 'var ' + r + ' = this.' + r + ';';
+            if (deps[r]) {
                 requires = requires.concat(deps[r]);
             }
         }
@@ -68,7 +83,7 @@ for (var i = 0; i < modules.length; i++) {
 
     if (!config.ES5) {
         src = src.replace(ECMAScript5, '');
-    }    
+    }
     if (!config.ltIE9) {
         src = src.replace(ltIE9_r, '');
     }
@@ -77,28 +92,28 @@ for (var i = 0; i < modules.length; i++) {
     fs.writeSync(fd, buf, 0, buf.length, null);
 
     var sig = '../dist/' + m + '.js';
-    if(fs.existsSync(sig)){
+    if (fs.existsSync(sig)) {
         fs.unlinkSync(sig);
     }
     checkdir(sig, true);
 
-    fs.appendFileSync(sig, 
+    fs.appendFileSync(sig,
         template
-        .replace('{{requires}}', '"' +requires.join('","') + '"')
-        .replace('{{requires_val}}', requires_val)
+        .replace('{{requires}}', '"' + requires.join('","') + '"')
+        // .replace('{{requires_val}}', requires_val)
         .replace('{{defines}}', src));
 };
 
 fs.closeSync(fd);
 // console.log(config);
 
-function checkdir (path, isfile) {
+function checkdir(path, isfile) {
     var _path = path.substr(0, path.lastIndexOf('/') || path.lastIndexOf('\\'));
     var ps = _path.split(/[\/\\]{1}/g);
     var p = ps[0];
     for (var i = 1; i < ps.length; i++) {
-        var p = p + '/' +  ps[i];
-        if(!fs.existsSync(p)){
+        var p = p + '/' + ps[i];
+        if (!fs.existsSync(p)) {
             fs.mkdirSync(p);
         }
     };

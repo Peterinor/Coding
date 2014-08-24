@@ -445,6 +445,7 @@ String.extend('uniqueID', function(){
 
 
     var ajs_path_r = /ajs\.(min.){0,1}js/;
+    var ajs_file = '';
     var ajs_path = '';
 
     var scripts = document.getElementsByTagName('script');
@@ -452,6 +453,7 @@ String.extend('uniqueID', function(){
     for (var i = 0; i < scripts.length; i++) {
         var s = scripts[i];
         if (ajs_path_r.test(s.src)) {
+            ajs_file = s.src;
             ajs_path = s.src.replace(ajs_path_r, '');
             break;
         }
@@ -492,6 +494,7 @@ String.extend('uniqueID', function(){
     for (var lib in ajs_libs) {
         ajs_libs_config['Ajs.' + lib] = ajs_path + ajs_libs[lib];
     }
+    // ajs_libs_config['Ajs.Core.Core.Core'] = ajs_file.substr(0, ajs_file.lastIndexOf('.js'));
 
     Ajs.config = function(config) {
         config = config || {

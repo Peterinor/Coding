@@ -14,4 +14,4 @@ Ajs.module(
 
 setTimeout(function(){
     console.log(Ajs.afx);
-}, 100);
+}, 1000);
