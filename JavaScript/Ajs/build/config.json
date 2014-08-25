@@ -3,6 +3,7 @@
     "ES5": false,
     "ltIE9": false,
     "SignFile":false,
+    "third-party-build": false,
     "modules": [
         "Core/intro",
         "Core/Core/Core",
@@ -16,7 +17,8 @@
         "Core/Class/Class.Extras",
 
 
-        "third-party/Sizzle/Sizzle.ajs",
+        "third-party/Sizzle/Sizzle",
+        "third-party/jQuery/jQuery",
         "third-party/jQuery/intro",
         "third-party/jQuery/core",
         "third-party/jQuery/sizzle-jquery",

@@ -452,9 +452,13 @@ String.extend('uniqueID', function(){
     var _scripts = Array.from(scripts);
     for (var i = 0; i < scripts.length; i++) {
         var s = scripts[i];
-        if (ajs_path_r.test(s.src)) {
-            ajs_file = s.src;
-            ajs_path = s.src.replace(ajs_path_r, '');
+        // window.s = s;
+        // console.log(s);
+        var data_main = s.attributes['data-main'];
+        var src = s.src;
+        if (ajs_path_r.test(src) || (s)) {
+            ajs_file = src;
+            ajs_path = src.substr(0, src.lastIndexOf('/')) + '/';
             break;
         }
 
@@ -465,6 +469,9 @@ String.extend('uniqueID', function(){
 
         'Core.Class': 'Core/Class/Class',
         'Core.Class.Extras': 'Core/Class/Class.Extras',
+
+        'third-party.Sizzle': 'third-party/Sizzle',
+        'third-party.jQuery': 'third-party/jQuery',
 
         'Core.Element': 'Core/Element/Element',
         'Core.Element.Event': 'Core/Element/Element.Event',
@@ -492,8 +499,13 @@ String.extend('uniqueID', function(){
     var ajs_libs_config = {};
 
     for (var lib in ajs_libs) {
-        ajs_libs_config['Ajs.' + lib] = ajs_path + ajs_libs[lib];
+        if(lib.indexOf('third-party') == -1){
+            ajs_libs_config['Ajs.' + lib] = ajs_path + ajs_libs[lib];
+        }else{
+            ajs_libs_config[lib] = ajs_path + ajs_libs[lib];
+        }
     }
+    console.log(ajs_libs_config);
     // ajs_libs_config['Ajs.Core.Core.Core'] = ajs_file.substr(0, ajs_file.lastIndexOf('.js'));
 
     Ajs.config = function(config) {
@@ -502,14 +514,11 @@ String.extend('uniqueID', function(){
             baseUrl: "./",
             paths: {},
             shim: {
-                backbone: {
-                    deps: 'underscore'
-                }
             }
         };
 
         Object.extend.call(config.paths, ajs_libs_config);
-        console.log(config);
+        // console.log(config);
         require.config(config);
         //...
         //TODO:        

@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Array, Function, Number, String]
 
-provides: Core.Class
+provides: [Class]
 
 ...
 */

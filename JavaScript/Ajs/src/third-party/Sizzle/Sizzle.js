@@ -8,6 +8,9 @@
  *
  * Date: 2014-07-01
  */
+
+// provides: [Sizzle]
+
 (function( window ) {
 
 var i,

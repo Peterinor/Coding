@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <script type="text/javascript" data-main="./main.js" src="../../dist/boot.js"></script>
+        
+        <script type="text/javascript">
+
+        // $(function(){
+        //     console.log(Ajs);
+
+        //     window.ee = new Ajs.Element('body');
+        //     console.log(ee);
+
+        //     // $('body').addEvent('keydown', function(event){
+        //     //     event.preventDefault();
+        //     //     // the passed event parameter is already an instance of the Event type.
+        //     //     console.log(event);
+        //     //     console.log(event.keyCode);   // returns the lowercase letter pressed.
+        //     //     console.log(event.shiftKey, event.ctrlKey); // returns true if the key pressed is shift.
+        //     //     if (event.keyCode == 's' && event.ctrlKey) console.log('Document saved.'); //executes if the user presses Ctr+S.
+        //     // });
+        // });
+
+        </script>
+        <style type="text/css">
+            .box {
+                background: greenyellow;
+                border: 1px solid black;
+                padding: 10px;
+                width: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Fx.Tween</h1>
+
+            <p>
+                <a href="#" id="simple-fx-tween-link">tween</a>
+            </p>
+
+            <div id="simple-fx-tween" class="box"></div>
+
+            <script>
+
+            Ajs.require(['Ajs.Core.Fx.Tween'], function(){
+
+                var simpleFxTween = new Ajs.Fx.Tween('#simple-fx-tween', {
+                    property: 'width',
+                    link: 'cancel'
+                });
+                var simpleFxTweenToggle = true;
+
+                $('#simple-fx-tween-link').on('click', function(event){
+                    event.preventDefault();
+                    simpleFxTween.start(simpleFxTweenToggle ? 500 : 200);
+                    simpleFxTweenToggle = !simpleFxTweenToggle;
+                });
+            });
+
+
+            </script>
+
+    </body>
+</html>

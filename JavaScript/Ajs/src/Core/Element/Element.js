@@ -7,7 +7,7 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Browser, Array, Function, Number, String, Object, Number]
+requires: [Browser, Array, Function, Number, String, Object, Number, jQuery]
 provides: [Element, Elements, IFrame]
 
 ...

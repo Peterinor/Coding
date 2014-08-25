@@ -24,6 +24,11 @@ for (var i = 0; i < modules.length; i++) {
         for (var j = 0; j < ps.length; j++) {
             var p = ps[j];
             var _m = 'Ajs.' + m.replace(/[\/\\]/g, '.');
+            // console.log(_m);
+            var _m = m.replace(/[\/\\]/g, '.');
+            if (m.indexOf('third-party') == -1) {
+                _m = ('Ajs.' + _m);
+            }
             deps[p] || (deps[p] = []);
             if (_m == 'Ajs.Core.Core.Core') {
                 deps;
@@ -33,11 +38,11 @@ for (var i = 0; i < modules.length; i++) {
                 var msObj = '';
                 for (var k = 0; k < _ms.length; k++) {
                     var __m = _ms[k];
-                    if(msObj.indexOf(__m + '.') == -1){
+                    if (msObj.indexOf(__m + '.') == -1) {
                         msObj += __m + '.';
                     }
                 };
-                deps[p].push(msObj.substr(0, msObj.length -1));
+                deps[p].push(msObj.substr(0, msObj.length - 1));
             }
             // deps[p] ? deps[p].push(_m) : (deps[p] = [], deps[p].push(_m));
         };
@@ -52,11 +57,21 @@ var ltIE9_r = /<(ltIE[6789].*?)>+[\d\D]*?<\/\1>/g;
 
 
 var ajsFile = '../dist/ajs.js';
-var template = fs.readFileSync('./js.temp.js', 'utf-8');
 
-if (fs.existsSync(ajsFile)) {
-    fs.unlinkSync(ajsFile);
+var bootModules = "#Core/intro#Core/Core/Core#Core/exports#Core/outro#";
+var bootFile = '../dist/boot.js';
+
+var template = fs.readFileSync('./js.temp.js', 'utf-8');
+var checkList = [ajsFile, bootFile];
+if(config["third-party-build"]){
+    checkList.concat(['../dist/third-party/jQuery.js', '../dist/third-party/Sizzle.js']);
 }
+
+checkList.forEach(function(file, index) {
+    if (fs.existsSync(file)) {
+        fs.unlinkSync(file);
+    }
+});
 var fd = fs.openSync(ajsFile, 'a');
 for (var i = 0; i < modules.length; i++) {
     var m = modules[i];
@@ -77,7 +92,6 @@ for (var i = 0; i < modules.length; i++) {
             }
         }
     }
-    // console.log(m, requires);
 
     src = src.replace(campat_r, '');
 
@@ -91,21 +105,38 @@ for (var i = 0; i < modules.length; i++) {
     // fs.appendFileSync(ajsFile, src.replace(r, ''));
     fs.writeSync(fd, buf, 0, buf.length, null);
 
-    var sig = '../dist/' + m + '.js';
-    if (fs.existsSync(sig)) {
-        fs.unlinkSync(sig);
-    }
-    checkdir(sig, true);
+    if (m.indexOf('third-party') == -1) {
+        if (bootModules.indexOf('#' + m + '#') != -1) {
+            fs.appendFileSync(bootFile, src);
+        }
 
-    fs.appendFileSync(sig,
-        template
-        .replace('{{requires}}', '"' + requires.join('","') + '"')
-        // .replace('{{requires_val}}', requires_val)
-        .replace('{{defines}}', src));
+        var single = '../dist/' + m + '.js';
+        if (fs.existsSync(single)) {
+            fs.unlinkSync(single);
+        }
+        checkdir(single, true);
+
+        if (fs.existsSync(single)) {
+            fs.unlinkSync(single);
+        }
+        var _temp = template;
+        _temp = _temp.replace('{{requires}}', '"' + requires.join('","') + '"');
+        _temp += src + "});";
+
+        fs.appendFileSync(single, _temp);
+    } else {
+        if(config["third-party-build"]){
+            var _m = m.replace('third-party/', '');
+            var third_file = '../dist/third-party/' + _m.substr(0, _m.indexOf('/')) + '.js';
+            // console.log(third_file);
+            fs.appendFileSync(third_file, src);            
+        }
+
+    }
+
 };
 
 fs.closeSync(fd);
-// console.log(config);
 
 function checkdir(path, isfile) {
     var _path = path.substr(0, path.lastIndexOf('/') || path.lastIndexOf('\\'));
