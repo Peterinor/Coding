@@ -5,10 +5,6 @@ name: JSON
 
 description: JSON encoder and decoder.
 
-license: MIT-style license.
-
-SeeAlso: <http://www.json.org/>
-
 requires: [Array, String, Number, Function]
 
 provides: [JSON]
@@ -17,15 +13,6 @@ provides: [JSON]
 */
 
 if (typeof JSON == 'undefined') window.JSON = {};
-
-//<1.2compat>
-
-JSON = new Hash({
-	stringify: JSON.stringify,
-	parse: JSON.parse
-});
-
-//</1.2compat>
 
 (function(){
 
@@ -68,9 +55,6 @@ JSON.encode = JSON.stringify ? function(obj){
 });
 
 JSON.secure = true;
-//<1.4compat>
-JSON.secure = false;
-//</1.4compat>
 
 JSON.decode = function(string, secure){
 	if (!string || typeOf(string) != 'string') return null;
