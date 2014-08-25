@@ -5,8 +5,6 @@ name: Request.HTML
 
 description: Extends the basic Request Class with additional methods for interacting with HTML responses.
 
-license: MIT-style license.
-
 requires: [Element, Request]
 
 provides: [Request.HTML]

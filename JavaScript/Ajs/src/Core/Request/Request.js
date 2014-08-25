@@ -5,16 +5,12 @@ name: Request
 
 description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
-license: MIT-style license.
-
 requires: [Object, Element, Chain, Events, Options, Browser]
 
 provides: [Request]
 
 ...
 */
-
-(function(){
 
 var empty = function(){},
 	progressSupport = ('onprogress' in new Browser.Request);
@@ -274,5 +270,3 @@ Element.implement({
 	}
 
 });
-
-})();

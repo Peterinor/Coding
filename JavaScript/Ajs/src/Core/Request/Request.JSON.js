@@ -5,8 +5,6 @@ name: Request.JSON
 
 description: Extends the basic Request Class with additional methods for sending and receiving JSON data.
 
-license: MIT-style license.
-
 requires: [Request, JSON]
 
 provides: [Request.JSON]
