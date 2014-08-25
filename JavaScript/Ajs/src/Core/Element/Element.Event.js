@@ -8,7 +8,7 @@ description: Contains Element methods for dealing with events. This file also in
 
 license: MIT-style license.
 
-requires: [Element, Event]
+requires: [Element, Event, jQuery]
 
 provides: [Element.Event]
 
