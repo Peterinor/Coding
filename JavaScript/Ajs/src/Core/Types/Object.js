@@ -5,8 +5,6 @@ name: Object
 
 description: Object generic methods
 
-license: MIT-style license.
-
 requires: [Type]
 
 provides: [Object]

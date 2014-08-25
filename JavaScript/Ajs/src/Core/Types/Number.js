@@ -5,8 +5,6 @@ name: Number
 
 description: Contains Number Prototypes like limit, round, times, and ceil.
 
-license: MIT-style license.
-
 requires: [Type]
 
 provides: [Number]

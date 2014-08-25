@@ -5,8 +5,6 @@ name: String
 
 description: Contains String Prototypes like camelCase, capitalize, test, and toInt.
 
-license: MIT-style license.
-
 requires: [Type, Array]
 
 provides: [String]
