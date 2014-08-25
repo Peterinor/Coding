@@ -5,9 +5,7 @@ name: Element
 
 description: One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
 
-license: MIT-style license.
-
-requires: [Browser, Array, Function, Number, String, Object, Number, jQuery]
+requires: [Browser, Array, Function, Number, String, Object, Number, Sizzle]
 provides: [Element, Elements, IFrame]
 
 ...
@@ -247,39 +245,36 @@ Element.Constructors = {};
 })();
 
 
-// var inserters = {
-
-//     before: function(context, element) {
-//         $(context).insertBefore(element);
-//     },
-
-//     after: function(context, element) {
-//         $(context).insertAfter(element);
-//     },
-
-//     bottom: function(context, element) {
-//         $(element).append(context);
-//     },
-
-//     top: function(context, element) {
-//         $(element).insertBefore($(":first-child", context));
-//     }
-
-// };
-
-// inserters.inside = inserters.bottom;
+var collected = {}, storage = {};
+var UIDX = 0;
+var uidName = 'Ajs-data-uid';
+var get = function(uid) {
+    return (storage[uid] || (storage[uid] = {}));
+};
+var uidOf = function(el) {
+    var id = el.getAttribute(uidName);
+    if (!id) {
+        var uid = UIDX++;
+        el.setAttribute(uidName, uid);
+        return uid;
+    }
+    return id;
+}
 
 Element.implement({
 
     removeData: function(prop) {
-        $(this).removeData(prop);
+        var data = get(uidOf(this));
+        delete data[prop];
     },
 
     data: function(prop, value) {
+        var data = get(uidOf(this));
         if (value) {
-            return $(this).data(prop, value);
+            data[prop] = value;
+            return value;
         }
-        return $(this).data(prop);
+        return data[prop];
     },
 
     set: function(prop, value) {
@@ -300,14 +295,14 @@ Element.implement({
 
     toQueryString: function() {
         var queryString = [];
-        $('input, select, textarea', this).each(function(_el) {
+        Sizzle('input, select, textarea', this).each(function(_el) {
             var el = _el.toDom();
             var type = el.type;
             if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 
             var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
                 // IE
-                return $(opt).get('value');
+                return Sizzle(opt)[0].get('value');
             }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
 
             Array.from(value).each(function(val) {
