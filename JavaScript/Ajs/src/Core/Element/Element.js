@@ -263,18 +263,30 @@ var uidOf = function(el) {
 
 Element.implement({
 
+    retrieve: function(property, dflt){
+        var storage = get(uidOf(this)), prop = storage[property];
+        if (dflt != null && prop == null) prop = storage[property] = dflt;
+        return prop != null ? prop : null;
+    },
+
+    store: function(property, value){
+        var storage = get(uidOf(this));
+        storage[property] = value;
+        return this;
+    },
+    
+    eliminate: function(property){
+        var storage = get(uidOf(this));
+        delete storage[property];
+        return this;
+    },
+
     removeData: function(prop) {
-        var data = get(uidOf(this));
-        delete data[prop];
+        return this.eliminate(prop);
     },
 
     data: function(prop, value) {
-        var data = get(uidOf(this));
-        if (value) {
-            data[prop] = value;
-            return value;
-        }
-        return data[prop];
+        return value ? this.store(prop, value) : this.retrieve(prop);
     },
 
     set: function(prop, value) {
