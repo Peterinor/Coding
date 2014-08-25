@@ -378,11 +378,12 @@ Object.extend({
 
 // Unique ID
 
-var UID = Date.now();
-
-String.extend('uniqueID', function(){
-    return (UID++).toString(36);
-});
+var idCount = Date.now();
+Ajs.uniqueID = function(prefix) {
+    var id = (idCount++).toString(36);
+    return prefix ? prefix + id : id;
+}
+String.extend('uniqueID', Ajs.uniqueID);
 
 
 (function(Ajs) {
@@ -440,8 +441,8 @@ String.extend('uniqueID', function(){
 
     Ajs.namespace = namespace;
 
-    var require = Ajs.require = requirejs;
-    var define = Ajs.define = define;
+    var require = Ajs.requires = Ajs.require = requirejs;
+    var define = Ajs.defines = Ajs.define = define;
 
 
     var ajs_path_r = /ajs\.(min.){0,1}js/;
@@ -455,8 +456,9 @@ String.extend('uniqueID', function(){
         // window.s = s;
         // console.log(s);
         var data_main = s.attributes['data-main'];
+        var data_ajs = s.attributes['data-ajs'];
         var src = s.src;
-        if (ajs_path_r.test(src) || (s)) {
+        if (ajs_path_r.test(src) || data_main || data_ajs) {
             ajs_file = src;
             ajs_path = src.substr(0, src.lastIndexOf('/')) + '/';
             break;
@@ -510,7 +512,7 @@ String.extend('uniqueID', function(){
 
     Ajs.config = function(config) {
         config = config || {
-            urlArgs: "bust=" + (new Date()).getTime(),
+            urlArgs: "bust=" + Date.now(),
             baseUrl: "./",
             paths: {},
             shim: {
