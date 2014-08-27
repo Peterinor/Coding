@@ -82,6 +82,18 @@ Function.prototype.overloadGetter = function(usePlural){
     };
 };
 
+Function.prototype.iteratorDecorator = function(){
+    var self = this;
+    return function(){
+        var result = [];
+        for (var i = 0; i < this.length; i++) {
+            var _this = this[i];
+            result.push(self.apply(_this, Array.from(arguments)));
+        };
+        return result;
+    };
+};
+
 Function.prototype.extend = function(key, value){
     this[key] = value;
 }.overloadSetter();
@@ -265,9 +277,6 @@ force('String', String, [
 ])('Date', Date, ['now']);
 
 Object.extend = extend.overloadSetter();
-// Object.implement({
-//     extend:extend.overloadSetter()
-// });
 
 Date.extend('now', function(){
     return +(new Date);
@@ -476,6 +485,7 @@ String.extend('uniqueID', Ajs.uniqueID);
         'third-party.jQuery': 'third-party/jQuery',
 
         'Core.Element': 'Core/Element/Element',
+        'Core.Element.Attributes': 'Core/Element/Element.Attributes',
         'Core.Element.Event': 'Core/Element/Element.Event',
         'Core.Element.Style': 'Core/Element/Element.Style',
 

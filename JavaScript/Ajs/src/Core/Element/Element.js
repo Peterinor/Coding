@@ -6,18 +6,18 @@ name: Element
 description: One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
 
 requires: [Browser, Array, Function, Number, String, Object, Number, Sizzle]
-provides: [Element, Elements, IFrame]
+provides: [Element, Elements, $]
 
 ...
 */
 
 var Element = this.Element = function(tag, props) {
-    var _Element = function() {};
+    // var _Element = function() {};
     // var el = jQuery(tag).attr(props || {});
     if (typeOf(tag) == 'element') return tag;
     var el = Sizzle(tag)[0];
-    _Element.prototype = el;
-    var _el = new _Element();
+    // _Element.prototype = el;
+    // var _el = new _Element();
     return el;
 };
 
@@ -33,8 +33,6 @@ if (Browser.Element) {
 }
 
 new Type('Element', Element).mirror(function(name) {
-    if (Array.prototype[name]) return;
-
     var obj = {};
     obj[name] = function() {
         var results = [],
@@ -45,10 +43,11 @@ new Type('Element', Element).mirror(function(name) {
                 result = results[i] = element[name].apply(element, args);
             elements = (elements && typeOf(result) == 'element');
         }
-        return (elements) ? new Elements(results) : results;
+        // return (elements) ? $(results) : results;
+        return (elements) ? $(results) : results[0]; //jquery return the first element's value
     };
 
-    // Elements.implement(obj);
+    $.implement(obj);
 });
 
 if (!Browser.Element) {
@@ -64,241 +63,9 @@ if (!Browser.Element) {
     });
 }
 
-Element.Constructors = {};
-
-
-// var Element = this.Element = jQuery;
-
-
-// var IFrame = new Type('IFrame', function() {
-//     var params = Array.link(arguments, {
-//         properties: Type.isObject,
-//         iframe: function(obj) {
-//             return (obj != null);
-//         }
-//     });
-
-//     var props = params.properties || {}, iframe;
-//     if (params.iframe) iframe = document.id(params.iframe);
-//     var onload = props.onload || function() {};
-//     delete props.onload;
-//     props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
-//     iframe = new Element(iframe || 'iframe', props);
-
-//     var onLoad = function() {
-//         onload.call(iframe.contentWindow);
-//     };
-
-//     if (window.frames[props.id]) onLoad();
-//     else iframe.addListener('load', onLoad);
-//     return iframe;
-// });
-
-
-// Define a local copy of A
-A = function(selector, context) {
-    return new A.fn.init(selector, context);
-}
-
-A.fn = A.prototype = {
-    constructor: A,
-    length: 0,
-
-    init: function(selector, context) {
-        var elems = Sizzle(selector, context);
-        for (var i = 0; i < elems.length; i++) {
-            this.push(elems[i]);
-        };
-    }
-};
-
-A.fn.init.prototype = A.fn;
-
-A.implement({
-
-    filter: function(filter, bind) {
-        if (!filter) return this;
-        return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
-            return item.match(filter);
-        } : filter, bind));
-    }.protect(),
-
-    push: function() {
-        var length = this.length;
-        for (var i = 0, l = arguments.length; i < l; i++) {
-            var item = arguments[i];
-            if (item) this[length++] = item;
-        }
-        return (this.length = length);
-    }.protect(),
-
-    unshift: function() {
-        var items = [];
-        for (var i = 0, l = arguments.length; i < l; i++) {
-            var item = arguments[i];
-            if (item) items.push(item);
-        }
-        return Array.prototype.unshift.apply(this, items);
-    }.protect(),
-
-    concat: function() {
-        var newElements = new Elements(this);
-        for (var i = 0, l = arguments.length; i < l; i++) {
-            var item = arguments[i];
-            if (Type.isEnumerable(item)) newElements.append(item);
-            else newElements.push(item);
-        }
-        return newElements;
-    }.protect(),
-
-    append: function(collection) {
-        for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
-        return this;
-    }.protect(),
-
-    empty: function() {
-        while (this.length) delete this[--this.length];
-        return this;
-    }.protect()
-
-});
-
-
-// var Elements = this.Elements = function(nodes) {
-//     var ns = Sizzle(nodes);
-//     for (var i = 0; i < ns.length; i++) {
-//         this.push(ns[i]);
-//     };
-// };
-
-// Elements.prototype = {
-//     length: 0
-// };
-// Elements.parent = Array;
-
-// new Type('Elements', Elements).implement({
-
-//     filter: function(filter, bind) {
-//         if (!filter) return this;
-//         return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
-//             return item.match(filter);
-//         } : filter, bind));
-//     }.protect(),
-
-//     push: function() {
-//         var length = this.length;
-//         for (var i = 0, l = arguments.length; i < l; i++) {
-//             var item = arguments[i];
-//             if (item) this[length++] = item;
-//         }
-//         return (this.length = length);
-//     }.protect(),
-
-//     unshift: function() {
-//         var items = [];
-//         for (var i = 0, l = arguments.length; i < l; i++) {
-//             var item = arguments[i];
-//             if (item) items.push(item);
-//         }
-//         return Array.prototype.unshift.apply(this, items);
-//     }.protect(),
-
-//     concat: function() {
-//         var newElements = new Elements(this);
-//         for (var i = 0, l = arguments.length; i < l; i++) {
-//             var item = arguments[i];
-//             if (Type.isEnumerable(item)) newElements.append(item);
-//             else newElements.push(item);
-//         }
-//         return newElements;
-//     }.protect(),
-
-//     append: function(collection) {
-//         for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
-//         return this;
-//     }.protect(),
-
-//     empty: function() {
-//         while (this.length) delete this[--this.length];
-//         return this;
-//     }.protect()
-
-// });
-
-// //<1.2compat>
-
-// Elements.alias('extend', 'append');
-
-// //</1.2compat>
-
 (function() {
 
-    // // FF, IE
-    // var splice = Array.prototype.splice,
-    //     object = {
-    //         '0': 0,
-    //         '1': 1,
-    //         length: 2
-    //     };
-
-    // splice.call(object, 1, 1);
-    // if (object[1] == 1) Elements.implement('splice', function() {
-    //     var length = this.length;
-    //     var result = splice.apply(this, arguments);
-    //     while (length >= this.length) delete this[length--];
-    //     return result;
-    // }.protect());
-
-    // Array.forEachMethod(function(method, name) {
-    //     Elements.implement(name, method);
-    // });
-
-    // Array.mirror(Elements);
-
-    /*<ltIE8>*/
-    var createElementAcceptsHTML;
-    try {
-        createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
-    } catch (e) {}
-
-    var escapeQuotes = function(html) {
-        return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
-    };
-    /*</ltIE8>*/
-
-    // Document.implement({
-
-    //     newElement: function(tag, props) {
-    //         if (props && props.checked != null) props.defaultChecked = props.checked;
-    //         /*<ltIE8>*/ // Fix for readonly name and type properties in IE < 8
-    //         if (createElementAcceptsHTML && props) {
-    //             tag = '<' + tag;
-    //             if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
-    //             if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
-    //             tag += '>';
-    //             delete props.name;
-    //             delete props.type;
-    //         }
-    //         /*</ltIE8>*/
-    //         return this.id(this.createElement(tag)).set(props);
-    //     }
-
-    // });
-
-
     Document.implement({
-
-        // newTextNode: function(text) {
-        //     return this.createTextNode(text);
-        // },
-
-        // getDocument: function() {
-        //     return this;
-        // },
-
-        // getWindow: function() {
-        //     return this.window;
-        // },
 
         id: function(el) {
             if (typeOf(el) == 'string') {
@@ -313,125 +80,205 @@ A.implement({
 })();
 
 
-var collected = {}, storage = {};
-var UIDX = 0;
-var uidName = 'Ajs-data-uid';
-var get = function(uid) {
-    return (storage[uid] || (storage[uid] = {}));
-};
-var uidOf = function(el) {
-    var id = el.getAttribute(uidName);
-    if (!id) {
-        var uid = UIDX++;
-        el.setAttribute(uidName, uid);
-        return uid;
-    }
-    return id;
+//------
+// Save a reference to some core methods
+core_push = Array.prototype.push,
+core_slice = Array.prototype.slice,
+core_indexOf = Array.prototype.indexOf,
+core_toString = Object.prototype.toString,
+core_hasOwn = Object.prototype.hasOwnProperty,
+core_trim = String.prototype.trim;
+
+// Define a local copy of $
+var $ = function(selector, context) {
+    return new $.fn.init(selector, context);
 }
 
-Element.implement({
+$.fn = $.prototype = {
+    constructor: $,
+    length: 0,
+    // Start with an empty selector
+    selector: "",
 
-    retrieve: function(property, dflt) {
-        var storage = get(uidOf(this)),
-            prop = storage[property];
-        if (dflt != null && prop == null) prop = storage[property] = dflt;
-        return prop != null ? prop : null;
+    init: function(selector, context) {
+
+        // Handle $(DOMElement)
+        if (selector.nodeType) {
+            this.context = this[0] = selector;
+            this.length = 1;
+            return this;
+        }
+
+        var elems = [];
+        if (typeOf(selector) === 'array') {
+            //selector is a array itself
+            elems = selector;
+        } else {
+            this.selector = selector;
+            elems = Sizzle(selector, context);
+        }
+
+        for (var i = 0; i < elems.length; i++) {
+            this.__push(elems[i]);
+        };
     },
+    __push: function() {
+        var length = this.length;
+        for (var i = 0, l = arguments.length; i < l; i++) {
+            var item = arguments[i];
+            if (item) this[length++] = item;
+        }
+        return (this.length = length);
+    }.protect()
+};
 
-    store: function(property, value) {
-        var storage = get(uidOf(this));
-        storage[property] = value;
-        return this;
-    },
+$.fn.init.prototype = $.fn;
 
-    eliminate: function(property) {
-        var storage = get(uidOf(this));
-        delete storage[property];
-        return this;
-    },
+this.$ = $;
 
-    removeData: function(prop) {
-        return this.eliminate(prop);
-    },
 
-    data: function(prop, value) {
-        return value ? this.store(prop, value) : this.retrieve(prop);
-    },
+(function() {
 
-    set: function(prop, value) {
-        var property = Element.Properties[prop];
-        (property && property.set) ? property.set.call(this, value) : this.setProperty(prop, value);
-    }.overloadSetter(),
-
-    get: function(prop) {
-        var property = Element.Properties[prop];
-        return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
-    }.overloadGetter(),
-
-    erase: function(prop) {
-        var property = Element.Properties[prop];
-        (property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
-        return this;
-    },
-
-    toQueryString: function() {
-        var queryString = [];
-        Sizzle('input, select, textarea', this).each(function(_el) {
-            var el = _el.toDom();
-            var type = el.type;
-            if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
-
-            var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
-                // IE
-                return Sizzle(opt)[0].get('value');
-            }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
-
-            Array.from(value).each(function(val) {
-                if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
-            });
-        });
-        return queryString.join('&');
+    var collected = {}, storage = {};
+    var UIDX = 0;
+    var uidName = 'Ajs-data-uid';
+    var get = function(uid) {
+        return (storage[uid] || (storage[uid] = {}));
+    };
+    var uidOf = function(el) {
+        var id = el.getAttribute(uidName);
+        if (!id) {
+            var uid = UIDX++;
+            el.setAttribute(uidName, uid);
+            return uid;
+        }
+        return id;
     }
+
+    Element.implement({
+
+        retrieve: function(property, dflt) {
+            var storage = get(uidOf(this)),
+                prop = storage[property];
+            if (dflt != null && prop == null) prop = storage[property] = dflt;
+            return prop != null ? prop : null;
+        },
+
+        store: function(property, value) {
+            var storage = get(uidOf(this));
+            storage[property] = value;
+            return this;
+        },
+
+        eliminate: function(property) {
+            var storage = get(uidOf(this));
+            delete storage[property];
+            return this;
+        }
+    });
+
+    //For jQuery API compact
+    Element.implement({
+
+        removeData: function(prop) {
+            return this.eliminate(prop);
+        },
+
+        data: function(prop, value) {
+            return value ? this.store(prop, value) : this.retrieve(prop);
+        }
+    });
+
+})();
+
+
+
+this.$.implement({
+    // The number of elements contained in the matched element set
+    size: function() {
+        return this.length;
+    },
+
+    toArray: function() {
+        return Array.from(this);
+    },
+
+    // Get the Nth element in the matched element set OR
+    // Get the whole matched element set as a clean array
+    get: function(num) {
+        return num == null ?
+            this.toArray() :
+            (num < 0 ? this[this.length + num] : this[num]);
+    },
+
+    // // Take an array of elements and push it onto the stack
+    // // (returning the new matched element set)
+    // pushStack: function(elems, name, selector) {
+
+    //     // Build a new jQuery matched element set
+    //     var ret = jQuery.merge(this.constructor(), elems);
+
+    //     // Add the old object onto the stack (as a reference)
+    //     ret.prevObject = this;
+
+    //     ret.context = this.context;
+
+    //     if (name === "find") {
+    //         ret.selector = this.selector + (this.selector ? " " : "") + selector;
+    //     } else if (name) {
+    //         ret.selector = this.selector + "." + name + "(" + selector + ")";
+    //     }
+
+    //     // Return the newly-formed element set
+    //     return ret;
+    // },
+
+    // // Execute a callback for every element in the matched set.
+    // // (You can seed the arguments with an array of args, but this is
+    // // only used internally.)
+    // each: function(callback, args) {
+    //     return jQuery.each(this, callback, args);
+    // },
+
+    // ready: function(fn) {
+    //     // Add the callback
+    //     jQuery.ready.promise().done(fn);
+
+    //     return this;
+    // },
+
+    // eq: function(i) {
+    //     i = +i;
+    //     return i === -1 ?
+    //         this.slice(i) :
+    //         this.slice(i, i + 1);
+    // },
+
+    // first: function() {
+    //     return this.eq(0);
+    // },
+
+    // last: function() {
+    //     return this.eq(-1);
+    // },
+
+    // slice: function() {
+    //     return this.pushStack(core_slice.apply(this, arguments),
+    //         "slice", core_slice.call(arguments).join(","));
+    // },
+
+    // map: function(callback) {
+    //     return this.pushStack(jQuery.map(this, function(elem, i) {
+    //         return callback.call(elem, i, elem);
+    //     }));
+    // },
+
+    // end: function() {
+    //     return this.prevObject || this.constructor(null);
+    // },   
+    // // // For internal use only.
+    // // // Behaves like an Array's method, not like a jQuery method.
+    // // push: core_push,
+    // // sort: [].sort,
+    // // splice: [].splice
 });
-
-Element.Properties = {};
-
-// Element.Properties.style = {
-
-//     set: function(style) {
-//         this.style.cssText = style;
-//     },
-
-//     get: function() {
-//         return this.style.cssText;
-//     },
-
-//     erase: function() {
-//         this.style.cssText = '';
-//     }
-
-// };
-
-// Element.Properties.tag = {
-
-//     get: function() {
-//         return this.tagName.toLowerCase();
-//     }
-
-// };
-
-// Element.Properties.html = {
-
-//     set: function(html) {
-//         if (html == null) html = '';
-//         else if (typeOf(html) == 'array') html = html.join('');
-//         this.innerHTML = html;
-//     },
-
-//     erase: function() {
-//         this.innerHTML = '';
-//     }
-
-// };
-
-;

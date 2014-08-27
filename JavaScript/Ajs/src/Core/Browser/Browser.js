@@ -149,12 +149,12 @@ if (document.execCommand) try {
 } catch (e){}
 
 /*<ltIE9>*/
-if (this.attachEvent && !this.addEventListener){
+if (window.attachEvent && !window.addEventListener){
     var unloadEvent = function(){
-        this.detachEvent('onunload', unloadEvent);
+        window.detachEvent('onunload', unloadEvent);
         document.head = document.html = document.window = null;
     };
-    this.attachEvent('onunload', unloadEvent);
+    window.attachEvent('onunload', unloadEvent);
 }
 
 // IE fails on collections and <select>.options (refers to <select>)

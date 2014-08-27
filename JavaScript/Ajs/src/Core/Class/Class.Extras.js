@@ -5,8 +5,6 @@ name: Class.Extras
 
 description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
 
-license: MIT-style license.
-
 requires: [Class]
 
 provides: [Class.Extras, Chain, Events, Options]
@@ -47,10 +45,6 @@ var Events = this.Events = new Class({
 
     addEvent: function(type, fn, internal) {
         type = removeOn(type);
-
-        /*<1.2compat>*/
-        if (fn == $empty) return this;
-        /*</1.2compat>*/
 
         this.$events[type] = (this.$events[type] || []).include(fn);
         if (internal) fn.internal = true;

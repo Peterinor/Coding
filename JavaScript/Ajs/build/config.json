@@ -41,6 +41,7 @@
         "Core/Element/Element",
         "Core/Element/Element.Style",
         "Core/Element/Element.Event",
+        "Core/Element/Element.Attributes",
 
         "Core/Fx/Fx",
         "Core/Fx/Fx.Transitions",
