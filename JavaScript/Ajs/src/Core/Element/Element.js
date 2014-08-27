@@ -95,6 +95,74 @@ Element.Constructors = {};
 // });
 
 
+// Define a local copy of A
+A = function(selector, context) {
+    return new A.fn.init(selector, context);
+}
+
+A.fn = A.prototype = {
+    constructor: A,
+    length: 0,
+
+    init: function(selector, context) {
+        var elems = Sizzle(selector, context);
+        for (var i = 0; i < elems.length; i++) {
+            this.push(elems[i]);
+        };
+    }
+};
+
+A.fn.init.prototype = A.fn;
+
+A.implement({
+
+    filter: function(filter, bind) {
+        if (!filter) return this;
+        return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item) {
+            return item.match(filter);
+        } : filter, bind));
+    }.protect(),
+
+    push: function() {
+        var length = this.length;
+        for (var i = 0, l = arguments.length; i < l; i++) {
+            var item = arguments[i];
+            if (item) this[length++] = item;
+        }
+        return (this.length = length);
+    }.protect(),
+
+    unshift: function() {
+        var items = [];
+        for (var i = 0, l = arguments.length; i < l; i++) {
+            var item = arguments[i];
+            if (item) items.push(item);
+        }
+        return Array.prototype.unshift.apply(this, items);
+    }.protect(),
+
+    concat: function() {
+        var newElements = new Elements(this);
+        for (var i = 0, l = arguments.length; i < l; i++) {
+            var item = arguments[i];
+            if (Type.isEnumerable(item)) newElements.append(item);
+            else newElements.push(item);
+        }
+        return newElements;
+    }.protect(),
+
+    append: function(collection) {
+        for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
+        return this;
+    }.protect(),
+
+    empty: function() {
+        while (this.length) delete this[--this.length];
+        return this;
+    }.protect()
+
+});
+
 
 // var Elements = this.Elements = function(nodes) {
 //     var ns = Sizzle(nodes);
@@ -263,19 +331,20 @@ var uidOf = function(el) {
 
 Element.implement({
 
-    retrieve: function(property, dflt){
-        var storage = get(uidOf(this)), prop = storage[property];
+    retrieve: function(property, dflt) {
+        var storage = get(uidOf(this)),
+            prop = storage[property];
         if (dflt != null && prop == null) prop = storage[property] = dflt;
         return prop != null ? prop : null;
     },
 
-    store: function(property, value){
+    store: function(property, value) {
         var storage = get(uidOf(this));
         storage[property] = value;
         return this;
     },
-    
-    eliminate: function(property){
+
+    eliminate: function(property) {
         var storage = get(uidOf(this));
         delete storage[property];
         return this;
