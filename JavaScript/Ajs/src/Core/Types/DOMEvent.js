@@ -5,11 +5,9 @@ name: Event
 
 description: Contains the Event Type, to make the event object cross-browser.
 
-license: MIT-style license.
-
 requires: [Window, Document, Array, Function, String, Object]
 
-provides: [DOMEvent, Event]
+provides: [DOMEvent]
 
 ...
 */
@@ -112,14 +110,3 @@ DOMEvent.defineKeys({
 });
 
 })();
-
-/*<1.3compat>*/
-var Event = DOMEvent;
-Event.Keys = {};
-/*</1.3compat>*/
-
-/*<1.2compat>*/
-
-Event.Keys = new Hash(Event.Keys);
-
-/*</1.2compat>*/

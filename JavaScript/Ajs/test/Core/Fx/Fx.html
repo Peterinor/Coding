@@ -157,7 +157,7 @@
 			</style>
 
 			<script>
-				var sun = new Ajs.Element('#sun').set("morph", {
+				var sun = new Ajs.Element('#sun').setter("morph", {
 					duration: 2000
 				});
 				var sunToggle = true;
@@ -219,7 +219,7 @@
 
 			<script>
 			var fadeToggle = 1;
-			var fade = new Ajs.Element('#fade').set('tween');
+			var fade = new Ajs.Element('#fade').setter('tween');
 			// var fade = Ajs.Element('#fade').set('tween', {
 			// 	onStart: function(){
 			// 		$('#fade-opacity').set('text', fade.getStyle('opacity'))

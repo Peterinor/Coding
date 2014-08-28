@@ -46,7 +46,6 @@ new Type('Element', Element).mirror(function(name) {
         // return (elements) ? $(results) : results;
         return (elements) ? $(results) : results[0]; //jquery return the first element's value
     };
-
     $.implement(obj);
 });
 
@@ -62,23 +61,6 @@ if (!Browser.Element) {
         Element.Prototype[name] = method;
     });
 }
-
-(function() {
-
-    Document.implement({
-
-        id: function(el) {
-            if (typeOf(el) == 'string') {
-                if (el.indexOf('#') == -1) {
-                    el = '#' + el;
-                }
-            }
-            return Sizzle(el)[0];
-        }
-    });
-
-})();
-
 
 //------
 // Save a reference to some core methods
@@ -136,7 +118,6 @@ $.fn.init.prototype = $.fn;
 
 this.$ = $;
 
-
 (function() {
 
     var collected = {}, storage = {};
@@ -177,108 +158,43 @@ this.$ = $;
         }
     });
 
-    //For jQuery API compact
-    Element.implement({
-
-        removeData: function(prop) {
-            return this.eliminate(prop);
-        },
-
-        data: function(prop, value) {
-            return value ? this.store(prop, value) : this.retrieve(prop);
-        }
-    });
-
 })();
 
 
+(function() {
 
-this.$.implement({
-    // The number of elements contained in the matched element set
-    size: function() {
-        return this.length;
-    },
+    Document.implement({
+        id: function(el) {
+            if (typeOf(el) == 'string') {
+                if (el.indexOf('#') == -1) {
+                    el = '#' + el;
+                }
+            }
+            return Sizzle(el)[0];
+        },
+        getDocument: function() {
+            return this;
+        },
+        getWindow: function() {
+            return this.window;
+        }
+    });
 
-    toArray: function() {
-        return Array.from(this);
-    },
+    Window.implement({
+        getDocument: function() {
+            return this.document;
+        },
+        getWindow: function() {
+            return this;
+        }
+    });
 
-    // Get the Nth element in the matched element set OR
-    // Get the whole matched element set as a clean array
-    get: function(num) {
-        return num == null ?
-            this.toArray() :
-            (num < 0 ? this[this.length + num] : this[num]);
-    },
-
-    // // Take an array of elements and push it onto the stack
-    // // (returning the new matched element set)
-    // pushStack: function(elems, name, selector) {
-
-    //     // Build a new jQuery matched element set
-    //     var ret = jQuery.merge(this.constructor(), elems);
-
-    //     // Add the old object onto the stack (as a reference)
-    //     ret.prevObject = this;
-
-    //     ret.context = this.context;
-
-    //     if (name === "find") {
-    //         ret.selector = this.selector + (this.selector ? " " : "") + selector;
-    //     } else if (name) {
-    //         ret.selector = this.selector + "." + name + "(" + selector + ")";
-    //     }
-
-    //     // Return the newly-formed element set
-    //     return ret;
-    // },
-
-    // // Execute a callback for every element in the matched set.
-    // // (You can seed the arguments with an array of args, but this is
-    // // only used internally.)
-    // each: function(callback, args) {
-    //     return jQuery.each(this, callback, args);
-    // },
-
-    // ready: function(fn) {
-    //     // Add the callback
-    //     jQuery.ready.promise().done(fn);
-
-    //     return this;
-    // },
-
-    // eq: function(i) {
-    //     i = +i;
-    //     return i === -1 ?
-    //         this.slice(i) :
-    //         this.slice(i, i + 1);
-    // },
-
-    // first: function() {
-    //     return this.eq(0);
-    // },
-
-    // last: function() {
-    //     return this.eq(-1);
-    // },
-
-    // slice: function() {
-    //     return this.pushStack(core_slice.apply(this, arguments),
-    //         "slice", core_slice.call(arguments).join(","));
-    // },
-
-    // map: function(callback) {
-    //     return this.pushStack(jQuery.map(this, function(elem, i) {
-    //         return callback.call(elem, i, elem);
-    //     }));
-    // },
-
-    // end: function() {
-    //     return this.prevObject || this.constructor(null);
-    // },   
-    // // // For internal use only.
-    // // // Behaves like an Array's method, not like a jQuery method.
-    // // push: core_push,
-    // // sort: [].sort,
-    // // splice: [].splice
-});
+    Element.implement({
+        getWindow: function() {
+            return this.ownerDocument.window;
+        },
+        getDocument: function() {
+            return this.ownerDocument;
+        }
+    })
+})();

@@ -42,7 +42,7 @@
 
             <script>
 
-            Ajs.require(['third-party.jQuery', 'Ajs.Core.Fx.Tween'], function(){
+            Ajs.require(['Ajs.Core.jQ', 'Ajs.Core.Fx.Tween'], function(){
 
                 var simpleFxTween = new Ajs.Fx.Tween('#simple-fx-tween', {
                     property: 'width',
@@ -50,7 +50,7 @@
                 });
                 var simpleFxTweenToggle = true;
 
-                $('#simple-fx-tween-link').on('click', function(event){
+                Ajs.$('#simple-fx-tween-link').on('click', function(event){
                     event.preventDefault();
                     simpleFxTween.start(simpleFxTweenToggle ? 500 : 200);
                     simpleFxTweenToggle = !simpleFxTweenToggle;

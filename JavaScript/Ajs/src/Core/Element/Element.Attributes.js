@@ -188,14 +188,14 @@ Element.implement({
 		return this;
 	},
 
-	set: function(prop, value) {
+	setter: function(prop, value) {
 		var property = Element.Properties[prop];
-		(property && property.set) ? property.set.call(this, value) : this.setProperty(prop, value);
+		(property && property.setter) ? property.setter.call(this, value) : this.setProperty(prop, value);
 	}.overloadSetter(),
 
-	get: function(prop) {
+	getter: function(prop) {
 		var property = Element.Properties[prop];
-		return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
+		return (property && property.getter) ? property.getter.apply(this) : this.getProperty(prop);
 	}.overloadGetter(),
 
 	erase: function(prop) {
@@ -258,10 +258,10 @@ Element.implement({
 			var type = el.type;
 			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 
-			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
+			var value = (el.getter('tag') == 'select') ? el.getSelected().map(function(opt) {
 				// IE
-				return document.id(opt).get('value');
-			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
+				return document.id(opt).getter('value');
+			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.getter('value');
 
 			Array.from(value).each(function(val) {
 				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
@@ -407,11 +407,11 @@ Element.Properties = {};
 
 Element.Properties.style = {
 
-	set: function(style) {
+	setter: function(style) {
 		this.style.cssText = style;
 	},
 
-	get: function() {
+	getter: function() {
 		return this.style.cssText;
 	},
 
@@ -423,7 +423,7 @@ Element.Properties.style = {
 
 Element.Properties.tag = {
 
-	get: function() {
+	getter: function() {
 		return this.tagName.toLowerCase();
 	}
 
@@ -431,7 +431,7 @@ Element.Properties.tag = {
 
 Element.Properties.html = {
 
-	set: function(html) {
+	setter: function(html) {
 		if (html == null) html = '';
 		else if (typeOf(html) == 'array') html = html.join('');
 		this.innerHTML = html;
@@ -478,7 +478,7 @@ tr = null;
 
 if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements) {
 
-	Element.Properties.html.set = (function(set) {
+	Element.Properties.html.setter = (function(setter) {
 
 		var translations = {
 			table: [1, '<table>', '</table>'],
@@ -490,9 +490,9 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements) {
 		translations.thead = translations.tfoot = translations.tbody;
 
 		return function(html) {
-			var wrap = translations[this.get('tag')];
+			var wrap = translations[this.getter('tag')];
 			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
-			if (!wrap) return set.call(this, html);
+			if (!wrap) return setter.call(this, html);
 
 			var level = wrap[0],
 				wrapper = document.createElement('div'),
@@ -505,7 +505,7 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements) {
 			wrapper = null;
 		};
 
-	})(Element.Properties.html.set);
+	})(Element.Properties.html.setter);
 }
 /*</IE>*/
 
@@ -515,29 +515,29 @@ testForm.innerHTML = '<select><option>s</option></select>';
 
 if (testForm.firstChild.value != 's') Element.Properties.value = {
 
-	set: function(value) {
-		var tag = this.get('tag');
+	setter: function(value) {
+		var tag = this.getter('tag');
 		if (tag != 'select') return this.setProperty('value', value);
 		var options = this.getElements('option');
 		value = String(value);
 		for (var i = 0; i < options.length; i++) {
 			var option = options[i],
 				attr = option.getAttributeNode('value'),
-				optionValue = (attr && attr.specified) ? option.value : option.get('text');
+				optionValue = (attr && attr.specified) ? option.value : option.getter('text');
 			if (optionValue === value) return option.selected = true;
 		}
 	},
 
-	get: function() {
+	getter: function() {
 		var option = this,
-			tag = option.get('tag');
+			tag = option.getter('tag');
 
 		if (tag != 'select' && tag != 'option') return this.getProperty('value');
 
 		if (tag == 'select' && !(option = option.getSelected()[0])) return '';
 
 		var attr = option.getAttributeNode('value');
-		return (attr && attr.specified) ? option.value : option.get('text');
+		return (attr && attr.specified) ? option.value : option.getter('text');
 	}
 
 };
@@ -546,10 +546,10 @@ testForm = null;
 
 /*<IE>*/
 if (document.createElement('div').getAttributeNode('id')) Element.Properties.id = {
-	set: function(id) {
+	setter: function(id) {
 		this.id = this.getAttributeNode('id').value = id;
 	},
-	get: function() {
+	getter: function() {
 		return this.id || null;
 	},
 	erase: function() {

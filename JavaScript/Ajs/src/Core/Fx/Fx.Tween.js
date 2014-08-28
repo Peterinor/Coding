@@ -45,7 +45,7 @@ Fx.Tween = new Class({
 Element.Properties.tween = {
 
 	set: function(options){
-		this.get('tween').cancel().setOptions(options);
+		this.getter('tween').cancel().setOptions(options);
 		return this;
 	},
 
@@ -63,12 +63,12 @@ Element.Properties.tween = {
 Element.implement({
 
 	tween: function(property, from, to){
-		this.get('tween').start(property, from, to);
+		this.getter('tween').start(property, from, to);
 		return this;
 	},
 
 	fade: function(how){
-		var fade = this.get('tween'), method, args = ['opacity'].append(arguments), toggle;
+		var fade = this.getter('tween'), method, args = ['opacity'].append(arguments), toggle;
 		if (args[1] == null) args[1] = 'toggle';
 		switch (args[1]){
 			case 'in': method = 'start'; args[1] = 1; break;
@@ -100,7 +100,7 @@ Element.implement({
 			end = this.data('highlight:original', this.getStyle('background-color'));
 			end = (end == 'transparent') ? '#fff' : end;
 		}
-		var tween = this.get('tween');
+		var tween = this.getter('tween');
 		tween.start('background-color', start || '#ffff88', end).chain(function(){
 			this.setStyle('background-color', this.data('highlight:original'));
 			tween.callChain();

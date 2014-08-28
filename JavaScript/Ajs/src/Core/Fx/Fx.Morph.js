@@ -52,7 +52,7 @@ Fx.Morph = new Class({
 Element.Properties.morph = {
 
 	set: function(options){
-		this.get('morph').cancel().setOptions(options);
+		this.getter('morph').cancel().setOptions(options);
 		return this;
 	},
 
@@ -70,7 +70,7 @@ Element.Properties.morph = {
 Element.implement({
 
 	morph: function(props){
-		this.get('morph').start(props);
+		this.getter('morph').start(props);
 		return this;
 	}
 

@@ -7,41 +7,24 @@
     "modules": [
         "Core/intro",
         "Core/Core/Core",
+        
         "Core/Types/Array",
         "Core/Types/Function",
         "Core/Types/Number",
         "Core/Types/Object",
         "Core/Types/String",
+        "Core/Types/DOMEvent",
+
         "Core/Browser/Browser",
         "Core/Class/Class",
         "Core/Class/Class.Extras",
 
-
         "third-party/Sizzle/Sizzle",
-        "third-party/jQuery/jQuery",
-        "third-party/jQuery/intro",
-        "third-party/jQuery/core",
-        "third-party/jQuery/sizzle-jquery",
-        "third-party/jQuery/traversing",
-
-        "third-party/jQuery/callbacks",
-        "third-party/jQuery/deferred",
-        "third-party/jQuery/support",
-        "third-party/jQuery/css",
-
-        "third-party/jQuery/data",
-        "third-party/jQuery/event",
-
-        "third-party/jQuery/attributes",
-        "third-party/jQuery/manipulation",
-
-        "third-party/jQuery/exports",
-        "third-party/jQuery/outro",
 
         "Core/Element/Element",
+        "Core/Element/Element.Attributes",
         "Core/Element/Element.Style",
         "Core/Element/Element.Event",
-        "Core/Element/Element.Attributes",
 
         "Core/Fx/Fx",
         "Core/Fx/Fx.Transitions",
@@ -54,6 +37,8 @@
 
         "Core/Utilities/Cookie",
         "Core/Utilities/JSON",
+
+        "Core/jQ",
 
         "Core/exports",
         "Core/outro"

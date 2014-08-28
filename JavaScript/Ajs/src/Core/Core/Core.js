@@ -27,8 +27,10 @@ var typeOf = this.typeOf = function(item){
         if ('callee' in item) return 'arguments';
         if ('item' in item) return 'collection';
     }
-
-    return typeof item;
+    
+    var tp = Object.prototype.toString.call(item);
+    return tp.replace(/\[|\]|object|\s/g, '').toLowerCase();
+    // return typeof item;
 };
 
 var instanceOf = this.instanceOf = function(item, object){
@@ -482,7 +484,7 @@ String.extend('uniqueID', Ajs.uniqueID);
         'Core.Class.Extras': 'Core/Class/Class.Extras',
 
         'third-party.Sizzle': 'third-party/Sizzle',
-        'third-party.jQuery': 'third-party/jQuery',
+        // 'third-party.jQuery': 'third-party/jQuery',
 
         'Core.Element': 'Core/Element/Element',
         'Core.Element.Attributes': 'Core/Element/Element.Attributes',
@@ -504,9 +506,12 @@ String.extend('uniqueID', Ajs.uniqueID);
         'Core.Types.Number': 'Core/Types/Number',
         'Core.Types.Object': 'Core/Types/Object',
         'Core.Types.String': 'Core/Types/String',
+        'Core.Types.DOMEvent': 'Core/Types/DOMEvent',
 
         'Core.Utilities.Cookie': 'Core/Utilities/Cookie',
-        'Core.Utilities.JSON': 'Core/Utilities/JSON'
+        'Core.Utilities.JSON': 'Core/Utilities/JSON',
+
+        'Core.jQ': 'Core/jQ',
     }
     var ajs_libs_config = {};
 
