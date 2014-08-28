@@ -95,12 +95,13 @@ for (var i = 0; i < modules.length; i++) {
 
     src = src.replace(campat_r, '');
 
-    if (!config.ES5) {
+    if (config.noES5) {
         src = src.replace(ECMAScript5, '');
     }
-    if (!config.ltIE9) {
+    if (config.noltIE9) {
         src = src.replace(ltIE9_r, '');
     }
+    src = src.replace(/\/\*\*\//g, '');
     var buf = new Buffer(src);
     // fs.appendFileSync(ajsFile, src.replace(r, ''));
     fs.writeSync(fd, buf, 0, buf.length, null);

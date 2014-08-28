@@ -1,7 +1,7 @@
 {
     "root": "../src/",
-    "ES5": false,
-    "ltIE9": false,
+    "noES5": false,
+    "noltIE9": false,
     "SignFile":false,
     "third-party-build": false,
     "modules": [
