@@ -44,12 +44,12 @@ Fx.Tween = new Class({
 
 Element.Properties.tween = {
 
-	set: function(options){
+	setter: function(options){
 		this.getter('tween').cancel().setOptions(options);
 		return this;
 	},
 
-	get: function(){
+	getter: function(){
 		var tween = this.data('tween');
 		if (!tween){
 			tween = new Fx.Tween(this, {link: 'cancel'});

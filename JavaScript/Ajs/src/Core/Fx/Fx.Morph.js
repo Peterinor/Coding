@@ -51,12 +51,12 @@ Fx.Morph = new Class({
 
 Element.Properties.morph = {
 
-	set: function(options){
+	setter: function(options){
 		this.getter('morph').cancel().setOptions(options);
 		return this;
 	},
 
-	get: function(){
+	getter: function(){
 		var morph = this.data('morph');
 		if (!morph){
 			morph = new Fx.Morph(this, {link: 'cancel'});

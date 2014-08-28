@@ -461,7 +461,6 @@ String.extend('uniqueID', Ajs.uniqueID);
     var ajs_path = '';
 
     var scripts = document.getElementsByTagName('script');
-    var _scripts = Array.from(scripts);
     for (var i = 0; i < scripts.length; i++) {
         var s = scripts[i];
         // window.s = s;
@@ -511,7 +510,7 @@ String.extend('uniqueID', Ajs.uniqueID);
         'Core.Utilities.Cookie': 'Core/Utilities/Cookie',
         'Core.Utilities.JSON': 'Core/Utilities/JSON',
 
-        'Core.jQ': 'Core/jQ',
+        'Core.jQ': 'Core/jQ'
     }
     var ajs_libs_config = {};
 

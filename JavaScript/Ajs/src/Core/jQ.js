@@ -23,6 +23,30 @@ Element.implement({
     }
 });
 
+//For jQuery API compact
+Element.implement({
+    css: function(property, value) {
+        switch (typeOf(property)) {
+            case 'object':
+                this.setStyles(property);
+                break;
+            case 'string':
+                if (value) this.setStyle(property, value)
+                else return this.getStyle(property);
+        }
+        return this;
+    }
+});
+
+// Save a reference to some core methods
+core_push = Array.prototype.push,
+core_slice = Array.prototype.slice,
+core_indexOf = Array.prototype.indexOf,
+core_toString = Object.prototype.toString,
+core_hasOwn = Object.prototype.hasOwnProperty,
+core_trim = String.prototype.trim;
+
+
 var $ = this.$;
 
 // Map over the $ in case of overwrite
@@ -92,7 +116,7 @@ this.$.implement({
     },
 
     toArray: function() {
-        return Array.from(this);
+        // return Array.from(this);
     },
 
     // Get the Nth element in the matched element set OR
@@ -149,7 +173,7 @@ this.$.implement({
 
     last: function() {
         return this.eq(-1);
-    },
+    }
 
     // map: function(callback) {
     //     return this.pushStack(jQuery.map(this, function(elem, i) {
@@ -176,5 +200,5 @@ $.implement({
 
     off: function(type, fn) {
         return this.removeEvent(type, fn);
-    }.overloadSetter(),
+    }.overloadSetter()
 })
