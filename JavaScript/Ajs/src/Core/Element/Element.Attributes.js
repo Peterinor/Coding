@@ -122,6 +122,13 @@ var hasCloneBug = (function(test) {
 })(document.createElement('div'));
 /* </ltIE9> */
 
+var hasAttribute = function(elem, attr) {
+	if (elem.hasAttribute) {
+		return elem.hasAttribute(attr);
+	}
+	return null != elem.getAttribute(attr);
+};
+
 Element.implement({
 
 	setProperty: function(name, value) {
@@ -170,8 +177,8 @@ Element.implement({
 			}
 		}
 		/* </ltIE9> */
-		var result = Slick.getAttribute(this, name);
-		return (!result && !Slick.hasAttribute(this, name)) ? null : result;
+		var result = this.getAttribute(name);
+		return (!result && !hasAttribute(this, name)) ? null : result;
 	},
 
 	getProperties: function() {
@@ -270,6 +277,61 @@ Element.implement({
 		return queryString.join('&');
 	}
 
+});
+
+
+
+//Class
+
+var hasClassList = !! document.createElement('div').classList;
+
+var classes = function(className) {
+	var classNames = (className || '').clean().split(" "),
+		uniques = {};
+	return classNames.filter(function(className) {
+		if (className !== "" && !uniques[className]) return uniques[className] = className;
+	});
+};
+
+var addToClassList = function(name) {
+	this.classList.add(name);
+};
+
+var removeFromClassList = function(name) {
+	this.classList.remove(name);
+};
+
+//For jQuery API compact
+Element.implement({
+
+	hasClass: hasClassList ? function(className) {
+		return this.classList.contains(className);
+	} : function(className) {
+		return this.className.clean().contains(className, ' ');
+	},
+
+	addClass: hasClassList ? function(className) {
+		classes(className).forEach(addToClassList, this);
+		return this;
+	} : function(className) {
+		this.className = classes(className + ' ' + this.className).join(' ');
+		return this;
+	},
+
+	removeClass: hasClassList ? function(className) {
+		classes(className).forEach(removeFromClassList, this);
+		return this;
+	} : function(className) {
+		var classNames = classes(this.className);
+		classes(className).forEach(classNames.erase, classNames);
+		this.className = classNames.join(' ');
+		return this;
+	},
+
+	toggleClass: function(className, force) {
+		if (force == null) force = !this.hasClass(className);
+		return (force) ? this.addClass(className) : this.removeClass(className);
+	}
 });
 
 
@@ -373,35 +435,6 @@ Element.implement({
 
 });
 
-[Element, Window, Document].invoke('implement', {
-
-	addListener: function(type, fn) {
-		if (window.attachEvent && !window.addEventListener) {
-			collected[Slick.uidOf(this)] = this;
-		}
-		if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
-		else this.attachEvent('on' + type, fn);
-		return this;
-	},
-
-	removeListener: function(type, fn) {
-		if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
-		else this.detachEvent('on' + type, fn);
-		return this;
-	}
-
-});
-
-/*<ltIE9>*/
-if (window.attachEvent && !window.addEventListener) {
-	var gc = function() {
-		Object.each(collected, clean);
-		if (window.CollectGarbage) CollectGarbage();
-		window.removeListener('unload', gc);
-	}
-	window.addListener('unload', gc);
-}
-/*</ltIE9>*/
 
 Element.Properties = {};
 
@@ -442,6 +475,8 @@ Element.Properties.html = {
 	}
 
 };
+
+
 
 var supportsHTML5Elements = true,
 	supportsTableInnerHTML = true,

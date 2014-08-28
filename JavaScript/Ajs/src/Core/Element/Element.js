@@ -12,12 +12,17 @@ provides: [Element, Elements, $]
 */
 
 var Element = this.Element = function(tag, props) {
-    // var _Element = function() {};
-    // var el = jQuery(tag).attr(props || {});
-    if (typeOf(tag) == 'element') return tag;
-    var el = Sizzle(tag)[0];
-    // _Element.prototype = el;
-    // var _el = new _Element();
+    var el;
+    if (typeOf(tag) == 'element') el = tag;
+    else el = Sizzle(tag)[0];
+    //for ie7
+    if (Browser.name == 'ie' && Browser.version == '7') {
+        var fireEvent = el.fireEvent;
+        el._fireEvent = function(type, event) {
+            return fireEvent(type, event);
+        };
+        Object.append(el, Element.Prototype);
+    }
     return el;
 };
 
@@ -39,7 +44,7 @@ new Type('Element', Element).mirror(function(name) {
             args = arguments,
             elements = true;
         for (var i = 0, l = this.length; i < l; i++) {
-            var element = this[i],
+            var element = new Element(this[i]),
                 result = results[i] = element[name].apply(element, args);
             elements = (elements && typeOf(result) == 'element');
         }
@@ -63,13 +68,6 @@ if (!Browser.Element) {
 }
 
 //------
-// Save a reference to some core methods
-core_push = Array.prototype.push,
-core_slice = Array.prototype.slice,
-core_indexOf = Array.prototype.indexOf,
-core_toString = Object.prototype.toString,
-core_hasOwn = Object.prototype.hasOwnProperty,
-core_trim = String.prototype.trim;
 
 // Define a local copy of $
 var $ = function(selector, context) {
@@ -101,9 +99,10 @@ $.fn = $.prototype = {
         }
 
         for (var i = 0; i < elems.length; i++) {
-            this.__push(elems[i]);
+            this.__push(new Element(elems[i]));
         };
     },
+
     __push: function() {
         var length = this.length;
         for (var i = 0, l = arguments.length; i < l; i++) {
@@ -122,19 +121,31 @@ this.$ = $;
 
     var collected = {}, storage = {};
     var UIDX = 0;
-    var uidName = 'Ajs-data-uid';
+    // var uidName = 'Ajs-data-uid';
     var get = function(uid) {
         return (storage[uid] || (storage[uid] = {}));
     };
     var uidOf = function(el) {
-        var id = el.getAttribute(uidName);
-        if (!id) {
-            var uid = UIDX++;
-            el.setAttribute(uidName, uid);
-            return uid;
-        }
-        return id;
+        // var id = el.getAttribute(uidName);
+        // if (!id) {
+        //     var uid = UIDX++;
+        //     el.setAttribute(uidName, uid);
+        //     return uid;
+        // }
+        // return id;
+        return el.uniqueNumber || (el.uniqueNumber = UIDX++);
     }
+
+    // var clean = function(item) {
+    //     var uid = item.uniqueNumber;
+    //     if (item.removeEvents) item.removeEvents();
+    //     if (item.clearAttributes) item.clearAttributes();
+    //     if (uid != null) {
+    //         delete collected[uid];
+    //         delete storage[uid];
+    //     }
+    //     return item;
+    // };
 
     Element.implement({
 
@@ -158,6 +169,36 @@ this.$ = $;
         }
     });
 
+    [Element, Window, Document].invoke('implement', {
+
+        addListener: function(type, fn) {
+            if (window.attachEvent && !window.addEventListener) {
+                collected[uidOf(this)] = this;
+            }
+            if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
+            else this.attachEvent('on' + type, fn);
+            return this;
+        },
+
+        removeListener: function(type, fn) {
+            if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
+            else this.detachEvent('on' + type, fn);
+            return this;
+        }
+
+    });
+
+    // /*<ltIE9>*/
+    // if (window.attachEvent && !window.addEventListener) {
+    //     var gc = function() {
+    //         Object.each(collected, clean);
+    //         if (window.CollectGarbage) CollectGarbage();
+    //         window.removeListener('unload', gc);
+    //     }
+    //     window.addListener('unload', gc);
+    // }
+    // /*</ltIE9>*/
+
 })();
 
 
@@ -170,7 +211,8 @@ this.$ = $;
                     el = '#' + el;
                 }
             }
-            return Sizzle(el)[0];
+            var el = Sizzle(el)[0];
+            return el;
         },
         getDocument: function() {
             return this;

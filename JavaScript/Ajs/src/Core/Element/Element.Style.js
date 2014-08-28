@@ -102,8 +102,6 @@ var removeStyle = function(style, property) {
 };
 //</ltIE9>
 
-var hasGetComputedStyle = !! window.getComputedStyle;
-
 Element.implement({
 
     getComputedStyle: function(property) {
@@ -261,68 +259,3 @@ if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {
     backgroundPositionX: '@',
     backgroundPositionY: '@'
 };
-
-
-
-//Class
-var hasClassList = !! document.createElement('div').classList;
-
-var classes = function(className) {
-    var classNames = (className || '').clean().split(" "),
-        uniques = {};
-    return classNames.filter(function(className) {
-        if (className !== "" && !uniques[className]) return uniques[className] = className;
-    });
-};
-
-var addToClassList = function(name) {
-    this.classList.add(name);
-};
-
-var removeFromClassList = function(name) {
-    this.classList.remove(name);
-};
-
-//For jQuery API compact
-Element.implement({
-    css: function(property, value) {
-        switch (typeOf(property)) {
-            case 'object':
-                this.setStyles(property);
-                break;
-            case 'string':
-                if (value) this.setStyle(property, value)
-                else return this.getStyle(property);
-        }
-        return this;
-    },
-
-    hasClass: hasClassList ? function(className) {
-        return this.classList.contains(className);
-    } : function(className) {
-        return this.className.clean().contains(className, ' ');
-    },
-
-    addClass: hasClassList ? function(className) {
-        classes(className).forEach(addToClassList, this);
-        return this;
-    } : function(className) {
-        this.className = classes(className + ' ' + this.className).join(' ');
-        return this;
-    },
-
-    removeClass: hasClassList ? function(className) {
-        classes(className).forEach(removeFromClassList, this);
-        return this;
-    } : function(className) {
-        var classNames = classes(this.className);
-        classes(className).forEach(classNames.erase, classNames);
-        this.className = classNames.join(' ');
-        return this;
-    },
-
-    toggleClass: function(className, force) {
-        if (force == null) force = !this.hasClass(className);
-        return (force) ? this.addClass(className) : this.removeClass(className);
-    },
-});
