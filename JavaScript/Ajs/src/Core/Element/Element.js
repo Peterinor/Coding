@@ -12,11 +12,14 @@ provides: [Element, Elements, $]
 */
 
 var Element = this.Element = function(tag, props) {
+    if (typeOf(tag) == 'window' ||
+        typeOf(tag) == 'document')
+        return tag;
     var el;
     if (typeOf(tag) == 'element') el = tag;
     else el = Sizzle(tag)[0];
-    //for ie7
-    if (Browser.name == 'ie' && Browser.version == '7') {
+    //for ie6,7
+    if (!Browser.Element) {
         var fireEvent = el.fireEvent;
         el._fireEvent = function(type, event) {
             return fireEvent(type, event);
@@ -74,7 +77,12 @@ var $ = function(selector, context) {
     return new $.fn.init(selector, context);
 }
 
-$.fn = $.prototype = {
+$.prototype = {
+    length: 0
+};
+
+$.fn = $.prototype;
+$.implement({
     constructor: $,
     length: 0,
     // Start with an empty selector
@@ -82,8 +90,13 @@ $.fn = $.prototype = {
 
     init: function(selector, context) {
 
+        if (null == selector) {
+            this.length = 0;
+            return this;
+        }
+
         // Handle $(DOMElement)
-        if (selector.nodeType) {
+        if (selector.nodeType || window == selector) {
             this.context = this[0] = selector;
             this.length = 1;
             return this;
@@ -97,13 +110,15 @@ $.fn = $.prototype = {
             this.selector = selector;
             elems = Sizzle(selector, context);
         }
+        // elems.__proto__ = $.fn;
+        // return elems;
 
         for (var i = 0; i < elems.length; i++) {
-            this.__push(new Element(elems[i]));
+            this.push(new Element(elems[i]));
         };
     },
 
-    __push: function() {
+    push: function() {
         var length = this.length;
         for (var i = 0, l = arguments.length; i < l; i++) {
             var item = arguments[i];
@@ -111,7 +126,16 @@ $.fn = $.prototype = {
         }
         return (this.length = length);
     }.protect()
-};
+});
+
+
+//make $ looks like an Array
+Array.forEachMethod(function(method, name) {
+    $.implement(name, method);
+});
+
+Array.mirror($);
+
 
 $.fn.init.prototype = $.fn;
 
@@ -146,27 +170,27 @@ this.$ = $;
     //     }
     //     return item;
     // };
-
-    Element.implement({
-
+    ;
+    [Element, Window, Document].invoke('implement', {
         retrieve: function(property, dflt) {
-            var storage = get(uidOf(this)),
-                prop = storage[property];
-            if (dflt != null && prop == null) prop = storage[property] = dflt;
+            var _storage = get(uidOf(this)),
+                prop = _storage[property];
+            if (dflt != null && prop == null) prop = _storage[property] = dflt;
             return prop != null ? prop : null;
         },
 
         store: function(property, value) {
-            var storage = get(uidOf(this));
-            storage[property] = value;
+            var _storage = get(uidOf(this));
+            _storage[property] = value;
             return this;
         },
 
         eliminate: function(property) {
-            var storage = get(uidOf(this));
-            delete storage[property];
+            var _storage = get(uidOf(this));
+            delete _storage[property];
             return this;
         }
+
     });
 
     [Element, Window, Document].invoke('implement', {
@@ -238,5 +262,5 @@ this.$ = $;
         getDocument: function() {
             return this.ownerDocument;
         }
-    })
+    });
 })();
