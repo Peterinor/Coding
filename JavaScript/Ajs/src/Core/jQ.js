@@ -192,6 +192,21 @@ this.$.implement({
 });
 
 
+$.implement({
+    find: function(selector, util) {
+        var t = $();
+        t.selector = this.selector + ' ' + selector;
+        for (var i = 0, l = this.length; i < l; i++) {
+            // console.log(Array.from($(selector, this[i])));
+            // t.push.apply(t, Array.from($(selector, this[i])));
+            // t.push(Array.from($(selector, this[i])));
+            Array.prototype.push.apply(t, Array.from($(selector, this[i])));
+            // t.__push($(selector, this[i]));
+        };
+        return t;
+    }
+})
+
 //Event
 $.implement({
     on: function(type, fn) {
