@@ -8,8 +8,107 @@ description: jQuery compatible API
 requires: [Element, Element.Attribute, Element.Style, Element.Event]
 provides: [jQuery]
 
+attributes, callback, core, css, data, deferred, deprecated, dimensions, effect, event
+export, manipulation, offset, queue, serialize, support, traversing, ajax
 ...
 */
+
+[Window, Document].invoke('implement', {
+    // DOM Load
+    ready: function(fn) {
+        window.addEvent('domready', fn);
+        return this;
+    }
+});
+
+Window.implement({
+    load: function(fn) {
+        return this.addEvent('load', fn);
+    },
+
+    unload: function(fn) {
+        return this.addEvent('unload', fn);
+    },
+
+    resize: function(fn) {
+        return this.addEvent('resize', fn);
+    },
+
+    scroll: function(fn) {
+        return this.addEvent('scroll', fn);
+    }
+});
+
+/*****   EVENTS   *****/
+[Element, Document, Window].invoke('implement', {
+
+    bind: function(type, fn) {
+        type.split(' ').each(function(event) { // accepts multiple event types!
+            this.addEvent(event, fn);
+        }, this);
+        return this;
+    },
+
+    unbind: function(type, fn) {
+        return this.removeEvent(type, fn);
+    },
+
+    one: function(type, fn) {
+        // TODO: Make this cleaner. Looks like a hack now.
+        var removeOne = function() {
+            this.removeEvent(type, fn).removeEvent(type, removeOne);
+        }
+        return this.addEvent(type, fn).addEvent(type, removeOne);
+    },
+
+    trigger: function(type, args) {
+        return this.fireEvent(type, args);
+    },
+    
+    triggerHandler:function(){
+
+    },
+
+    hover: function(fnOver, fnOut) {
+        return this.addEvents({
+            'mouseenter': fnOver,
+            'mouseleave': fnOut
+        });
+    },
+
+    //TODO: to adjust to same as jquery on
+    on: function(type, fn) {
+        return this.addEvent(type, fn);
+    }.overloadSetter(),
+
+    off: function(type, fn) {
+        return this.removeEvent(type, fn);
+    }.overloadSetter(),
+
+    delegate: function(){
+
+    },
+
+    undelegate: function(){
+
+    }
+
+});
+
+
+(function(types) {
+    var methods = {};
+    types.each(function(name) {
+        methods[name] = function(fn) {
+            var un_name = name.replace('_', '');
+            return fn ? this.addEvent(un_name, fn) : this.fireEvent(un_name);
+        };
+    });
+
+    [Element, Document, Window].invoke('implement', methods);
+
+})(['_blur', 'change', 'click', '_click', 'dblclick', 'error', '_focus', 'keydown', 'keypress', 'keyup', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', '_select', '_submit', 'unload']);
+
 
 //For jQuery API compact
 Element.implement({
@@ -68,6 +167,10 @@ this.$.extend({
         return $;
     },
 
+    proxy:function(){
+
+    },
+
     each: function() {
 
     },
@@ -103,6 +206,7 @@ this.$.extend({
     error: function(msg) {
         throw new Error(msg);
     },
+
     trim: function(v) {
         return String(v).trim();
     }
@@ -192,7 +296,7 @@ this.$.implement({
 });
 
 
-$.implement({
+this.$.implement({
     find: function(selector, util) {
         var t = $();
         t.selector = this.selector + ' ' + selector;
@@ -207,13 +311,59 @@ $.implement({
     }
 })
 
-//Event
-$.implement({
-    on: function(type, fn) {
-        return this.addEvent(type, fn);
-    }.overloadSetter(),
 
-    off: function(type, fn) {
-        return this.removeEvent(type, fn);
-    }.overloadSetter()
-})
+
+/*****   AJAX   *****/
+// Ajax Request
+
+$.extend({
+
+    ajax: function(options) {
+        var request;
+        options.method = options.type || options.method || 'get'; // default is 'get' for jQuery
+        if (options.complete) options.onComplete = options.complete;
+        if (options.error) options.onFailure = options.error;
+        if (options.success) options.onSuccess = options.success;
+        if (options.dataType && options.dataType == 'html' && Request.HTML) request = new Request.HTML(options);
+        else if (options.dataType && options.dataType == 'json' && Request.JSON) request = new Request.JSON(options);
+        else request = new Request(options);
+        if (options.timeout) request.cancel.delay(options.timeout);
+        return request.send();
+    },
+
+    get: function(url, data, fn, type) {
+        if (typeOf(data) == 'function') {
+            fn = data;
+            data = null;
+        }
+        var request;
+        var options = {
+            url: url,
+            data: data,
+            onSuccess: fn,
+            dataType: type
+        };
+        return this.ajax(options);
+    },
+
+    getJSON: function(url, data, fn) {
+        return this.get(url, data, fn, 'json');
+    },
+
+    post: function(url, data, fn, type) {
+        if (typeOf(data) == 'function') {
+            fn = data;
+            data = null;
+        }
+        var request;
+        var options = {
+            method: 'post',
+            url: url,
+            data: data,
+            onSuccess: fn,
+            dataType: type
+        };
+        return this.ajax(options);
+    }
+
+});
