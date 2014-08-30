@@ -21,9 +21,7 @@ test("Basic requirements", function() {
 	ok($, "$");
 });
 
-test("typeOf()", function() {
-	expect(15);
-
+test("Core.Core/typeOf()", function() {
 	ok(typeOf == Ajs.typeOf, 'Ajs.typeOf');
 
 	ok(typeOf(2) == 'number', '2');
@@ -42,6 +40,8 @@ test("typeOf()", function() {
 	ok(typeOf(new Array()) == 'array', 'new Array()');
 
 	ok(typeOf(document.body) == 'element', 'document.body');
+	ok(typeOf(document) == 'document', 'document');
+	ok(typeOf(window) == 'window', 'window');
 
 	var _type = {};
 	_type.$family = function() {
@@ -54,7 +54,7 @@ test("typeOf()", function() {
 
 });
 
-test('instanceOf()', function() {
+test('Core.Core/instanceOf()', function() {
 	expect(10);
 
 	ok(instanceOf == Ajs.instanceOf, 'Ajs.instanceOf');
