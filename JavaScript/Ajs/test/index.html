@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>Ajs Test Suite</title>
+	<link rel="Stylesheet" media="screen" href="qunit/qunit.css" />
+	<!-- Includes -->
+
+	<script src="qunit/qunit.js"></script>
+	<!-- Loads minified version if min=true is present in the search -->
+	<!-- Nullifies querySelectorAll if noqsa=true is present -->
+	<script>
+		(function() {
+			var src = "../dist/ajs.js";
+
+			QUnit.config.urlConfig.push( "min" );
+			if ( QUnit.urlParams.min ) {
+				src = "../dist/ajs.min.js";
+			}
+
+			QUnit.config.urlConfig.push( "noqsa" );
+			if ( QUnit.urlParams.noqsa ) {
+				document.querySelectorAll = null;
+			}
+
+			document.write( "<script src='" + src + "'><\/script>" );
+
+			QUnit.config.autostart = false;
+
+		})();
+	</script>
+	<script type="text/javascript">
+			window.addEvent('domready', function(){
+				QUnit.start();
+			})
+	</script>
+
+	<script src="unit/Core.Core.js"></script>
+	<script src="unit/Core.Browser.js"></script>
+	<script src="unit/Core.Element.js"></script>
+	<script src="unit/Core.jQ.js"></script>
+
+	<script>
+		// html5shiv, enabling HTML5 elements to be used with Ajs
+		( "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup " +
+			"mark meter nav output progress section summary time video"
+		).replace(/\w+/g, function(n) {
+			document.createElement(n);
+		});
+	</script>
+</head>
+
+<body id="body">
+	<h1 id="qunit-header"><a href="/jquery/test/index.html">Ajs Test Suite</a></h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="test">
+		<div class="find-test">
+			<p></p><p></p><p></p>
+		</div>
+	</div>
+</body>
+</html>
