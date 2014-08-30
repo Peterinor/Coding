@@ -125,7 +125,7 @@ var superWin = function(){};
 // superWin.prototype = window.Window;
 var Window = window.Window = this.Window = window.$constructor = new Type('Window', superWin);
 
-window.$family = Function.from('window').hide();
+window.$family = Function.from('window').hide().protect();
 
 Window.mirror(function(name, method){
     window[name] = method;
@@ -135,11 +135,13 @@ var superDoc = function(){};
 // superDoc.prototype = window.Document;
 var Document = window.Document = this.Document = document.$constructor = new Type('Document', superDoc);
 
-document.$family = Function.from('document').hide();
+document.$family = Function.from('document').hide().protect();
 
 Document.mirror(function(name, method){
     document[name] = method;
 });
+
+document.window = window;
 
 document.html = document.documentElement;
 if (!document.head) document.head = document.getElementsByTagName('head')[0];
@@ -148,37 +150,12 @@ if (document.execCommand) try {
     document.execCommand("BackgroundImageCache", false, true);
 } catch (e){}
 
-/*<ltIE9>*/
-if (window.attachEvent && !window.addEventListener){
-    var unloadEvent = function(){
-        window.detachEvent('onunload', unloadEvent);
-        document.head = document.html = document.window = null;
-    };
-    window.attachEvent('onunload', unloadEvent);
-}
-
-// IE fails on collections and <select>.options (refers to <select>)
-var arrayFrom = Array.from;
-try {
-    arrayFrom(document.html.childNodes);
-} catch(e){
-    Array.from = function(item){
-        if (typeof item != 'string' && Type.isEnumerable(item) && typeOf(item) != 'array'){
-            var i = item.length, array = new Array(i);
-            while (i--) array[i] = item[i];
-            return array;
-        }
-        return arrayFrom(item);
-    };
-
-    var prototype = Array.prototype,
-        slice = prototype.slice;
-    ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
-        var method = prototype[name];
-        Array[name] = function(item){
-            return method.apply(Array.from(item), slice.call(arguments, 1));
-        };
-    });
-}
-/*</ltIE9>*/
+// /*<ltIE9>*/
+// if (window.attachEvent && !window.addEventListener){
+//     var unloadEvent = function(){
+//         window.detachEvent('onunload', unloadEvent);
+//         document.head = document.html = document.window = null;
+//     };
+//     window.attachEvent('onunload', unloadEvent);
+// }
 
