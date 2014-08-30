@@ -114,10 +114,20 @@ Function.from = function(item){
     };
 };
 
+//直接使用slice在ie8,7,6..版本中出错
 Array.from = function(item){
     if (item == null) return [];
-    return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
-};
+    // if(typeOf(item) == 'array') return item;
+    if(Type.isEnumerable(item) && typeof item != 'string'){
+        var l = item.length;
+        var ret = [];
+        for (var i = 0; i < l; i++) {
+            ret.push(item[i]);
+        }
+        return ret;
+    }
+    return [item];
+}
 
 Number.from = function(item){
     var number = parseFloat(item);
