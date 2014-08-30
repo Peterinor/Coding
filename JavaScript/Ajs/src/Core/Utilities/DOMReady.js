@@ -12,8 +12,6 @@ provides: [DOMReady, DomReady]
 ...
 */
 
-(function(window, document){
-
 var ready,
 	loaded,
 	checks = [],
@@ -99,5 +97,3 @@ Element.Events.load = {
 window.addEvent('load', function(){
 	loaded = true;
 });
-
-})(window, document);

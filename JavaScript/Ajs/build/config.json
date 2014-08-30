@@ -37,6 +37,7 @@
 
         "Core/Utilities/Cookie",
         "Core/Utilities/JSON",
+        "Core/Utilities/DOMReady",
 
         "Core/jQ",
 
