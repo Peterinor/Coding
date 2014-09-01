@@ -102,6 +102,11 @@ $.implement({
             return this;
         }
 
+        if (Type.isFunction(selector)) {
+            var s = $(document);
+            return s.ready ? s.ready(selector) : s;
+        }
+
         var elems = [];
         if (typeOf(selector) === 'array') {
             //selector is a array itself
@@ -143,7 +148,8 @@ this.$ = $;
 
 (function() {
 
-    var collected = {}, storage = {};
+    var collected = {},
+        storage = {};
     var UIDX = 0;
     // var uidName = 'Ajs-data-uid';
     var get = function(uid) {
@@ -199,13 +205,13 @@ this.$ = $;
             if (window.attachEvent && !window.addEventListener) {
                 collected[uidOf(this)] = this;
             }
-            if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
+            if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
             else this.attachEvent('on' + type, fn);
             return this;
         },
 
         removeListener: function(type, fn) {
-            if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
+            if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
             else this.detachEvent('on' + type, fn);
             return this;
         }

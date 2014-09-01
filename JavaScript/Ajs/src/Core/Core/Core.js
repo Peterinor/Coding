@@ -46,6 +46,7 @@ var instanceOf = this.instanceOf = function(item, object){
     return item instanceof object;
 };
 
+
 var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
@@ -319,6 +320,29 @@ Object.extend('forEach', function(object, fn, bind){
 
 Object.each = Object.forEach;
 
+Object.eachWithBreak = function(obj, callback) {
+    var name,
+        i = 0,
+        length = obj.length,
+        isObj = length === undefined || Type.isFunction(obj);
+
+
+    if (isObj) {
+        for (name in obj) {
+            if (callback.call(obj[name], name, obj[name]) === false) {
+                break;
+            }
+        }
+    } else {
+        for (; i < length;) {
+            if (callback.call(obj[i], i, obj[i++]) === false) {
+                break;
+            }
+        }
+    }
+    return obj;
+};
+
 Array.implement({
 
     /*<!ES5>*/
@@ -519,6 +543,7 @@ String.extend('uniqueID', Ajs.uniqueID);
 
         'Core.Utilities.Cookie': 'Core/Utilities/Cookie',
         'Core.Utilities.JSON': 'Core/Utilities/JSON',
+        'Core.Utilities.DOMReady': 'Core/Utilities/DOMReady',
 
         'Core.jQ': 'Core/jQ'
     }

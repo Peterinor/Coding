@@ -5,7 +5,7 @@ name: jQ
 
 description: jQuery compatible API
 
-requires: [Element, Element.Attribute, Element.Style, Element.Event]
+requires: [Element, Element.Attribute, Element.Style, Element.Event, DOMReady]
 provides: [jQuery]
 
 attributes, callback, core, css, data, deferred, deprecated, dimensions, effect, event
@@ -14,7 +14,7 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
 */
 
 /*****   EVENTS   *****/
-(function() {
+(function($) {
     [Element, Document, Window].invoke('implement', {
 
         //TODO: to adjust to same as jquery on
@@ -75,10 +75,7 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
     (function(types) {
         var methods = {};
         types.each(function(name) {
-            // methods[name] = function(fn) {
-            //     var un_name = name.replace('_', '');
-            //     return fn ? this.addEvent(un_name, fn) : this.fireEvent(un_name);
-            // };
+
             methods[name] = function(data, fn) {
                 if (fn == null) {
                     fn = data;
@@ -105,12 +102,12 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
             });
         }
     });
-})();
+})(Ajs.$);
 
 
 /*****   Data   *****/
-(function() {
-    Element.implement({
+(function(Ajs) {
+    Ajs.Element.implement({
 
         removeData: function(prop) {
             return this.eliminate(prop);
@@ -121,11 +118,11 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
         }
     });
 
-})();
+})(Ajs);
 
 /*****   CSS   *****/
-(function() {
-    Element.implement({
+(function(Ajs) {
+    Ajs.Element.implement({
         css: function(property, value) {
             switch (typeOf(property)) {
                 case 'object':
@@ -138,7 +135,7 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
             return this;
         }
     });
-})();
+})(Ajs);
 
 
 /*****   jQuery Export  *****/
@@ -273,11 +270,9 @@ var core_push = Array.prototype.push,
         },
 
         toArray: function() {
-            // return Array.from(this);
+            return Array.from(this);
         },
 
-        // Get the Nth element in the matched element set OR
-        // Get the whole matched element set as a clean array
         get: function(num) {
             return num == null ?
                 this.toArray() :
