@@ -49,6 +49,8 @@ var core_push = Array.prototype.push,
 
         Deferred: Ajs.Deferred,
 
+        when: Ajs.when,
+
         proxy: function(fn, ctx) {
             if ($.type(ctx) == 'string') {
                 fn = fn[ctx];
@@ -57,15 +59,11 @@ var core_push = Array.prototype.push,
             Function.prototype.bind.apply(fn, Array.from(arguments).slice(1));
         },
 
-        each: Object.eachWithBreak,
+        each: Ajs.each,
 
-        isFunction: function(obj) {
-            return $.type(obj) === "function";
-        },
+        isFunction: Ajs.Type.isFunction,
 
-        isArray: Array.isArray || function(obj) {
-            return $.type(obj) === "array";
-        },
+        isArray: Ajs.Type.isArray,
 
         isWindow: function(obj) {
             return obj != null && obj == obj.window;

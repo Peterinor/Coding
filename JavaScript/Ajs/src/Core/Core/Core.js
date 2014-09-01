@@ -320,7 +320,7 @@ Object.extend('forEach', function(object, fn, bind){
 
 Object.each = Object.forEach;
 
-Object.eachWithBreak = function(obj, callback) {
+Ajs.each = function(obj, callback) {
     var name,
         i = 0,
         length = obj.length,
@@ -341,6 +341,20 @@ Object.eachWithBreak = function(obj, callback) {
         }
     }
     return obj;
+};
+
+Ajs.extend = function( /*at least one argument, extend into Ajs itself*/ ) {
+    var target = arguments[0];
+    var len = arguments.length;
+    if (len == 1) {
+        target = this;
+        Object.merge(target, arguments[0]);
+        return target;
+    }
+    for (var i = 1; i < len; i++) {
+        Object.merge(target, arguments[i]);
+    };
+    return target;
 };
 
 Array.implement({
@@ -515,6 +529,8 @@ String.extend('uniqueID', Ajs.uniqueID);
 
         'Core.Class': 'Core/Class/Class',
         'Core.Class.Extras': 'Core/Class/Class.Extras',
+        'Core.Class.Callback': 'Core/Class/Callback',
+        'Core.Class.Deferred': 'Core/Class/Deferred',
 
         'third-party.Sizzle': 'third-party/Sizzle',
         // 'third-party.jQuery': 'third-party/jQuery',

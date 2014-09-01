@@ -1,9 +1,11 @@
 /*
 ---
 
-name: Callback
+name: Deferred
 
-description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+description: Deferred class.
+just a port of Promises/A+ Standard from jQuery
+http://www.ituring.com.cn/article/66566
 
 requires: [Core, Callback]
 
@@ -11,63 +13,63 @@ provides: [Deferred]
 
 ...
 */
-
-;Object.extend(Ajs, {
+;
+Ajs.extend({
 
     Deferred: function(func) {
         var tuples = [
-                // action, add listener, listener list, final state
-                ["resolve", "done", Ajs.Callbacks("once memory"), "resolved"],
-                ["reject", "fail", Ajs.Callbacks("once memory"), "rejected"],
-                ["notify", "progress", Ajs.Callbacks("memory")]
-            ],
-            state = "pending",
-            promise = {
-                state: function() {
-                    return state;
-                },
-                always: function() {
-                    deferred.done(arguments).fail(arguments);
-                    return this;
-                },
-                then: function( /* fnDone, fnFail, fnProgress */ ) {
-                    var fns = arguments;
-                    return Ajs.Deferred(function(newDefer) {
-                        Object.eachWithBreak(tuples, function(i, tuple) {
-                            var action = tuple[0],
-                                fn = fns[i];
-                            // deferred[ done | fail | progress ] for forwarding actions to newDefer
-                            deferred[tuple[1]](Ajs.Type.isFunction(fn) ?
-                                function() {
-                                    var returned = fn.apply(this, arguments);
-                                    if (returned && Ajs.Type.isFunction(returned.promise)) {
-                                        returned.promise()
-                                            .done(newDefer.resolve)
-                                            .fail(newDefer.reject)
-                                            .progress(newDefer.notify);
-                                    } else {
-                                        newDefer[action + "With"](this === deferred ? newDefer : this, [returned]);
-                                    }
-                                } :
-                                newDefer[action]
-                            );
-                        });
-                        fns = null;
-                    }).promise();
-                },
-                // Get a promise for this deferred
-                // If obj is provided, the promise aspect is added to the object
-                promise: function(obj) {
-                    return obj != null ? Object.extend(obj, promise) : promise;
-                }
+            // action, add listener, listener list, final state
+            ["resolve", "done", Ajs.Callbacks("once memory"), "resolved"],
+            ["reject", "fail", Ajs.Callbacks("once memory"), "rejected"],
+            ["notify", "progress", Ajs.Callbacks("memory")]
+        ],
+            state = "pending";
+        var promise = {
+            state: function() {
+                return state;
             },
-            deferred = {};
+            always: function() {
+                deferred.done(arguments).fail(arguments);
+                return this;
+            },
+            then: function( /* fnDone, fnFail, fnProgress */ ) {
+                var fns = arguments;
+                return Ajs.Deferred(function(newDefer) {
+                    Ajs.each(tuples, function(i, tuple) {
+                        var action = tuple[0],
+                            fn = fns[i];
+                        // deferred[ done | fail | progress ] for forwarding actions to newDefer
+                        deferred[tuple[1]](Ajs.Type.isFunction(fn) ?
+                            function() {
+                                var returned = fn.apply(this, arguments);
+                                if (returned && Ajs.Type.isFunction(returned.promise)) {
+                                    returned.promise()
+                                        .done(newDefer.resolve)
+                                        .fail(newDefer.reject)
+                                        .progress(newDefer.notify);
+                                } else {
+                                    newDefer[action + "With"](this === deferred ? newDefer : this, [returned]);
+                                }
+                            } :
+                            newDefer[action]
+                        );
+                    });
+                    fns = null;
+                }).promise();
+            },
+            // Get a promise for this deferred
+            // If obj is provided, the promise aspect is added to the object
+            promise: function(obj) {
+                return obj != null ? Object.merge(obj, promise) : promise;
+            }
+        };
+        var deferred = {};
 
         // Keep pipe for back-compat
         promise.pipe = promise.then;
 
         // Add list-specific methods
-        Object.eachWithBreak(tuples, function(i, tuple) {
+        Ajs.each(tuples, function(i, tuple) {
             var list = tuple[2],
                 stateString = tuple[3];
 

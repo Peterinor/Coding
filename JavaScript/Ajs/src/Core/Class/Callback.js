@@ -3,7 +3,7 @@
 
 name: Callback
 
-description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+description: Callback class, just from jQuery.
 
 requires: [Array]
 
@@ -20,7 +20,7 @@ provides: [Callback]
     // Convert String-formatted options into Object-formatted ones and store in cache
     function createOptions(options) {
         var object = optionsCache[options] = {};
-        Object.eachWithBreak(options.split(core_rspace), function(_, flag) {
+        Ajs.each(options.split(core_rspace), function(_, flag) {
             object[flag] = true;
         });
         return object;
@@ -54,7 +54,7 @@ provides: [Callback]
         // (we check in cache first)
         options = typeof options === "string" ?
             (optionsCache[options] || createOptions(options)) :
-            Object.extend({}, options);
+            Object.merge({}, options);
 
         var // Last fire value (for non-forgettable lists)
             memory,
@@ -107,7 +107,7 @@ provides: [Callback]
                         // First, we save the current length
                         var start = list.length;
                         (function add(args) {
-                            Object.eachWithBreak(args, function(_, arg) {
+                            Ajs.each(args, function(_, arg) {
                                 var type = Ajs.typeOf(arg);
                                 if (type === "function" && (!options.unique || !self.has(arg))) {
                                     list.push(arg);
@@ -133,7 +133,7 @@ provides: [Callback]
                 // Remove a callback from the list
                 remove: function() {
                     if (list) {
-                        Object.eachWithBreak(arguments, function(_, arg) {
+                        Ajs.each(arguments, function(_, arg) {
                             var index;
                             while ((index = list.indexOf(arg, index)) > -1) {
                                 list.splice(index, 1);
