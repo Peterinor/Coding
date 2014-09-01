@@ -17,6 +17,25 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
 (function() {
     [Element, Document, Window].invoke('implement', {
 
+        //TODO: to adjust to same as jquery on
+        on: function(type, fn) {
+            return this.addEvent(type, fn);
+        }.overloadSetter(),
+
+        off: function(type, fn) {
+            return this.removeEvent(type, fn);
+        }.overloadSetter()
+
+    });
+
+    // DOM Load
+    $.implement('ready', function(fn) {
+        window.addEvent('domready', fn);
+        return this;
+    });
+
+    $.implement({
+
         bind: function(type, fn) {
             type.split(' ').each(function(event) { // accepts multiple event types!
                 this.addEvent(event, fn);
@@ -44,38 +63,12 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
 
         },
 
-        //TODO: to adjust to same as jquery on
-        on: function(type, fn) {
-            return this.addEvent(type, fn);
-        }.overloadSetter(),
-
-        off: function(type, fn) {
-            return this.removeEvent(type, fn);
-        }.overloadSetter(),
-
         delegate: function() {
 
         },
 
         undelegate: function() {
 
-        }
-
-    });
-
-    [Window, Document].invoke('implement', {
-        // DOM Load
-        ready: function(fn) {
-            window.addEvent('domready', fn);
-            return this;
-        },
-
-        load: function(fn) {
-            return this.addEvent('load', fn);
-        },
-
-        unload: function(fn) {
-            return this.addEvent('unload', fn);
         }
     });
 
@@ -93,35 +86,16 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
                 }
 
                 return arguments.length > 0 ?
-                    this.on(name, null, data, fn) :
+                    this.on(name, fn) :
                     this.trigger(name);
             };
         });
 
-        [Element, Document, Window].invoke('implement', methods);
+        $.implement(methods);
 
-        // })(['error',
-        //     'keydown', 'keypress', 'keyup', '_focusout', '_focusin',
-        //     'click', 'dblclick', 'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove', 'mouseover', 'mouseout',
-        //     '_blur', 'change', '_focus', '_select', '_submit',
-        //     'unload'
-        // ]);
-    })(("blur focus focusin focusout resize click dblclick " +
+    })(("blur focus focusin focusout resize click dblclick load scroll unload " +
         "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
         "change select submit keydown keypress keyup error contextmenu").split(" "));
-    // load scroll unload
-
-
-    Window.implement({
-
-        resize: function(fn) {
-            return this.addEvent('resize', fn);
-        },
-
-        scroll: function(fn) {
-            return this.addEvent('scroll', fn);
-        }
-    });
 
     [Element, Document, Window].invoke('implement', {
         hover: function(fnOver, fnOut) {
