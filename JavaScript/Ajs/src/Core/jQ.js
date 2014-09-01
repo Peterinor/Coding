@@ -13,131 +13,6 @@ export, manipulation, offset, queue, serialize, support, traversing, ajax
 ...
 */
 
-/*****   EVENTS   *****/
-(function($) {
-    [Element, Document, Window].invoke('implement', {
-
-        //TODO: to adjust to same as jquery on
-        on: function(type, fn) {
-            return this.addEvent(type, fn);
-        }.overloadSetter(),
-
-        off: function(type, fn) {
-            return this.removeEvent(type, fn);
-        }.overloadSetter()
-
-    });
-
-    // DOM Load
-    $.implement('ready', function(fn) {
-        window.addEvent('domready', fn);
-        return this;
-    });
-
-    $.implement({
-
-        bind: function(type, fn) {
-            type.split(' ').each(function(event) { // accepts multiple event types!
-                this.addEvent(event, fn);
-            }, this);
-            return this;
-        },
-
-        unbind: function(type, fn) {
-            return this.removeEvent(type, fn);
-        },
-
-        one: function(type, fn) {
-            // TODO: Make this cleaner. Looks like a hack now.
-            var removeOne = function() {
-                this.removeEvent(type, fn).removeEvent(type, removeOne);
-            }
-            return this.addEvent(type, fn).addEvent(type, removeOne);
-        },
-
-        trigger: function(type, args) {
-            return this.fireEvent(type, args);
-        },
-
-        triggerHandler: function() {
-
-        },
-
-        delegate: function() {
-
-        },
-
-        undelegate: function() {
-
-        }
-    });
-
-    (function(types) {
-        var methods = {};
-        types.each(function(name) {
-
-            methods[name] = function(data, fn) {
-                if (fn == null) {
-                    fn = data;
-                    data = null;
-                }
-
-                return arguments.length > 0 ?
-                    this.on(name, fn) :
-                    this.trigger(name);
-            };
-        });
-
-        $.implement(methods);
-
-    })(("blur focus focusin focusout resize click dblclick load scroll unload " +
-        "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-        "change select submit keydown keypress keyup error contextmenu").split(" "));
-
-    [Element, Document, Window].invoke('implement', {
-        hover: function(fnOver, fnOut) {
-            return this.addEvents({
-                'mouseenter': fnOver,
-                'mouseleave': fnOut
-            });
-        }
-    });
-})(Ajs.$);
-
-
-/*****   Data   *****/
-(function(Ajs) {
-    Ajs.Element.implement({
-
-        removeData: function(prop) {
-            return this.eliminate(prop);
-        },
-
-        data: function(prop, value) {
-            return value ? this.store(prop, value) : this.retrieve(prop);
-        }
-    });
-
-})(Ajs);
-
-/*****   CSS   *****/
-(function(Ajs) {
-    Ajs.Element.implement({
-        css: function(property, value) {
-            switch (typeOf(property)) {
-                case 'object':
-                    this.setStyles(property);
-                    break;
-                case 'string':
-                    if (value) this.setStyle(property, value)
-                    else return this.getStyle(property);
-            }
-            return this;
-        }
-    });
-})(Ajs);
-
-
 /*****   jQuery Export  *****/
 var _$$ = window.jQuery;
 var _$ = window.$;
@@ -170,6 +45,10 @@ var core_push = Array.prototype.push,
 
     $.extend({
 
+        Callbacks: Ajs.Callbacks,
+
+        Deferred: Ajs.Deferred,
+
         proxy: function(fn, ctx) {
             if ($.type(ctx) == 'string') {
                 fn = fn[ctx];
@@ -178,28 +57,7 @@ var core_push = Array.prototype.push,
             Function.prototype.bind.apply(fn, Array.from(arguments).slice(1));
         },
 
-        each: function(obj, callback) {
-            var name,
-                i = 0,
-                length = obj.length,
-                isObj = length === undefined || $.isFunction(obj);
-
-
-            if (isObj) {
-                for (name in obj) {
-                    if (callback.call(obj[name], name, obj[name]) === false) {
-                        break;
-                    }
-                }
-            } else {
-                for (; i < length;) {
-                    if (callback.call(obj[i], i, obj[i++]) === false) {
-                        break;
-                    }
-                }
-            }
-            return obj;
-        },
+        each: Object.eachWithBreak,
 
         isFunction: function(obj) {
             return $.type(obj) === "function";
@@ -343,6 +201,119 @@ var core_push = Array.prototype.push,
         // // splice: [].splice
     });
 })(this.$);
+
+
+/*****   EVENTS   *****/
+(function($) {
+
+    // DOM Load
+    $.implement('ready', function(fn) {
+        window.addEvent('domready', fn);
+        return this;
+    });
+
+    $.implement({
+
+        bind: function(type, fn) {
+            type.split(' ').each(function(event) { // accepts multiple event types!
+                this.addEvent(event, fn);
+            }, this);
+            return this;
+        },
+
+        unbind: function(type, fn) {
+            return this.removeEvent(type, fn);
+        },
+
+        one: function(type, fn) {
+            // TODO: Make this cleaner. Looks like a hack now.
+            var removeOne = function() {
+                this.removeEvent(type, fn).removeEvent(type, removeOne);
+            }
+            return this.addEvent(type, fn).addEvent(type, removeOne);
+        },
+
+        trigger: function(type, args) {
+            return this.fireEvent(type, args);
+        },
+
+        triggerHandler: function() {
+
+        },
+
+        delegate: function() {
+
+        },
+
+        undelegate: function() {
+
+        }
+    });
+
+    (function(types) {
+        var methods = {};
+        types.each(function(name) {
+
+            methods[name] = function(data, fn) {
+                if (fn == null) {
+                    fn = data;
+                    data = null;
+                }
+
+                return arguments.length > 0 ?
+                    this.on(name, fn) :
+                    this.trigger(name);
+            };
+        });
+
+        $.implement(methods);
+
+    })(("blur focus focusin focusout resize click dblclick load scroll unload " +
+        "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+        "change select submit keydown keypress keyup error contextmenu").split(" "));
+
+    [Element, Document, Window].invoke('implement', {
+        hover: function(fnOver, fnOut) {
+            return this.addEvents({
+                'mouseenter': fnOver,
+                'mouseleave': fnOut
+            });
+        }
+    });
+})(Ajs.$);
+
+
+/*****   Data   *****/
+(function(Ajs) {
+    Ajs.Element.implement({
+
+        removeData: function(prop) {
+            return this.eliminate(prop);
+        },
+
+        data: function(prop, value) {
+            return value ? this.store(prop, value) : this.retrieve(prop);
+        }
+    });
+
+})(Ajs);
+
+/*****   CSS   *****/
+(function(Ajs) {
+    Ajs.Element.implement({
+        css: function(property, value) {
+            switch (typeOf(property)) {
+                case 'object':
+                    this.setStyles(property);
+                    break;
+                case 'string':
+                    if (value) this.setStyle(property, value)
+                    else return this.getStyle(property);
+            }
+            return this;
+        }
+    });
+})(Ajs);
 
 
 (function($) {

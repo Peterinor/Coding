@@ -205,16 +205,29 @@ this.$ = $;
             if (window.attachEvent && !window.addEventListener) {
                 collected[uidOf(this)] = this;
             }
-            if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
+            if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
             else this.attachEvent('on' + type, fn);
             return this;
         },
 
         removeListener: function(type, fn) {
-            if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
+            if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
             else this.detachEvent('on' + type, fn);
             return this;
         }
+
+    });
+
+    [Element, Document, Window].invoke('implement', {
+
+        //TODO: to adjust to same as jquery on
+        on: function(type, fn) {
+            return this.addEvent(type, fn);
+        }.overloadSetter(),
+
+        off: function(type, fn) {
+            return this.removeEvent(type, fn);
+        }.overloadSetter()
 
     });
 

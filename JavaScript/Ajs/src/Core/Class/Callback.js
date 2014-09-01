@@ -13,6 +13,7 @@ provides: [Callback]
 */
 ;(function(Ajs) {
 
+    var core_rspace = /\s+/;
     // String to Object options format cache
     var optionsCache = {};
 
