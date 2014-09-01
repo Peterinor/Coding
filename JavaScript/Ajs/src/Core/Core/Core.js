@@ -584,7 +584,7 @@ String.extend('uniqueID', Ajs.uniqueID);
             }
         };
 
-        Object.extend.call(config.paths, ajs_libs_config);
+        Object.merge(config.paths, ajs_libs_config);
         // console.log(config);
         require.config(config);
         //...
@@ -593,7 +593,7 @@ String.extend('uniqueID', Ajs.uniqueID);
     Ajs.config();
 
     var Dependence = function(name) {
-        Object.extend.call(this, {
+        Object.merge(this, {
             name: name,
             _requires: [],
             loaded: false,
@@ -611,7 +611,7 @@ String.extend('uniqueID', Ajs.uniqueID);
             var nsobj = Ajs.namespace(this.name);
             if (typeof m == 'object') {
                 if (nsobj) {
-                    Object.extend.call(nsobj, m);
+                    Object.merge(nsobj, m);
                 }
                 return this;
             }
@@ -619,7 +619,7 @@ String.extend('uniqueID', Ajs.uniqueID);
                 Ajs.define(this._requires, function() {
                     var _m = m.apply(Ajs, Array.prototype.slice.call(arguments));
                     if (nsobj) {
-                        Object.extend.call(nsobj, _m);
+                        Object.merge(nsobj, _m);
                     }
                 });
             }
