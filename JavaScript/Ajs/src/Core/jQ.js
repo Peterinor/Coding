@@ -293,18 +293,18 @@ this.$.extend({
 
         // HTML
         html: function(value) {
-            return value ? this.set('html', value) : this.get('html');
+            return value ? this.setter('html', value) : this.getter('html');
         },
 
         // Text
         text: function(text) {
-            return text ? this.set('text', text) : this.get('text');
+            return text ? this.setter('text', text) : this.getter('text');
         },
 
         // Value
         val: function(value) {
             // Note: Array type value not implemented
-            return value ? this.set('value', value) : this.get('value');
+            return value ? this.setter('value', value) : this.getter('value');
         }
     });
 })(Ajs);
