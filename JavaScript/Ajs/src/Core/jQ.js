@@ -91,6 +91,46 @@ this.$.extend({
                 return "";
             }
             return String(v).trim();
+        },
+
+        merge: function(first, second) {
+            if (this.isArray(first)) {
+                var ret = Array.from(first);
+                ret.append(second);
+                return ret;
+            }
+            //just array like
+            var i = first.length;
+            var j = 0;
+            while (second[j] !== undefined) {
+                first[i++] = second[j++];
+            }
+            first.length = i;
+            return first;
+        },
+
+        grep: function(elems, callback, inv) {
+            var retVal,
+                ret = [],
+                i = 0,
+                length = elems.length;
+            inv = !! inv;
+
+            // Go through the array, only saving the items
+            // that pass the validator function
+            for (; i < length; i++) {
+                retVal = !! callback(elems[i], i);
+                if (inv !== retVal) {
+                    ret.push(elems[i]);
+                }
+            }
+
+            return ret;
+        },
+
+        // arg is for internal usage only
+        map: function(elems, callback, arg) {
+
         }
     });
 
