@@ -227,7 +227,11 @@ this.$ = $;
 
         off: function(type, fn) {
             return this.removeEvent(type, fn);
-        }.overloadSetter()
+        }.overloadSetter(),
+
+        trigger: function(event, args) {
+            return this.fireEvent(event, args);
+        },
 
     });
 

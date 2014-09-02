@@ -230,25 +230,21 @@ this.$.extend({
 
         bind: function(type, fn) {
             type.split(' ').each(function(event) { // accepts multiple event types!
-                this.addEvent(event, fn);
+                this.on(event, fn);
             }, this);
             return this;
         },
 
         unbind: function(type, fn) {
-            return this.removeEvent(type, fn);
+            return this.off(type, fn);
         },
 
         one: function(type, fn) {
             // TODO: Make this cleaner. Looks like a hack now.
             var removeOne = function() {
-                this.removeEvent(type, fn).removeEvent(type, removeOne);
+                this.off(type, fn).off(type, removeOne);
             }
-            return this.addEvent(type, fn).addEvent(type, removeOne);
-        },
-
-        trigger: function(type, args) {
-            return this.fireEvent(type, args);
+            return this.on(type, fn).on(type, removeOne);
         },
 
         triggerHandler: function() {
