@@ -520,24 +520,24 @@ test( "isNumeric", function() {
     equal( t(function(){} ), false, "Instance of a function");
 });
 
-// test("isWindow", function() {
-//     expect( 14 );
+test("isWindow", function() {
+    expect( 14 );
 
-//     ok( jQuery.isWindow(window), "window" );
-//     ok( jQuery.isWindow(document.getElementsByTagName("iframe")[0].contentWindow), "iframe.contentWindow" );
-//     ok( !jQuery.isWindow(), "empty" );
-//     ok( !jQuery.isWindow(null), "null" );
-//     ok( !jQuery.isWindow(undefined), "undefined" );
-//     ok( !jQuery.isWindow(document), "document" );
-//     ok( !jQuery.isWindow(document.documentElement), "documentElement" );
-//     ok( !jQuery.isWindow(""), "string" );
-//     ok( !jQuery.isWindow(1), "number" );
-//     ok( !jQuery.isWindow(true), "boolean" );
-//     ok( !jQuery.isWindow({}), "object" );
-//     ok( !jQuery.isWindow({ setInterval: function(){} }), "fake window" );
-//     ok( !jQuery.isWindow(/window/), "regexp" );
-//     ok( !jQuery.isWindow(function(){}), "function" );
-// });
+    ok( jQuery.isWindow(window), "window" );
+    ok( jQuery.isWindow(document.getElementsByTagName("iframe")[0].contentWindow), "iframe.contentWindow" );
+    ok( !jQuery.isWindow(), "empty" );
+    ok( !jQuery.isWindow(null), "null" );
+    ok( !jQuery.isWindow(undefined), "undefined" );
+    ok( !jQuery.isWindow(document), "document" );
+    ok( !jQuery.isWindow(document.documentElement), "documentElement" );
+    ok( !jQuery.isWindow(""), "string" );
+    ok( !jQuery.isWindow(1), "number" );
+    ok( !jQuery.isWindow(true), "boolean" );
+    ok( !jQuery.isWindow({}), "object" );
+    ok( !jQuery.isWindow({ setInterval: function(){} }), "fake window" );
+    ok( !jQuery.isWindow(/window/), "regexp" );
+    ok( !jQuery.isWindow(function(){}), "function" );
+});
 
 
 test('$.noConflict', function() {
