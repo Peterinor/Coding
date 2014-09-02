@@ -316,9 +316,6 @@ Object.extend('forEach', function(object, fn, bind){
 Object.each = Object.forEach;
 
 Type.extend({
-    isWindow: function(obj) {
-        return obj != null && obj == obj.window;
-    },
 
     isNumeric: function(obj) {
         return !isNaN(parseFloat(obj)) && isFinite(obj);

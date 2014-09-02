@@ -63,7 +63,9 @@ this.$.extend({
 
         isArray: Ajs.Type.isArray,
 
-        isWindow: Ajs.Type.isWindow,
+        isWindow: function(obj) {
+            return obj != null && obj == obj.window;
+        },
 
         isNumeric: Ajs.Type.isNumeric,
 
@@ -85,7 +87,7 @@ this.$.extend({
         },
 
         trim: function(v) {
-            if(v === null || v === undefined){
+            if (v === null || v === undefined) {
                 return "";
             }
             return String(v).trim();
