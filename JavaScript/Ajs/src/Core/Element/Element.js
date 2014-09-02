@@ -231,8 +231,8 @@ this.$ = $;
 
         trigger: function(event, args) {
             return this.fireEvent(event, args);
-        },
-
+        }
+        
     });
 
     // /*<ltIE9>*/
