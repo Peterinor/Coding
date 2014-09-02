@@ -28,18 +28,10 @@ this.$.extend({
             window.jQuery = _$$;
         }
 
-        return this.$;
+        return Ajs.$;
     }
 });
 
-
-// Save a reference to some core methods
-var core_push = Array.prototype.push,
-    core_slice = Array.prototype.slice,
-    core_indexOf = Array.prototype.indexOf,
-    core_toString = Object.prototype.toString,
-    core_hasOwn = Object.prototype.hasOwnProperty,
-    core_trim = String.prototype.trim;
 
 (function($) {
 
@@ -51,12 +43,18 @@ var core_push = Array.prototype.push,
 
         when: Ajs.when,
 
+        extend: Ajs.extend,
+
         proxy: function(fn, ctx) {
             if ($.type(ctx) == 'string') {
+                var tmp = fn;
                 fn = fn[ctx];
-                arguments[1] = ctx = fn;
+                arguments[1] = ctx = tmp;
             }
-            Function.prototype.bind.apply(fn, Array.from(arguments).slice(1));
+            if (!this.isFunction(fn)) {
+                return undefined;
+            }
+            return Function.prototype.bind.apply(fn, Array.from(arguments).slice(1));
         },
 
         each: Ajs.each,
@@ -65,48 +63,21 @@ var core_push = Array.prototype.push,
 
         isArray: Ajs.Type.isArray,
 
-        isWindow: function(obj) {
-            return obj != null && obj == obj.window;
-        },
+        isWindow: Ajs.Type.isWindow,
 
-        isNumeric: function(obj) {
-            return !isNaN(parseFloat(obj)) && isFinite(obj);
-        },
+        isNumeric: Ajs.Type.isNumeric,
 
         type: Ajs.typeOf,
 
-        isPlainObject: function(obj) {
-            // Must be an Object.
-            // Because of IE, we also have to check the presence of the constructor property.
-            // Make sure that DOM nodes and window objects don't pass through, as well
-            if (!obj || $.type(obj) !== "object" || obj.nodeType || $.isWindow(obj)) {
-                return false;
+        isPlainObject: Ajs.Type.isPlainObject,
+
+        isEmptyObject: Ajs.Type.isEmptyObject,
+
+        inArray: function(val, arr, from) {
+            if (this.isArray(arr)) {
+                return arr.indexOf(val, from);
             }
-
-            try {
-                // Not own constructor property must be Object
-                if (obj.constructor && !core_hasOwn.call(obj, "constructor") && !core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
-                    return false;
-                }
-            } catch (e) {
-                // IE8,9 Will throw exceptions on certain host objects #9897
-                return false;
-            }
-
-            // Own properties are enumerated firstly, so to speed up,
-            // if last one is own, then all properties are own.
-
-            var key;
-            for (key in obj) {}
-
-            return key === undefined || core_hasOwn.call(obj, key);
-        },
-        isEmptyObject: function(obj) {
-            var name;
-            for (name in obj) {
-                return false;
-            }
-            return true;
+            return -1;
         },
 
         error: function(msg) {
@@ -114,6 +85,9 @@ var core_push = Array.prototype.push,
         },
 
         trim: function(v) {
+            if(v === null || v === undefined){
+                return "";
+            }
             return String(v).trim();
         }
     });
@@ -294,6 +268,43 @@ var core_push = Array.prototype.push,
         }
     });
 
+})(Ajs);
+
+/*****   ATTR   *****/
+(function(Ajs) {
+    Ajs.Element.implement({
+        // ATTR
+        attr: function(prop, value) {
+            switch ($type(prop)) {
+                case 'object':
+                    this.set(prop);
+                    break;
+                case 'string':
+                    if (value) {
+                        // Note: first attempt() arg is supposed to be index of elements array, but can't be done in Mootools
+                        if ($type(value) == 'function') value = value.attempt(this, this);
+                        this.set(prop, value)
+                    } else return this.get(prop);
+            }
+            return this;
+        },
+
+        // HTML
+        html: function(value) {
+            return value ? this.set('html', value) : this.get('html');
+        },
+
+        // Text
+        text: function(text) {
+            return text ? this.set('text', text) : this.get('text');
+        },
+
+        // Value
+        val: function(value) {
+            // Note: Array type value not implemented
+            return value ? this.set('value', value) : this.get('value');
+        }
+    });
 })(Ajs);
 
 /*****   CSS   *****/

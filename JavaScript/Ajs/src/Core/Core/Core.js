@@ -16,18 +16,18 @@ provides: [Core, Type, typeOf, instanceOf, Native]
 
 // typeOf, instanceOf
 
-var typeOf = this.typeOf = function(item){
-    if (item == null) return 'null';
+var typeOf = this.typeOf = function(item) {
+    if (item == null) return String(item);
     if (item.$family != null) return item.$family();
 
-    if (item.nodeName){
+    if (item.nodeName) {
         if (item.nodeType == 1) return 'element';
         if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
-    } else if (typeof item.length == 'number'){
+    } else if (typeof item.length == 'number') {
         if ('callee' in item) return 'arguments';
         if ('item' in item) return 'collection';
     }
-    
+
     var tp = Object.prototype.toString.call(item);
     return tp.replace(/\[|\]|object|\s/g, '').toLowerCase();
     // return typeof item;
@@ -169,14 +169,10 @@ var Type = this.Type = function(name, object){
             object.prototype.$family = (function(){
                 return lower;
             }).hide();
-            //<1.2compat>
-            object.type = typeCheck;
-            //</1.2compat>
         }
     }
 
     if (object == null) return null;
-
     object.extend(this);
     object.$constructor = Type;
     object.prototype.$constructor = object;
@@ -249,6 +245,8 @@ var force = function(name, object, methods){
 
     if (isType) object = new Type(name, object);
 
+    delete object.$family;
+
     for (var i = 0, l = methods.length; i < l; i++){
         var key = methods[i],
             generic = object[key],
@@ -287,7 +285,7 @@ force('String', String, [
     'create', 'defineProperty', 'defineProperties', 'keys',
     'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
     'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
-])('Date', Date, ['now']);
+])('Date', Date, ['now'])('Boolean', Boolean, []);
 
 Object.extend = extend.overloadSetter();
 
@@ -295,10 +293,8 @@ Date.extend('now', function(){
     return +(new Date);
 });
 
-new Type('Boolean', Boolean);
 
 // fixes NaN returning as Number
-
 Number.prototype.$family = function(){
     return isFinite(this) ? 'number' : 'null';
 }.hide();
@@ -310,7 +306,6 @@ Number.extend('random', function(min, max){
 });
 
 // forEach, each
-
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 Object.extend('forEach', function(object, fn, bind){
     for (var key in object){
@@ -320,13 +315,55 @@ Object.extend('forEach', function(object, fn, bind){
 
 Object.each = Object.forEach;
 
+Type.extend({
+    isWindow: function(obj) {
+        return obj != null && obj == obj.window;
+    },
+
+    isNumeric: function(obj) {
+        return !isNaN(parseFloat(obj)) && isFinite(obj);
+    },
+
+    isPlainObject: function(obj) {
+        // Must be an Object.
+        // Because of IE, we also have to check the presence of the constructor property.
+        // Make sure that DOM nodes and window objects don't pass through, as well
+        if (!obj || typeOf(obj) !== "object" || obj.nodeType || this.isWindow(obj)) {
+            return false;
+        }
+
+        try {
+            // Not own constructor property must be Object
+            if (obj.constructor && !hasOwnProperty.call(obj, "constructor") && !hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
+                return false;
+            }
+        } catch (e) {
+            // IE8,9 Will throw exceptions on certain host objects #9897
+            return false;
+        }
+        // Own properties are enumerated firstly, so to speed up,
+        // if last one is own, then all properties are own.
+        var key;
+        for (key in obj) {}
+
+        return key === undefined || hasOwnProperty.call(obj, key);
+    },
+
+    isEmptyObject: function(obj) {
+        var name;
+        for (name in obj) {
+            return false;
+        }
+        return true;
+    }
+});
+
+//compact with jQuery.extend
 Ajs.each = function(obj, callback) {
     var name,
         i = 0,
         length = obj.length,
         isObj = length === undefined || Type.isFunction(obj);
-
-
     if (isObj) {
         for (name in obj) {
             if (callback.call(obj[name], name, obj[name]) === false) {
@@ -343,17 +380,62 @@ Ajs.each = function(obj, callback) {
     return obj;
 };
 
+//compact with jQuery.extend
 Ajs.extend = function( /*at least one argument, extend into Ajs itself*/ ) {
-    var target = arguments[0];
-    var len = arguments.length;
-    if (len == 1) {
-        target = this;
-        Object.merge(target, arguments[0]);
-        return target;
+    var length = arguments.length;
+    var deep = false;
+    var start = 1;
+    var target = arguments[0] || {};
+
+    if (Type.isBoolean(target)) {
+        deep = arguments[0];
+        target = arguments[1] || {};
+        start = 2;
     }
-    for (var i = 1; i < len; i++) {
-        Object.merge(target, arguments[i]);
-    };
+
+    if (typeof target !== "object" && !Type.isFunction(target)) {
+        target = {};
+    }
+    if (length === start) {
+        target = this;
+        start--;
+    }
+
+    var options, name, src, copy, copyIsArray, clone;
+
+    for (var i = start; i < length; i++) {
+        // Only deal with non-null/undefined values
+        if ((options = arguments[i]) != null) {
+            // Extend the base object
+            for (name in options) {
+                src = target[name];
+                copy = options[name];
+
+                // Prevent never-ending loop
+                if (target === copy) {
+                    continue;
+                }
+
+                // Recurse if we're merging plain objects or arrays
+                if (deep && copy && (Type.isPlainObject(copy) || (copyIsArray = Type.isArray(copy)))) {
+                    if (copyIsArray) {
+                        copyIsArray = false;
+                        clone = src && Type.isArray(src) ? src : [];
+
+                    } else {
+                        clone = src && Type.isPlainObject(src) ? src : {};
+                    }
+
+                    // Never move original objects, clone them
+                    target[name] = Ajs.extend(deep, clone, copy);
+
+                    // Don't bring in undefined values
+                } else if (copy !== undefined) {
+                    target[name] = copy;
+                }
+            }
+        }
+    }
     return target;
 };
 

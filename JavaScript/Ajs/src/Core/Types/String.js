@@ -80,9 +80,3 @@ String.implement({
 	}
 
 });
-
-//<1.4compat>
-String.prototype.contains = function(string, separator){
-	return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
-};
-//</1.4compat>

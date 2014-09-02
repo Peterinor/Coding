@@ -10,6 +10,13 @@
 	<script src="qunit/qunit.js"></script>
 	<!-- Loads minified version if min=true is present in the search -->
 	<!-- Nullifies querySelectorAll if noqsa=true is present -->
+	
+	<style type="text/css">
+		.testDiv{
+			display: none;
+		}
+	</style>
+
 	<script>
 		(function() {
 			var src = "../dist/ajs.js";
@@ -42,9 +49,10 @@
 	<script src="unit/Core.Core.js"></script>
 	<script src="unit/Core.Browser.js"></script>
 	
+	<!--
 	<script src="unit/Core.Callback.js"></script>
 	<script src="unit/Core.Deferred.js"></script>
-
+	-->
 	<script src="unit/Core.Element.js"></script>
 	<script src="unit/Core.jQ.js"></script>
 
@@ -73,6 +81,10 @@
 				<p></p><p></p><p></p>
 			</div>
 		</div>
+	</div>
+
+	<div class="testDiv">
+		<iframe src="./Data/iframe.html"></iframe>
 	</div>
 
 </body>
