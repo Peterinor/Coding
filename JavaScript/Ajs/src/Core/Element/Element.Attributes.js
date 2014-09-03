@@ -261,7 +261,7 @@ Element.implement({
 
 	toQueryString: function() {
 		var queryString = [];
-		this.getElements('input, select, textarea').each(function(el) {
+		$('input, select, textarea', this).each(function(el) {
 			var type = el.type;
 			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 
