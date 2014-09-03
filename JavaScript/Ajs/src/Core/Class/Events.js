@@ -22,11 +22,14 @@ var Events = this.Events = new Class({
 
     $events: {},
 
-    addEvent: function(type, fn, internal) {
+    addEvent: function(type, fn, context) {
         type = removeOn(type);
-
+        if (context) {
+            fn = function(args) {
+                fn.apply(context, Array.from(args));
+            }
+        }
         this.$events[type] = (this.$events[type] || []).include(fn);
-        if (internal) fn.internal = true;
         return this;
     },
 
@@ -79,8 +82,8 @@ var Events = this.Events = new Class({
 
 
 Events.implement({
-    on: function(type, fn) {
-        return this.addEvent(type, fn);
+    on: function(type, fn, context) {
+        return this.addEvent(type, fn, context);
     }.overloadSetter(),
 
     off: function(type, fn) {
@@ -98,16 +101,27 @@ Events.implement({
         return this;
     }.overloadSetter(),
 
-    one: function(type, fn) {
+    one: function(type, fn, context) {
         var self = this;
         var et = function() {
             self.off(type, et);
             fn.apply(this, Array.prototype.slice(arguments));
         }
-        return this.on(type, et);
+        return this.on(type, et, context);
     },
 
     trigger: function(type, data, delay) {
         return this.fireEvent(type, data, delay);
     }
+});
+
+var listenMethods = {
+    listenTo: 'on',
+    listenToOnce: 'one'
+};
+
+Object.each(listenMethods, function(attach, listenTo) {
+    Events.implement(listenTo, function(obj, type, fn) {
+        obj[attach](type, fn, this);
+    });
 });
