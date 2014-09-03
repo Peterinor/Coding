@@ -429,6 +429,99 @@ test("$.proxy", function() {
 });
 
 
+// test("$.parseHTML", function() {
+//     expect( 17 );
+
+//     var html, nodes;
+
+//     equal( $.parseHTML(), null, "Nothing in, null out." );
+//     equal( $.parseHTML( null ), null, "Null in, null out." );
+//     equal( $.parseHTML( "" ), null, "Empty string in, null out." );
+//     raises(function() {
+//         $.parseHTML( "<div></div>", document.getElementById("form") );
+//     }, "Passing an element as the context raises an exception (context should be a document)");
+
+//     nodes = $.parseHTML( $("body")[0].innerHTML );
+//     ok( nodes.length > 4, "Parse a large html string" );
+//     equal( $.type( nodes ), "array", "parseHTML returns an array rather than a nodelist" );
+
+//     html = "<script>undefined()</script>";
+//     equal( $.parseHTML( html ).length, 0, "Ignore scripts by default" );
+//     equal( $.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve scripts when requested" );
+
+//     html += "<div></div>";
+//     equal( $.parseHTML( html )[0].nodeName.toLowerCase(), "div", "Preserve non-script nodes" );
+//     equal( $.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve script position");
+
+//     equal( $.parseHTML("text")[0].nodeType, 3, "Parsing text returns a text node" );
+//     equal( $.parseHTML( "\t<div></div>" )[0].nodeValue, "\t", "Preserve leading whitespace" );
+
+//     equal( $.parseHTML(" <div/> ")[0].nodeType, 3, "Leading spaces are treated as text nodes (#11290)" );
+
+//     html = $.parseHTML( "<div>test div</div>" );
+//     equal( html[ 0 ].parentNode.nodeType, 11, "parentNode should be documentFragment" );
+//     equal( html[ 0 ].innerHTML, "test div", "Content should be preserved" );
+
+//     equal( $.parseHTML("<span><span>").length, 1, "Incorrect html-strings should not break anything" );
+//     equal( $.parseHTML("<td><td>")[ 1 ].parentNode.nodeType, 11, "parentNode should be documentFragment" );
+// });
+
+test("$.parseJSON", function(){
+    expect( 9 );
+
+    equal( $.parseJSON( null ), null, "Actual null returns null" );
+    equal( $.isEmptyObject( $.parseJSON("{}") ), true, "Empty object returns empty object" );
+    deepEqual( $.parseJSON("{\"test\":1}"), { "test": 1 }, "Plain object parses" );
+    deepEqual( $.parseJSON("\n{\"test\":1}"), { "test": 1 }, "Leading whitespaces are ignored." );
+    raises(function() {
+        $.parseJSON();
+    }, null, "Undefined raises an error" );
+    raises( function() {
+        $.parseJSON( "" );
+    }, null, "Empty string raises an error" );
+    raises(function() {
+        $.parseJSON("''");
+    }, null, "Single-quoted string raises an error" );
+    raises(function() {
+        $.parseJSON("{a:1}");
+    }, null, "Unquoted property raises an error" );
+    raises(function() {
+        $.parseJSON("{'a':1}");
+    }, null, "Single-quoted property raises an error" );
+});
+
+test("$.parseXML", 8, function(){
+    var xml, tmp;
+    try {
+        xml = $.parseXML( "<p>A <b>well-formed</b> xml string</p>" );
+        tmp = xml.getElementsByTagName( "p" )[ 0 ];
+        ok( !!tmp, "<p> present in document" );
+        tmp = tmp.getElementsByTagName( "b" )[ 0 ];
+        ok( !!tmp, "<b> present in document" );
+        strictEqual( tmp.childNodes[ 0 ].nodeValue, "well-formed", "<b> text is as expected" );
+    } catch (e) {
+        strictEqual( e, undefined, "unexpected error" );
+    }
+    try {
+        xml = $.parseXML( "<p>Not a <<b>well-formed</b> xml string</p>" );
+        ok( false, "invalid xml not detected" );
+    } catch( e ) {
+        strictEqual( e.message, "Invalid XML: <p>Not a <<b>well-formed</b> xml string</p>", "invalid xml detected" );
+    }
+    try {
+        xml = $.parseXML( "" );
+        strictEqual( xml, null, "empty string => null document" );
+        xml = $.parseXML();
+        strictEqual( xml, null, "undefined string => null document" );
+        xml = $.parseXML( null );
+        strictEqual( xml, null, "null string => null document" );
+        xml = $.parseXML( true );
+        strictEqual( xml, null, "non-string => null document" );
+    } catch( e ) {
+        ok( false, "empty input throws exception" );
+    }
+});
+
 
 test('$.noConflict', function() {
 

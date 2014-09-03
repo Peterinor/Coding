@@ -5,7 +5,7 @@ name: jQ
 
 description: jQuery compatible API
 
-requires: [Element, Element.Attribute, Element.Style, Element.Event, DOMReady]
+requires: [Element, Element.Attribute, Element.Style, Element.Event, DOMReady, JSON, XML]
 provides: [jQuery]
 
 attributes, callback, core, css, data, deferred, deprecated, dimensions, effect, event
@@ -131,7 +131,31 @@ this.$.extend({
         // arg is for internal usage only
         map: function(elems, callback, arg) {
 
-        }
+        },
+
+        parseJSON: function(data) {
+            return JSON.parse(data);
+        },
+
+        parseXML: function(data) {
+            if (!data || typeof data !== "string") {
+                return null;
+            }
+            var p = new DOMParser();
+            var xml;
+            try {
+
+                xml = p.parseFromString(data, "text/xml");
+            } catch (e) {
+                xml = undefined;
+            }
+            if (!xml || !xml.documentElement || xml.getElementsByTagName("parsererror").length) {
+                this.error("Invalid XML: " + data);
+            }
+            return xml;
+        },
+
+        noop: function() {}
     });
 
 
