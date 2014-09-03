@@ -17,7 +17,9 @@
 
         "Core/Browser/Browser",
         "Core/Class/Class",
-        "Core/Class/Class.Extras",
+        "Core/Class/Chain",
+        "Core/Class/Events",
+        "Core/Class/Options",
         "Core/Class/Callback",
         "Core/Class/Deferred",
 
