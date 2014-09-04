@@ -25,6 +25,6 @@ Afx.User = new Class({
 
     initialize: function(o) {
         console.log('user' + o);
-        this.super(o);
+        this._super(o);
     }
 })
