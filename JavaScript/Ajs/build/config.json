@@ -46,6 +46,9 @@
 
         "Core/jQ",
 
+        "More/Afx/Afx",
+        "More/Afx/Afx.Model",
+
         "Core/exports",
         "Core/outro"
     ]

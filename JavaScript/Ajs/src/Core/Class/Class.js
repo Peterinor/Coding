@@ -30,6 +30,7 @@ var Class = this.Class = function(params) {
     newClass.$constructor = Class;
     newClass.prototype.$constructor = newClass;
     newClass.prototype.parent = parent;
+    newClass.prototype.super = parent;
 
     return newClass;
 };
