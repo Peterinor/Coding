@@ -121,16 +121,7 @@ $.implement({
         for (var i = 0; i < elems.length; i++) {
             this.push(new Element(elems[i]));
         };
-    },
-
-    push: function() {
-        var length = this.length;
-        for (var i = 0, l = arguments.length; i < l; i++) {
-            var item = arguments[i];
-            if (item) this[length++] = item;
-        }
-        return (this.length = length);
-    }.protect()
+    }
 });
 
 
