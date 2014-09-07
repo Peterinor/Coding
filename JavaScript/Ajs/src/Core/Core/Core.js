@@ -51,22 +51,55 @@ var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 
-Function.prototype.overloadSetter = function(usePlural){
+Function.prototype.overloadSetter = function(usePlural) {
     var self = this;
-    return function(a, b){
+    return function(a, b) {
+        var __args = arguments;
         if (a == null) return this;
-        if (usePlural || typeof a != 'string'){
-            for (var k in a) self.call(this, k, a[k]);
-            if (enumerables) for (var i = enumerables.length; i--;){
-                k = enumerables[i];
-                if (a.hasOwnProperty(k)) self.call(this, k, a[k]);
+        if (usePlural || typeof a != 'string') {
+            __args = [1, 2].concat(Array.prototype.slice.call(arguments, 1));
+            for (var k in a) {
+                __args[0] = k;
+                __args[1] = a[k];
+                self.apply(this, __args);
             }
+            if (enumerables)
+                for (var i = enumerables.length; i--;) {
+                    k = enumerables[i];
+                    if (a.hasOwnProperty(k)) self.call(this, k, a[k]);
+                }
         } else {
-            self.call(this, a, b);
+            self.apply(this, __args);
         }
         return this;
     };
 };
+// Function.prototype.overloadSetter = function(usePlural) {
+//     var self = this;
+//     return function(a, b) {
+//         var args = arguments;
+//         if (a == null) return this;
+//         if (usePlural || typeof a != 'string') {
+//             for (var k in a) {
+//                 args[0] = k;
+//                 args[1] = a[k];
+//                 self.apply(this, args);
+//             }
+//             if (enumerables)
+//                 for (var i = enumerables.length; i--;) {
+//                     k = enumerables[i];
+//                     if (a.hasOwnProperty(k)) {
+//                         args[0] = k;
+//                         args[1] = a[k];
+//                         self.apply(this, args);
+//                     }
+//                 }
+//         } else {
+//             self.apply(this, args);
+//         }
+//         return this;
+//     };
+// };
 
 Function.prototype.overloadGetter = function(usePlural){
     var self = this;
@@ -514,13 +547,23 @@ Object.extend({
     new Type(name);
 });
 
-// Unique ID
 
-var idCount = Date.now();
-Ajs.uniqueID = function(prefix) {
-    var id = (idCount++).toString(36);
-    return prefix ? prefix + id : id;
-}
+// Unique ID
+(function() {
+    var uid = 0;
+    Ajs.simpleUID = function(prefix) {
+        return prefix ? prefix + uid++ : uid++;
+    };
+
+    var idCount = Date.now();
+    Ajs.uniqueID = function(prefix) {
+        var id = (idCount++).toString(36);
+        return prefix ? prefix + id : id;
+    };
+
+})();
+
+
 String.extend('uniqueID', Ajs.uniqueID);
 
 
