@@ -1,3 +1,6 @@
+
+module('Core.jQ');
+
 // test("$ Compactable API", function() {
 //     ok($, "$");
 //     ok($ == $);

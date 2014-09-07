@@ -1,3 +1,6 @@
+
+module('Core.Core');
+
 test("Basic requirements", function() {
 	expect(9);
 	

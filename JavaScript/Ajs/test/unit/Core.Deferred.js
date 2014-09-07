@@ -1,3 +1,7 @@
+
+module('Core.Deferred');
+
+
 $.each( [ "", " - new operator" ], function( _, withNew ) {
 
 	function createDeferred( fn ) {

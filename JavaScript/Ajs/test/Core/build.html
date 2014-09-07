@@ -24,6 +24,41 @@
         </script>
     </head>
     <body>
-        <div id='test'></div>
+        <div id='test'>
+            <p>par 1</p>
+            <p>par 2</p>
+            <p>par 3</p>
+            <div>
+                lkjfasfga
+            </div>
+        </div>
+
+        <p>par outter</p>
+
+
+        <script type="text/javascript">
+            $(function(){
+
+                // $('#test').on('click', 'p', 'eventData', function(e){
+                //     console.log('click on p', e.target);
+                // });
+
+                var dfn = function(e){
+                    console.log('click on p delegated to div!');
+                };
+                $('#test').delegate('p', 'click', dfn);
+
+                $('#test').undelegate('p', 'click', dfn);
+
+                // $('#test').one('click', 'p', 'eventData', function(e){
+                //     console.log('click once on p');
+                // });   
+
+                // $('#test').one('click', function(e){
+                //     console.log('click on div');
+                // });
+
+            });
+        </script>
     </body>
 </html>

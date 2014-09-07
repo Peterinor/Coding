@@ -1,4 +1,6 @@
 
+module('Core.Browser');
+
 test("Core.Browser", function(){
     ok(Ajs.Browser, "Browser Object");
     ok(Ajs.Browser.name, "Browser name");

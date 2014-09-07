@@ -1,3 +1,6 @@
+
+module('Core.Element');
+
 test("Core.Element", function() {
 
     var body = document.body;

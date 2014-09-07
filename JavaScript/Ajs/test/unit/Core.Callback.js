@@ -1,3 +1,6 @@
+
+module('Core.Callbacks');
+
 (function() {
 
     var output,
