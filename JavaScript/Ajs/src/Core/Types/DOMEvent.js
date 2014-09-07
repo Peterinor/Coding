@@ -16,7 +16,7 @@ provides: [DOMEvent]
 
 var _keys = {};
 
-var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
+var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win, data){
 	if (!win) win = window;
 	event = event || win.event;
 	if (event.$extended) return event;
@@ -29,7 +29,9 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	var type = this.type = event.type;
 	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
-	this.target = document.id(target);
+	this.target = document.id(target) || new Element(target);
+	this.currentTarget = this.delegateTarget = this.target;
+	this.data = data;
 
 	if (type.indexOf('key') == 0){
 		var code = this.code = (event.which || event.keyCode);
