@@ -200,9 +200,9 @@ this.$.extend({
         // // Execute a callback for every element in the matched set.
         // // (You can seed the arguments with an array of args, but this is
         // // only used internally.)
-        // each: function(callback, args) {
-        //     return jQuery.each(this, callback, args);
-        // },
+        each: function(callback, args) {
+            return $.each(this, callback, args);
+        },
 
         // ready: function(fn) {
         //     // Add the callback
@@ -252,36 +252,42 @@ this.$.extend({
 
     $.implement({
 
-        bind: function(type, fn) {
-            type.split(' ').each(function(event) { // accepts multiple event types!
-                this.on(event, fn);
-            }, this);
-            return this;
+        one: function(types, selector, data, fn) {
+            return this.on(types, selector, data, fn, 1);
         },
 
-        unbind: function(type, fn) {
-            return this.off(type, fn);
+        bind: function(types, data, fn) {
+            return this.on(types, null, data, fn);
         },
 
-        one: function(type, fn) {
-            // TODO: Make this cleaner. Looks like a hack now.
-            var removeOne = function() {
-                this.off(type, fn).off(type, removeOne);
+        unbind: function(types, fn) {
+            return this.off(types, null, fn);
+        },
+
+        delegate: function(selector, types, data, fn) {
+            return this.on(types, selector, data, fn);
+        },
+        undelegate: function(selector, types, fn) {
+            return arguments.length === 1 ? this.off(selector, "**") : this.off(types, selector || "**", fn);
+        },
+
+        trigger: function(type, data) {
+            return this.each(function() {
+                jQuery.event.trigger(type, data, this);
+            });
+        },
+
+        triggerHandler: function(type, data) {
+            var elem = this[0];
+            if (elem) {
+                return jQuery.event.trigger(type, data, elem, true);
             }
-            return this.on(type, fn).on(type, removeOne);
         },
 
-        triggerHandler: function() {
-
-        },
-
-        delegate: function() {
-
-        },
-
-        undelegate: function() {
-
+        hover: function(fnOver, fnOut) {
+            return this.mouseenter(fnOver).mouseleave(fnOut || fnOver);
         }
+
     });
 
     (function(types) {
@@ -337,18 +343,32 @@ this.$.extend({
     Ajs.Element.implement({
         // ATTR
         attr: function(prop, value) {
-            switch ($type(prop)) {
+            switch ($.type(prop)) {
                 case 'object':
-                    this.set(prop);
+                    this.setter(prop);
                     break;
                 case 'string':
                     if (value) {
                         // Note: first attempt() arg is supposed to be index of elements array, but can't be done in Mootools
-                        if ($type(value) == 'function') value = value.attempt(this, this);
-                        this.set(prop, value)
-                    } else return this.get(prop);
+                        if ($.type(value) == 'function') value = value.attempt(this, this);
+                        this.setter(prop, value)
+                    } else return this.getter(prop);
             }
             return this;
+        },
+
+        //
+        removeAttr: function(attributeName) {
+            //TODO:
+        },
+
+        //.prop( propertyName ); .prop( properties ), .prop( properties ), .prop( propertyName, function )
+        prop: function(name, val) {
+            //TODO:
+        },
+
+        removeProp: function(propertyName) {
+            //TODO:
         },
 
         // HTML
@@ -366,6 +386,7 @@ this.$.extend({
             // Note: Array type value not implemented
             return value ? this.setter('value', value) : this.getter('value');
         }
+
     });
 })(Ajs);
 
@@ -387,6 +408,7 @@ this.$.extend({
 })(Ajs);
 
 
+/*****  Traversing   *****/
 (function($) {
     $.implement({
         find: function(selector, util) {
@@ -400,6 +422,23 @@ this.$.extend({
     });
 })($);
 
+/*****   AJAX Helper Functions   *****/
+$.extend({
+
+    param: function(obj, traditional) {
+        Object.toQueryString(obj);
+    }
+});
+
+$.implement({
+    serialize: function() {
+        return this[0].toQueryString();
+    },
+
+    serializeArray: function() {
+        //TODO:
+    }
+})
 
 
 /*****   AJAX   *****/
