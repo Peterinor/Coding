@@ -47,7 +47,11 @@
         "Core/jQ",
 
         "More/Afx/Afx",
+        "More/Afx/Afx.Observable",
+        "More/Afx/Afx.ObjectObservable",
         "More/Afx/Afx.Model",
+        "More/Afx/Afx.DOMObservable",
+        "More/Afx/Afx.Collection",
 
         "Core/exports",
         "Core/outro"
