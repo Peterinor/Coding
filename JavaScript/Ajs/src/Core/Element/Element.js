@@ -19,13 +19,16 @@ var Element = this.Element = function(tag, props) {
     if (typeOf(tag) == 'element') el = tag;
     else el = Sizzle(tag)[0];
     //for ie6,7
-    if (!Browser.Element) {
-        var fireEvent = el.fireEvent;
-        el._fireEvent = function(type, event) {
-            return fireEvent(type, event);
-        };
-        Object.append(el, Element.Prototype);
+    if (el) {
+        if (!Browser.Element) {
+            var fireEvent = el.fireEvent;
+            el._fireEvent = function(type, event) {
+                return fireEvent(type, event);
+            };
+            Object.append(el, Element.Prototype);
+        }
     }
+
     return el;
 };
 
@@ -207,23 +210,6 @@ this.$ = $;
             return this;
         }
 
-    });
-
-    [Element, Document, Window].invoke('implement', {
-
-        //TODO: to adjust to same as jquery on
-        on: function(type, fn) {
-            return this.addEvent(type, fn);
-        }.overloadSetter(),
-
-        off: function(type, fn) {
-            return this.removeEvent(type, fn);
-        }.overloadSetter(),
-
-        trigger: function(event, args) {
-            return this.fireEvent(event, args);
-        }
-        
     });
 
     // /*<ltIE9>*/
