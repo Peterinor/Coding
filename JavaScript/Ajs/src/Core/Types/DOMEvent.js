@@ -58,7 +58,8 @@ provides: [DOMEvent]
 
 			// Add which for click: 1 === left; 2 === middle; 3 === right
 			this.which = event.which;
-			if (!this.which && event.button !== undefined) {
+			var button = event.button;
+			if (!this.which && button !== undefined) {
 				this.which = (button & 1 ? 1 : (button & 2 ? 3 : (button & 4 ? 2 : 0)));
 			}
 
