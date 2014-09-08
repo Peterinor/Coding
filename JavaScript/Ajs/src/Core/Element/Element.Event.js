@@ -217,13 +217,6 @@ if (!window.addEventListener) {
 
 (function() {
 
-    function returnFalse() {
-        return false;
-    }
-
-    function returnTrue() {
-        return true;
-    }
     [Element, Document, Window].invoke('implement', {
 
         on: function(types, selector, data, fn, /*INTERNAL*/ one) {
@@ -260,7 +253,7 @@ if (!window.addEventListener) {
                 }
             }
             if (fn === false) {
-                fn = returnFalse;
+                fn = Function.returnFalse;
             } else if (!fn) {
                 return this;
             }
@@ -304,7 +297,6 @@ if (!window.addEventListener) {
             return this.addEvent(types, fn, data);
         },
 
-        // off: function(type, fn) {
         off: function(types, selector, fn) {
             if (typeOf(types) == 'domevent') {
                 handleObj = types.handleObj;
@@ -328,20 +320,27 @@ if (!window.addEventListener) {
                 selector = undefined;
             }
             if (fn === false) {
-                fn = returnFalse;
+                fn = Function.returnFalse;
             }
             if (selector) {
                 var de = this.retrieve('delegate_events');
-                var hh = de[selector];
-                var hhs = hh.filter(function(v, i) {
-                    return v.oe === fn;
-                });
+                var hhs = de[selector];
+                if (!hhs) {
+                    return this;
+                }
+                if ( !! fn) {
+                    hhs = hhs.filter(function(v, i) {
+                        return v.oe === fn;
+                    });
+                }
 
-                var events = this.retrieve('events');
                 hhs.each(function(v, i) {
                     this.removeEvent(types, v.e);
                 }, this);
                 return this;
+            }
+            if (!fn) {
+                return this.removeEvents(types);
             }
             return this.removeEvent(types, fn);
         },
