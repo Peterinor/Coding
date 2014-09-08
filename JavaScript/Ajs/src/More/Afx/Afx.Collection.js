@@ -24,18 +24,17 @@ Collection.implement({
 });
 
 //make Collection looks like an Array
-Array.forEachMethod(function(method, name) {
-    Collection.implement(name, method);
-});
-
-Array.mirror(Collection);
+Array.makeArrayLike(Collection);
 
 var Collection = Afx.Collection = new Class({
     Implements: Events,
     Extends: Collection
 });
 
-
 Collection.implement({
-
+    toJSON: function(){
+        return this.map(function(m, ind){
+            return m.toJSON();
+        })
+    }
 });
