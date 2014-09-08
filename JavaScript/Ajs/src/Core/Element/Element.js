@@ -129,12 +129,7 @@ $.implement({
 
 
 //make $ looks like an Array
-Array.forEachMethod(function(method, name) {
-    $.implement(name, method);
-});
-
-Array.mirror($);
-
+Array.makeArrayLike($);
 
 $.fn.init.prototype = $.fn;
 

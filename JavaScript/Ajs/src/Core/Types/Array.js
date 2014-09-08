@@ -12,6 +12,19 @@ provides: [Array]
 ...
 */
 
+Array.extend({
+    makeArrayLike: function(klass) {
+
+        //make Collection looks like an Array
+        Array.forEachMethod(function(method, name) {
+            klass.implement(name, method);
+        });
+
+        Array.mirror(klass);
+    }
+});
+
+
 Array.implement({
 
     /*<!ES5>*/
