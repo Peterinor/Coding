@@ -17,17 +17,25 @@ var removeOn = function(string) {
         return first.toLowerCase();
     });
 };
+var eventType = function(type) {
+    return type.split('.');
+}
 
 var Events = this.Events = new Class({
 
     $events: {},
 
     addEvent: function(type, fn, context) {
-        type = removeOn(type);
+        var _type = eventType(removeOn(type));
+        type = _type[0];
+        var namespace = _type[1];
         if (context) {
             fn = function(args) {
                 fn.apply(context, Array.from(args));
             }
+        }
+        if (namespace) {
+            fn.namespace = namespace;
         }
         this.$events[type] = (this.$events[type] || []).include(fn);
         return this;
@@ -39,43 +47,35 @@ var Events = this.Events = new Class({
     },
 
     fireEvent: function(type, args, delay) {
-        type = removeOn(type);
+        var _type = eventType(removeOn(type));
+        type = _type[0];
+        var namespace = _type[1];
+
         var events = this.$events[type];
         if (!events) return this;
         args = Array.from(args);
-        events.each(function(fn) {
-            if (delay) fn.delay(delay, this, args);
-            else fn.apply(this, args);
-        }, this);
+        if (namespace) {
+            events.each(function(fn) {
+                if (fn.namespace == namespace) {
+                    if (delay) fn.delay(delay, this, args);
+                    else fn.apply(this, args);
+                }
+            }, this);
+        } else {
+            events.each(function(fn) {
+                if (delay) fn.delay(delay, this, args);
+                else fn.apply(this, args);
+            }, this);
+        }
         return this;
     },
 
     removeEvent: function(type, fn) {
-        type = removeOn(type);
-        var events = this.$events[type];
-        if (events && !fn.internal) {
-            var index = events.indexOf(fn);
-            if (index != -1) delete events[index];
-        }
-        return this;
+        return this.off(type, fn);
     },
 
     removeEvents: function(events) {
-        var type;
-        if (typeOf(events) == 'object') {
-            for (type in events) this.removeEvent(type, events[type]);
-            return this;
-        }
-        if (events) events = removeOn(events);
-        for (type in this.$events) {
-            if (events && events != type) continue;
-            var fns = this.$events[type];
-            for (var i = fns.length; i--;)
-                if (i in fns) {
-                    this.removeEvent(type, fns[i]);
-                }
-        }
-        return this;
+        return this.off(events);
     }
 
 });
@@ -87,16 +87,33 @@ Events.implement({
     }.overloadSetter(),
 
     off: function(type, fn) {
-        type = removeOn(type);
+        var _type = eventType(removeOn(type));
+        type = _type[0];
+        var namespace = _type[1];
+
         var events = this.$events[type];
-        if (!fn) {
-            events.empty();
-            delete this.$events[type];
-            return this;
-        }
-        if (events && !fn.internal) {
-            var index = events.indexOf(fn);
-            if (index != -1) events.remove(index);
+        if (namespace) {
+            if (!fn) {
+                events.each(function(fn, ind) {
+                    if (fn.namespace == namespace && !fn.internal) {
+                        delete events[ind];
+                    }
+                });
+                return this;
+            }
+        } else {
+            if (!fn) {
+                events.each(function(fn, ind) {
+                    if (!fn.internal) {
+                        delete events[ind];
+                    }
+                });
+                return this;
+            }
+            if (events && !fn.internal) {
+                var index = events.indexOf(fn);
+                if (index != -1) events.remove(index);
+            }
         }
         return this;
     }.overloadSetter(),
