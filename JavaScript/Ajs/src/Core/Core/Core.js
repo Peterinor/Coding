@@ -650,7 +650,9 @@ String.extend('uniqueID', Ajs.uniqueID);
         'Core.Browser': 'Core/Browser/Browser',
 
         'Core.Class': 'Core/Class/Class',
-        'Core.Class.Extras': 'Core/Class/Class.Extras',
+        'Core.Class.Events': 'Core/Class/Events',
+        'Core.Class.Chain': 'Core/Class/Chain',
+        'Core.Class.Options': 'Core/Class/Options',
         'Core.Class.Callback': 'Core/Class/Callback',
         'Core.Class.Deferred': 'Core/Class/Deferred',
 
@@ -681,6 +683,7 @@ String.extend('uniqueID', Ajs.uniqueID);
 
         'Core.Utilities.Cookie': 'Core/Utilities/Cookie',
         'Core.Utilities.JSON': 'Core/Utilities/JSON',
+        'Core.Utilities.XML': 'Core/Utilities/XML',
         'Core.Utilities.DOMReady': 'Core/Utilities/DOMReady',
 
         'Core.jQ': 'Core/jQ'
