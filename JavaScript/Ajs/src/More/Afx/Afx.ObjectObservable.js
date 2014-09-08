@@ -5,20 +5,24 @@ name: Afx.ObjectObservable
 
 description: One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
 
-requires: [Afx.Observable]
+requires: [Options, Afx.Observable]
 provides: [Afx.ObjectObservable]
 
 ...
 */
 
-var _ObjectObservable = function(attr, options) {
-    this.cid = Ajs.simpleUID('m');
-    this.attributes = {};
+var ObjectObservable = Afx.ObjectObservable = new Class({
 
-    this.set(attr, options);
-}
+    Implements: [Observable, Options],
 
-_ObjectObservable.implement({
+    initialize: function(obj, options) {
+        this.cid = Ajs.simpleUID('m');
+        this.attributes = {};
+
+        this.setOptions(options);
+
+        this.set(obj, options);
+    },
 
     toJSON: function() {
         return Object.clone(this.attributes);
@@ -32,13 +36,43 @@ _ObjectObservable.implement({
         return this.attributes[attr];
     },
 
+    //options.silent
     set: function(key, value, options) {
-        this.attributes[key] = value;
-    }.overloadSetter()
+        var attrs;
+        if (!key) return this;
+        if (Type.isObject(key)) {
+            attrs = key;
+            options = value;
+        } else {
+            (attrs = {})[key] = value;
+        }
+        options || (options = {});
 
-});
+        this._set(attrs, options);
+    },
 
-var ObjectObservable = Afx.ObjectObservable = new Class({
-    Implements: Observable,
-    Extends: _ObjectObservable
+    _set: function(attrs, options) {
+        var silent = options.silent;
+        var current = this.toJSON();
+        var changes = [];
+        for (var key in attrs) {
+            var v = attrs[key];
+            if (current[key] != v) {
+                this.attributes[key] = v;
+                changes.push(key);
+            }
+        }
+        if (!silent) {
+            for (var i = 0, l = changes.length; i < l; i++) {
+                var key = changes[i];
+                this.trigger('change:' + key, {
+                    from: current[key],
+                    to: this.get(key)
+                });
+            };
+
+            this.trigger('changes', attrs);
+        }
+    }
+
 });
