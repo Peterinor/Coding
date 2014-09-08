@@ -44,11 +44,13 @@
                 // });
 
                 var dfn = function(e){
+                    console.log(e, e.event, e.originalEvent);
                     console.log('click on p delegated to div!');
                 };
                 $('#test').delegate('p', 'click', dfn);
 
-                $('#test').undelegate('p', 'click', dfn);
+                // $('#test').undelegate('p', 'click', dfn);
+                // $('#test').off('click', 'p');
 
                 // $('#test').one('click', 'p', 'eventData', function(e){
                 //     console.log('click once on p');
