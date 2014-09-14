@@ -242,13 +242,13 @@ Request.implement(methods);
 
 Element.Properties.send = {
 
-	set: function(options){
+	setter: function(options){
 		var send = this.get('send').cancel();
 		send.setOptions(options);
 		return this;
 	},
 
-	get: function(){
+	getter: function(){
 		var send = this.retrieve('send');
 		if (!send){
 			send = new Request({
@@ -264,7 +264,7 @@ Element.Properties.send = {
 Element.implement({
 
 	send: function(url){
-		var sender = this.get('send');
+		var sender = this.getter('send');
 		sender.send({data: this, url: url || sender.options.url});
 		return this;
 	}

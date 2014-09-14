@@ -35,7 +35,7 @@ Request.HTML = new Class({
 
 		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		if (match) response.html = match[1];
-		var temp = new Element('div').set('html', response.html);
+		var temp = document.newElement('div').set('html', response.html);
 
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements(options.filter || '*');
@@ -59,13 +59,13 @@ Request.HTML = new Class({
 
 Element.Properties.load = {
 
-	set: function(options){
-		var load = this.get('load').cancel();
+	setter: function(options){
+		var load = this.getter('load').cancel();
 		load.setOptions(options);
 		return this;
 	},
 
-	get: function(){
+	getter: function(){
 		var load = this.retrieve('load');
 		if (!load){
 			load = new Request.HTML({data: this, link: 'cancel', update: this, method: 'get'});
@@ -79,7 +79,7 @@ Element.Properties.load = {
 Element.implement({
 
 	load: function(){
-		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
+		this.getter('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
 		return this;
 	}
 
