@@ -18,6 +18,15 @@ var _$$ = window.jQuery;
 var _$ = window.$;
 window.jQuery = window.$ = this.$;
 
+Sizzle.attr = jQuery.attr;
+jQuery.find = Sizzle;
+jQuery.expr = Sizzle.selectors;
+jQuery.expr[":"] = jQuery.expr.pseudos;
+jQuery.unique = Sizzle.uniqueSort;
+jQuery.text = Sizzle.getText;
+jQuery.isXMLDoc = Sizzle.isXML;
+jQuery.contains = Sizzle.contains;
+
 this.$.extend({
     noConflict: function(deep) {
         if (window.$ === this.$) {
@@ -51,7 +60,7 @@ this.$.extend({
                 fn = fn[ctx];
                 arguments[1] = ctx = tmp;
             }
-            if (!this.isFunction(fn)) {
+            if (!$.isFunction(fn)) {
                 return undefined;
             }
             return Function.prototype.bind.apply(fn, Array.from(arguments).slice(1));
@@ -340,6 +349,7 @@ this.$.extend({
 
 /*****   ATTR   *****/
 (function(Ajs) {
+
     Ajs.Element.implement({
         // ATTR
         attr: function(prop, value) {
@@ -388,6 +398,13 @@ this.$.extend({
         }
 
     });
+
+    // $.implement({
+    //     attr:function(prop, value){
+    //         return this;
+    //     }
+    // });
+
 })(Ajs);
 
 /*****   CSS   *****/
@@ -447,6 +464,8 @@ $.implement({
 $.extend({
 
     ajax: function(options) {
+        // var ajax = Ajs.Deferred();
+
         var request;
         options.method = options.type || options.method || 'get'; // default is 'get' for jQuery
         if (options.complete) options.onComplete = options.complete;
@@ -457,6 +476,7 @@ $.extend({
         else request = new Request(options);
         if (options.timeout) request.cancel.delay(options.timeout);
         return request.send();
+        // return ajax.promise();
     },
 
     get: function(url, data, fn, type) {

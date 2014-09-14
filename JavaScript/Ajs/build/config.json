@@ -46,6 +46,11 @@
 
         "Core/jQ",
 
+        "More/Types/Array.Extras",
+        "More/Types/Date",
+        "More/Types/Hash",
+        "More/Types/String.QueryString",
+
         "More/Afx/Afx",
         "More/Afx/Afx.Observable",
         "More/Afx/Afx.ObjectObservable",
