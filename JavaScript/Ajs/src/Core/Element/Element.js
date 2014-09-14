@@ -33,6 +33,52 @@ var Element = this.Element = function(tag, props) {
 };
 
 
+(function() {
+
+    [Element, Window, Document].invoke('implement', {
+
+        addListener: function(type, fn) {
+            if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
+            else this.attachEvent('on' + type, fn);
+            return this;
+        },
+
+        removeListener: function(type, fn) {
+            if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
+            else this.detachEvent('on' + type, fn);
+            return this;
+        }
+
+    });
+
+    Document.implement({
+        id: function(el) {
+            if (typeOf(el) == 'string') {
+                if (el.indexOf('#') == -1) {
+                    el = '#' + el;
+                }
+            }
+            var el = Sizzle(el)[0];
+            return el;
+        },
+        getDocument: function() {
+            return this;
+        },
+        getWindow: function() {
+            return this.window;
+        }
+    });
+
+    Window.implement({
+        getDocument: function() {
+            return this.document;
+        },
+        getWindow: function() {
+            return this;
+        }
+    });
+})();
+
 if (Browser.Element) {
     Element.prototype = Browser.Element.prototype;
     // IE8 and IE9 require the wrapping.
@@ -140,32 +186,13 @@ this.$ = $;
     var collected = {},
         storage = {};
     var UIDX = 0;
-    // var uidName = 'Ajs-data-uid';
     var get = function(uid) {
         return (storage[uid] || (storage[uid] = {}));
     };
     var uidOf = function(el) {
-        // var id = el.getAttribute(uidName);
-        // if (!id) {
-        //     var uid = UIDX++;
-        //     el.setAttribute(uidName, uid);
-        //     return uid;
-        // }
-        // return id;
         return el.uniqueNumber || (el.uniqueNumber = UIDX++);
-    }
+    };
 
-    // var clean = function(item) {
-    //     var uid = item.uniqueNumber;
-    //     if (item.removeEvents) item.removeEvents();
-    //     if (item.clearAttributes) item.clearAttributes();
-    //     if (uid != null) {
-    //         delete collected[uid];
-    //         delete storage[uid];
-    //     }
-    //     return item;
-    // };
-    ;
     [Element, Window, Document].invoke('implement', {
         retrieve: function(property, dflt) {
             var _storage = get(uidOf(this)),
@@ -187,69 +214,9 @@ this.$ = $;
         }
 
     });
-
-    [Element, Window, Document].invoke('implement', {
-
-        addListener: function(type, fn) {
-            if (window.attachEvent && !window.addEventListener) {
-                collected[uidOf(this)] = this;
-            }
-            if (this.addEventListener) this.addEventListener(type, fn, !! arguments[2]);
-            else this.attachEvent('on' + type, fn);
-            return this;
-        },
-
-        removeListener: function(type, fn) {
-            if (this.removeEventListener) this.removeEventListener(type, fn, !! arguments[2]);
-            else this.detachEvent('on' + type, fn);
-            return this;
-        }
-
-    });
-
-    // /*<ltIE9>*/
-    // if (window.attachEvent && !window.addEventListener) {
-    //     var gc = function() {
-    //         Object.each(collected, clean);
-    //         if (window.CollectGarbage) CollectGarbage();
-    //         window.removeListener('unload', gc);
-    //     }
-    //     window.addListener('unload', gc);
-    // }
-    // /*</ltIE9>*/
-
 })();
 
-
 (function() {
-
-    Document.implement({
-        id: function(el) {
-            if (typeOf(el) == 'string') {
-                if (el.indexOf('#') == -1) {
-                    el = '#' + el;
-                }
-            }
-            var el = Sizzle(el)[0];
-            return el;
-        },
-        getDocument: function() {
-            return this;
-        },
-        getWindow: function() {
-            return this.window;
-        }
-    });
-
-    Window.implement({
-        getDocument: function() {
-            return this.document;
-        },
-        getWindow: function() {
-            return this;
-        }
-    });
-
     Element.implement({
         getWindow: function() {
             return this.ownerDocument.window;

@@ -350,16 +350,4 @@ if (!window.addEventListener) {
         }
 
     });
-
-    // /*<ltIE9>*/
-    // if (window.attachEvent && !window.addEventListener) {
-    //     var gc = function() {
-    //         Object.each(collected, clean);
-    //         if (window.CollectGarbage) CollectGarbage();
-    //         window.removeListener('unload', gc);
-    //     }
-    //     window.addListener('unload', gc);
-    // }
-    // /*</ltIE9>*/
-
 })();
