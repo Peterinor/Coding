@@ -45,8 +45,8 @@
         "Core/Utilities/DOMReady",
 
         "Core/jQ",
+        "Core/jQ.traversing",
 
-        "More/Types/Array.Extras",
         "More/Types/Date",
         "More/Types/Hash",
         "More/Types/String.QueryString",

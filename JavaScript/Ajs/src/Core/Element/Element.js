@@ -144,6 +144,54 @@ $.implement({
             return this;
         }
 
+        // A simple way to check for HTML strings
+        // Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
+        // Strict HTML recognition (#11290: must start with <)
+        var rquickExpr = /^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/;
+        // Match a standalone tag
+        var rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
+        // Handle HTML strings
+        if (typeof selector === "string") {
+            if (selector.charAt(0) === "<" && selector.charAt(selector.length - 1) === ">" && selector.length >= 3) {
+                // Assume that strings that start and end with <> are HTML and skip the regex check
+                match = [null, selector, null];
+
+                // HANDLE: $(html) -> $(array)
+                if (match[1]) {
+                    context = context instanceof $ ? context[0] : context;
+
+                    // scripts is true for back-compat
+                    $.merge(this, $.parseHTML(
+                        match[1],
+                        context && context.nodeType ? context.ownerDocument || context : document,
+                        true
+                    ));
+
+                    // HANDLE: $(html, props)
+                    if (rsingleTag.test(match[1]) && $.isPlainObject(context)) {
+                        for (match in context) {
+                            // Properties of context are called as methods if possible
+                            if ($.isFunction(this[match])) {
+                                this[match](context[match]);
+
+                                // ...and otherwise set as attributes
+                            } else {
+                                this.attr(match, context[match]);
+                            }
+                        }
+                    }
+                    return this;
+                }
+            } else if (!context || context instanceof $) {
+                // HANDLE: $(expr, $(...))
+                return $(Sizzle(selector, context));
+            } else {
+                // HANDLE: $(expr, context)
+                // (which is just equivalent to: $(context).find(expr)
+                return $(context).find(selector);
+            }
+        }
+
         // Handle $(DOMElement)
         if (selector.nodeType || window == selector) {
             this.context = this[0] = selector;

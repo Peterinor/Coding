@@ -41,8 +41,57 @@ this.$.extend({
     }
 });
 
+var class2type = {},
+
+    // List of deleted data cache ids, so we can reuse them
+    core_deletedIds = [],
+
+    core_version = "@VERSION",
+
+    // Save a reference to some core methods
+    core_concat = core_deletedIds.concat,
+    core_push = core_deletedIds.push,
+    core_slice = core_deletedIds.slice,
+    core_indexOf = core_deletedIds.indexOf,
+    core_toString = class2type.toString,
+    core_hasOwn = class2type.hasOwnProperty,
+    core_trim = core_version.trim;
+
+function isArraylike(obj) {
+    var length = obj.length,
+        type = $.type(obj);
+
+    if ($.isWindow(obj)) {
+        return false;
+    }
+
+    if (obj.nodeType === 1 && length) {
+        return true;
+    }
+
+    return type === "array" || type !== "function" &&
+        (length === 0 ||
+        typeof length === "number" && length > 0 && (length - 1) in obj);
+}
 
 (function($) {
+
+    $.implement({
+        // Take an array of elements and push it onto the stack
+        // (returning the new matched element set)
+        pushStack: function(elems) {
+
+            // Build a new $ matched element set
+            var ret = $.merge(this.constructor(), elems);
+
+            // Add the old object onto the stack (as a reference)
+            ret.prevObject = this;
+            ret.context = this.context;
+
+            // Return the newly-formed element set
+            return ret;
+        }
+    });
 
     $.extend({
 
@@ -102,19 +151,38 @@ this.$.extend({
             return String(v).trim();
         },
 
+        // merge: function(first, second) {
+        //     if (this.isArray(first)) {
+        //         var ret = Array.from(first);
+        //         ret.append(second);
+        //         return ret;
+        //     }
+        //     //just array like
+        //     var i = first.length;
+        //     var j = 0;
+        //     while (second[j] !== undefined) {
+        //         first[i++] = second[j++];
+        //     }
+        //     first.length = i;
+        //     return first;
+        // },
         merge: function(first, second) {
-            if (this.isArray(first)) {
-                var ret = Array.from(first);
-                ret.append(second);
-                return ret;
+            var l = second.length,
+                i = first.length,
+                j = 0;
+
+            if (typeof l === "number") {
+                for (; j < l; j++) {
+                    first[i++] = second[j];
+                }
+            } else {
+                while (second[j] !== undefined) {
+                    first[i++] = second[j++];
+                }
             }
-            //just array like
-            var i = first.length;
-            var j = 0;
-            while (second[j] !== undefined) {
-                first[i++] = second[j++];
-            }
+
             first.length = i;
+
             return first;
         },
 
@@ -139,8 +207,64 @@ this.$.extend({
 
         // arg is for internal usage only
         map: function(elems, callback, arg) {
+            var value,
+                i = 0,
+                length = elems.length,
+                isArray = isArraylike(elems),
+                ret = [];
 
+            // Go through the array, translating each of the items to their
+            if (isArray) {
+                for (; i < length; i++) {
+                    value = callback(elems[i], i, arg);
+
+                    if (value != null) {
+                        ret[ret.length] = value;
+                    }
+                }
+
+                // Go through every key on the object,
+            } else {
+                for (i in elems) {
+                    value = callback(elems[i], i, arg);
+
+                    if (value != null) {
+                        ret[ret.length] = value;
+                    }
+                }
+            }
+
+            // Flatten any nested arrays
+            return core_concat.apply([], ret);
         },
+
+        // // data: string of html
+        // // context (optional): If specified, the fragment will be created in this context, defaults to document
+        // // keepScripts (optional): If true, will include scripts passed in the html string
+        // parseHTML: function(data, context, keepScripts) {
+        //     if (!data || typeof data !== "string") {
+        //         return null;
+        //     }
+        //     if (typeof context === "boolean") {
+        //         keepScripts = context;
+        //         context = false;
+        //     }
+        //     context = context || document;
+
+        //     var parsed = rsingleTag.exec(data),
+        //         scripts = !keepScripts && [];
+
+        //     // Single tag
+        //     if (parsed) {
+        //         return [context.createElement(parsed[1])];
+        //     }
+
+        //     parsed = $.buildFragment([data], context, scripts);
+        //     if (scripts) {
+        //         $(scripts).remove();
+        //     }
+        //     return $.merge([], parsed.childNodes);
+        // },
 
         parseJSON: function(data) {
             return JSON.parse(data);
@@ -164,7 +288,11 @@ this.$.extend({
             return xml;
         },
 
-        noop: function() {}
+        noop: function() {},
+
+        nodeName: function(elem, name) {
+            return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
+        },
     });
 
 
@@ -183,28 +311,6 @@ this.$.extend({
                 this.toArray() :
                 (num < 0 ? this[this.length + num] : this[num]);
         },
-
-        // // Take an array of elements and push it onto the stack
-        // // (returning the new matched element set)
-        // pushStack: function(elems, name, selector) {
-
-        //     // Build a new jQuery matched element set
-        //     var ret = jQuery.merge(this.constructor(), elems);
-
-        //     // Add the old object onto the stack (as a reference)
-        //     ret.prevObject = this;
-
-        //     ret.context = this.context;
-
-        //     if (name === "find") {
-        //         ret.selector = this.selector + (this.selector ? " " : "") + selector;
-        //     } else if (name) {
-        //         ret.selector = this.selector + "." + name + "(" + selector + ")";
-        //     }
-
-        //     // Return the newly-formed element set
-        //     return ret;
-        // },
 
         // // Execute a callback for every element in the matched set.
         // // (You can seed the arguments with an array of args, but this is
@@ -230,17 +336,17 @@ this.$.extend({
 
         last: function() {
             return this.eq(-1);
+        },
+
+        map: function(callback) {
+            return this.pushStack($.map(this, function(elem, i) {
+                return callback.call(elem, i, elem);
+            }));
+        },
+
+        end: function() {
+            return this.prevObject || this.constructor(null);
         }
-
-        // map: function(callback) {
-        //     return this.pushStack(jQuery.map(this, function(elem, i) {
-        //         return callback.call(elem, i, elem);
-        //     }));
-        // },
-
-        // end: function() {
-        //     return this.prevObject || this.constructor(null);
-        // },   
         // // // For internal use only.
         // // // Behaves like an Array's method, not like a jQuery method.
         // // push: core_push,
@@ -424,20 +530,6 @@ this.$.extend({
     });
 })(Ajs);
 
-
-/*****  Traversing   *****/
-(function($) {
-    $.implement({
-        find: function(selector, util) {
-            var t = $();
-            t.selector = this.selector + ' ' + selector;
-            for (var i = 0, l = this.length; i < l; i++) {
-                [].push.apply(t, Array.from($(selector, this[i])));
-            };
-            return t;
-        }
-    });
-})($);
 
 /*****   AJAX Helper Functions   *****/
 $.extend({
