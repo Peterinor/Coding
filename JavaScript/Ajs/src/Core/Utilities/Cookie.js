@@ -56,14 +56,14 @@ var Cookie = this.Cookie = new Class({
 
 });
 
-Cookie.write = function(key, value, options){
+Cookie.set = Cookie.write = function(key, value, options) {
 	return new Cookie(key, options).write(value);
 };
 
-Cookie.read = function(key){
+Cookie.get = Cookie.read = function(key) {
 	return new Cookie(key).read();
 };
 
-Cookie.dispose = function(key, options){
+Cookie.dispose = function(key, options) {
 	return new Cookie(key, options).dispose();
 };
