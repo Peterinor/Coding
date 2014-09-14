@@ -358,7 +358,7 @@ this.$.extend({
                     this.setter(prop);
                     break;
                 case 'string':
-                    if (value) {
+                    if (undefined != value) {
                         // Note: first attempt() arg is supposed to be index of elements array, but can't be done in Mootools
                         if ($.type(value) == 'function') value = value.attempt(this, this);
                         this.setter(prop, value)
