@@ -1,4 +1,3 @@
-
 #include "crc.h"
 
 #include <iostream>
@@ -6,7 +5,8 @@ using namespace std;
 
 int main(int argc, char * argv[]){
 
-    if(argc < 2){
+    if (argc < 2){
+
         cout << "-----------------------------------" << endl;
         cout << "FMC crc generate tool by Yu.Tang" << endl;
         cout << "usage: crc_gen <data>" << endl;

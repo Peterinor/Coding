@@ -1,4 +1,3 @@
-
 #include "crc.h"
 
 ulong bitReverse(ulong v, int b){
@@ -12,15 +11,14 @@ ulong bitReverse(ulong v, int b){
     ulong mask = 0xffffffff << b;
     ulong t = v & mask;
     int shift = 1;
-    ulong count = ceil(log(double(b))/log(2.0));
-    for(int i = 0; i < count; i++) {
+    ulong count = (ulong)ceil(log(double(b)) / log(2.0));
+    for (uint i = 0; i < count; i++) {
         ulong conv = converts[i];
         v = (v & conv) >> shift | (v & ~conv) << shift;
         shift <<= 1;
     }
     return t | ((v >> ((1L << count) - b)) & ~mask);
 }
-
 
 ulong bitReverseHex(ulong v){
     v = (v & 0xaaaaaaaa) >> 1 | (v & ~0xaaaaaaaa) << 1;

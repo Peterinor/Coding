@@ -1,14 +1,17 @@
 
+#ifndef _CRC_H_
+#define _CRC_H_
+
 #include <string>
 using namespace std;
 
-typedef unsigned long         ulong;
-// typedef unsigned long long     ullong;
-typedef unsigned int         uint;
-typedef unsigned short         ushort;
-typedef unsigned char         uchar;
+typedef unsigned long           ulong;
+typedef unsigned long long      ullong;
+typedef unsigned int            uint;
+typedef unsigned short          ushort;
+typedef unsigned char           uchar;
 
-ulong bitReverse (ulong v, int b);
+ulong bitReverse(ulong v, int b);
 ulong bitReverseHex(ulong v);
 
 #define BITMASK(X) (1L << (X))
@@ -30,10 +33,10 @@ namespace foc {
     public:
 
         Crc(int width, ulong poly, ulong init = 0, bool refIn = false, bool refOut = false, ulong xorOut = 0){
-            this->_width = width;
-            this->_poly = poly;
-            this->_init = init;
-            this->_refIn = refIn;
+            this->_width  = width;
+            this->_poly   = poly;
+            this->_init   = init;
+            this->_refIn  = refIn;
             this->_refOut = refOut;
             this->_xorOut = xorOut;
         }
@@ -41,14 +44,14 @@ namespace foc {
         }
 
         ulong mask(){
-            return (((1L << (this->_width - 1 )) - 1L) << 1) | 1L;
+            return (((1L << (this->_width - 1)) - 1L) << 1) | 1L;
         }
 
-        void init (){
-             this->_register = this->_init;
+        void init(){
+            this->_register = this->_init;
         }
-        void next (int ch) {
-            ulong uch  = (ulong) ch;
+        void next(int ch) {
+            ulong uch = (ulong)ch;
             ulong topbit = BITMASK(this->_width - 1);
 
             if (this->_refIn) {
@@ -57,14 +60,15 @@ namespace foc {
             this->_register ^= (uch << (this->_width - 8));
             for (int i = 0; i < 8; i++) {
                 if (this->_register & topbit){
-                   this->_register = (this->_register << 1) ^ this->_poly;
-                } else {
-                   this->_register <<= 1;
-                   }
+                    this->_register = (this->_register << 1) ^ this->_poly;
+                }
+                else {
+                    this->_register <<= 1;
+                }
                 this->_register &= this->mask();
             }
         }
-        ulong crc (){
+        ulong crc(){
             if (this->_refOut)
                 return this->_xorOut ^ bitReverse(this->_register, this->_width);
             else
@@ -77,10 +81,10 @@ namespace foc {
         }
         ushort cal(string data) {
             this->init();
-            for(int i = 0, l = data.size(); i < l; i++){
+            for (int i = 0, l = data.size(); i < l; i++){
                 this->next(data[i]);
             }
-            return this->crc();
+            return (ushort)this->crc();
         }
     };
 
@@ -95,7 +99,9 @@ namespace foc {
         }
         ushort generate(string data) {
             ushort crc = this->cal(data);
-            return bitReverseHex(crc);
+            return (ushort)bitReverseHex(crc);
         }
     };
 }
+
+#endif
