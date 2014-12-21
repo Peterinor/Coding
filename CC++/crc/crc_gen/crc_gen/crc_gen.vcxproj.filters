@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\libcrc\crc.cpp">
+    <ClCompile Include="..\..\libcrc\crc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\libcrc\crc_gen.cpp">
+    <ClCompile Include="..\..\libcrc\crc_gen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\libcrc\crc.h">
+    <ClInclude Include="..\..\libcrc\crc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
