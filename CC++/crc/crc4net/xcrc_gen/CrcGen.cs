@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using libcrc;
 namespace xcrc_gen
 {
     public partial class CrcGen : Form
@@ -18,7 +19,26 @@ namespace xcrc_gen
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            //Clipboard.SetDataObject(this.)
+            Clipboard.SetDataObject(this.txtBxResult.Text);
+        }
+
+        private void CrcGen_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGen_Click(object sender, EventArgs e)
+        {
+            var crc = CrcFmc.crc_gen(this.txtBxInput.Text);
+
+            var crcx = string.Format("{0:x}", crc);
+
+            this.txtBxResult.Text = crcx;
+        }
+
+        private void btnCopy_Click_1(object sender, EventArgs e)
+        {
+            Clipboard.SetDataObject(this.txtBxResult.Text);
         }
     }
 }

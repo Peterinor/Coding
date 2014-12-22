@@ -5,32 +5,34 @@ using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
 //
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// 有关程序集的常规信息通过下列特性集
+// 控制。更改这些特性值可修改
+// 与程序集关联的信息。
 //
-[assembly:AssemblyTitleAttribute(L"libcrc")];
-[assembly:AssemblyDescriptionAttribute(L"")];
-[assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"libcrc")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2014")];
-[assembly:AssemblyTrademarkAttribute(L"")];
-[assembly:AssemblyCultureAttribute(L"")];
+[assembly:AssemblyTitleAttribute("libcrc")];
+[assembly:AssemblyDescriptionAttribute("")];
+[assembly:AssemblyConfigurationAttribute("")];
+[assembly:AssemblyCompanyAttribute("Microsoft")];
+[assembly:AssemblyProductAttribute("libcrc")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) Microsoft 2014")];
+[assembly:AssemblyTrademarkAttribute("")];
+[assembly:AssemblyCultureAttribute("")];
 
 //
-// Version information for an assembly consists of the following four values:
+// 程序集的版本信息由下面四个值组成:
 //
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
+//      主版本
+//      次版本
+//      内部版本号
+//      修订号
 //
-// You can specify all the value or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
+// 您可以指定所有值，也可以使用“修订号”和“内部版本号”的默认值，
+// 方法是按如下所示使用“*”:
 
 [assembly:AssemblyVersionAttribute("1.0.*")];
 
 [assembly:ComVisible(false)];
 
 [assembly:CLSCompliantAttribute(true)];
+
+[assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)];
