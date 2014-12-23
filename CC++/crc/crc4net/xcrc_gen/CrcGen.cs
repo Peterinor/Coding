@@ -31,7 +31,7 @@ namespace xcrc_gen
         {
             var crc = CrcFmc.crc_gen(this.txtBxInput.Text);
 
-            var crcx = string.Format("{0:x}", crc);
+            var crcx = this.txtBxInput.Text + string.Format("{0:x}", crc).ToUpper();
 
             this.txtBxResult.Text = crcx;
         }
