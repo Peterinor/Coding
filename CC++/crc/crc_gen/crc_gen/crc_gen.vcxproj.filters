@@ -26,5 +26,8 @@
     <ClInclude Include="..\..\libcrc\crc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\libcrc\crc_fmc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "crc.h"
+#include "crc_fmc.h"
 
 #include <iostream>
 using namespace std;

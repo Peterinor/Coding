@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libcrc\crc.h" />
+    <ClInclude Include="..\..\libcrc\crc_fmc.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F53AEC0E-9FA5-4B9E-87DD-D98792B05DAE}</ProjectGuid>

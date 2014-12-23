@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libcrc\crc.h" />
+    <ClInclude Include="..\..\libcrc\crc_fmc.h" />
     <ClInclude Include="libcrc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

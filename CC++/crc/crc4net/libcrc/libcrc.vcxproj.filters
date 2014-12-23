@@ -28,5 +28,8 @@
     <ClInclude Include="..\..\libcrc\crc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\libcrc\crc_fmc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
