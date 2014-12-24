@@ -21,7 +21,7 @@ int main(int argc, char * argv[]){
 
     foc::CrcFMC *cal = new foc::CrcFMC();
 
-    unsigned short crc = cal->generate(argv[1]);
+    unsigned short crc = cal->cal(argv[1]);
     cout << hex << crc << endl;
 
     delete cal;

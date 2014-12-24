@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using libcrc;
 
 namespace crc_gen
@@ -23,7 +18,7 @@ namespace crc_gen
 
                 return;
             }
-            Console.WriteLine("{0:x}", CrcFmc.crc_gen(args[0]));
+            Console.WriteLine("{0:x}", CrcFmc.cal(args[0]));
         }
     }
 }

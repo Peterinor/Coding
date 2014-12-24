@@ -10,12 +10,12 @@ namespace foc{
         CrcFMC()
             : Crc(16, 0x1021, 0xffff, true, false, 0xffff) {
         }
-        ushort generate(const char * data) {
-            string ds(data);
-            return this->generate(ds);
+        ushort cal(const char * data){
+            ushort crc = Crc::cal(data);
+            return (ushort)bitReverseHex(crc);
         }
-        ushort generate(string data) {
-            ushort crc = this->cal(data);
+        ushort cal(string data){
+            ushort crc = Crc::cal(data);
             return (ushort)bitReverseHex(crc);
         }
     };

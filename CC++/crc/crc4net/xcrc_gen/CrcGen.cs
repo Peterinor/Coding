@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using libcrc;
@@ -17,11 +11,6 @@ namespace xcrc_gen
             InitializeComponent();
         }
 
-        private void btnCopy_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetDataObject(this.txtBxResult.Text);
-        }
-
         private void CrcGen_Load(object sender, EventArgs e)
         {
 
@@ -29,14 +18,14 @@ namespace xcrc_gen
 
         private void btnGen_Click(object sender, EventArgs e)
         {
-            var crc = CrcFmc.crc_gen(this.txtBxInput.Text);
+            var crc = CrcFmc.cal(this.txtBxInput.Text);
 
             var crcx = this.txtBxInput.Text + string.Format("{0:x}", crc).ToUpper();
 
             this.txtBxResult.Text = crcx;
         }
 
-        private void btnCopy_Click_1(object sender, EventArgs e)
+        private void btnCopy_Click(object sender, EventArgs e)
         {
             Clipboard.SetDataObject(this.txtBxResult.Text);
         }
