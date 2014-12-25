@@ -1,6 +1,8 @@
 #include "crc.h"
 #include "crc_fmc.h"
 
+#include "cmdline.h"
+
 #include <iostream>
 using namespace std;
 
@@ -18,6 +20,14 @@ int main(int argc, char * argv[]){
         system("pause");
         return 0;
     }
+
+    cmdline::Parser pa;
+    pa.add<int>("width", "w", "crc bit width", false, 16);
+    pa.add<ulong>("poly", "p", "crc poly", false, 0x1021);
+    pa.add<ulong>("init", "init", "crc register init value", false, 0);
+    pa.add<bool>("refin", "ri", "reflect the input bits", false, false);
+    pa.add<bool>("refout", "ro", "reflect the out bits", false, false);
+    pa.add<ulong>("xorout", "x", "xor with the out data", false, 0x0);
 
     foc::CrcFMC *cal = new foc::CrcFMC();
 
