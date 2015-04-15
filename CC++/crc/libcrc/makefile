@@ -1,17 +1,15 @@
 
-crc_src = crc.h crc.cpp
-crc_obj = crc.obj
+crc_src=crc.h crc.cpp
+crc_obj=crc.obj
 
-out = crc_gen.exe
+out=crc_gen
 
-main: crc crc_gen.cpp
-    cl crc_gen.cpp crc.obj
+main:crc crc_gen.cpp
+	g++ crc_gen.cpp $(crc_obj) -o crc_gen
 
-    crc_gen ADS
-
-crc: $(crc_src)
-    cl -c crc.cpp -o $(crc_obj)
+crc:$(crc_src)
+	g++ -c crc.cpp -o $(crc_obj)
 
 clean: 
-    del *.obj
-    del $(out)
+	del *.obj
+	del $(out)

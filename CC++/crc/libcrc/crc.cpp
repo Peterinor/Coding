@@ -1,4 +1,5 @@
 #include "crc.h"
+#include "cmath"
 
 ulong bitReverse(ulong v, int b){
     ulong converts[] = {

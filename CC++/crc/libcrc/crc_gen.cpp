@@ -17,7 +17,6 @@ int main(int argc, char * argv[]){
         cout << "the result is: e7bd" << endl;
         cout << "-----------------------------------" << endl;
 
-        system("pause");
         return 0;
     }
 
